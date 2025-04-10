@@ -1,0 +1,532 @@
+/* 主要容器 */
+.home {
+  background: linear-gradient(135deg, #fff, #f8f9fa);
+  min-height: 100vh;
+}
+
+/* 主標題區域 */
+.home__hero {
+  padding: 4rem 2rem;
+  border-radius: 20px;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.home__title {
+  font-size: 3.5rem;
+  background: #38597a;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 2rem;
+  animation: fadeInDown 1s ease;
+}
+
+.home__description {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #34495e;
+  animation: fadeInUp 1s ease;
+}
+
+/* About More 按鈕 */
+.home__button {
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  border-radius: 30px;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+}
+
+.home__button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+}
+
+/* 特色區域 */
+.home__features {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.home__features-collapse {
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  margin-top: 0;
+}
+
+.home__feature-card {
+  padding: 1.5rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: white;
+  height: 100%;
+}
+
+.home__feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.home__feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.home__feature-title {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+/* 用戶類型卡片 */
+.home__user-card {
+  padding: 2.5rem;
+  border-radius: 15px;
+  transition: all 0.3s ease;
+}
+
+.home__user-card--coffee {
+  background: #34495e;
+  color: white;
+}
+
+.home__user-card--store {
+  background: #bdc3c7;
+  color: #2c3e50;
+}
+
+.home__user-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.home__user-text {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.home__user-button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.home__user-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal 相關樣式 */
+.home__modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.home__modal {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 1.75rem;
+  z-index: 1060;
+}
+
+.home__modal-dialog {
+  position: relative;
+  width: auto;
+  margin: 0.5rem;
+  pointer-events: none;
+}
+
+.home__modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+}
+
+.home__modal-header {
+  display: flex;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.home__modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #2c3e50;
+}
+
+.home__modal-body {
+  position: relative;
+  flex: 1 1 auto;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.home__modal-text {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+}
+
+.home__modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.home__modal-button {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 0.25rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.home__modal-button--primary {
+  background-color: #3498db;
+  color: white;
+}
+
+.home__modal-button--primary:hover {
+  background-color: #2980b9;
+}
+
+.home__modal-button--secondary {
+  background-color: #95a5a6;
+  color: white;
+}
+
+.home__modal-button--secondary:hover {
+  background-color: #7f8c8d;
+}
+
+.home__modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1040;
+}
+
+/* 頁腳 */
+.home__footer {
+  padding: 2rem 0;
+  text-align: center;
+  color: #7f8c8d;
+}
+
+/* 動畫 */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+  .home__hero {
+    padding: 3rem 1.5rem;
+  }
+
+  .home__title {
+    font-size: 3rem;
+  }
+
+  .home__description {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .home__hero {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .home__title {
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .home__description {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .home__button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .home__features {
+    padding: 1.5rem;
+  }
+
+  .home__feature-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__feature-icon {
+    font-size: 1.5rem;
+  }
+
+  .home__feature-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .home__user-card {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__user-title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__user-text {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .home__user-button {
+    padding: 0.7rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .home__section-title {
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home {
+    padding: 0.5rem;
+  }
+
+  .home__hero {
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .home__title {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__description {
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+
+  .home__button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+
+  .home__features {
+    padding: 1rem;
+  }
+
+  .home__feature-card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__feature-icon {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .home__feature-title {
+    font-size: 1.1rem;
+  }
+
+  .home__user-card {
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+  }
+
+  .home__user-title {
+    font-size: 1.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .home__user-text {
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .home__user-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.8rem;
+    width: 100%; /* 在手機版讓按鈕佔滿寬度 */
+  }
+
+  .home__section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .home__modal {
+    margin: 0.5rem;
+  }
+
+  .home__modal-content {
+    padding: 0.8rem;
+  }
+
+  .home__modal-title {
+    font-size: 1.2rem;
+  }
+
+  .home__modal-text {
+    font-size: 0.9rem;
+  }
+
+  .home__modal-button {
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .home__footer {
+    padding: 1rem 0;
+    font-size: 0.8rem;
+  }
+}
+
+/* 超小螢幕優化 */
+@media (max-width: 360px) {
+  .home__title {
+    font-size: 1.5rem;
+  }
+
+  .home__description {
+    font-size: 0.85rem;
+  }
+
+  .home__user-card {
+    padding: 1rem;
+  }
+
+  .home__user-title {
+    font-size: 1.3rem;
+  }
+
+  .home__user-text {
+    font-size: 0.85rem;
+  }
+
+  .home__user-button {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.8rem;
+  }
+}
+
+/* 確保內容在小螢幕上也能正確顯示 */
+@media (max-width: 480px) {
+  .col-md-4 {
+    width: 100%;
+  }
+
+  .row {
+    margin: 0;
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+/* About More 下拉內容 */
+.home__features-collapse {
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  margin-top: 0;
+}
+
+/* 卡片樣式 */
+.card {
+  border: none;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 內容間距 */
+.feature-item {
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
+}
+
+/* 為了更好的動畫效果，添加以下樣式 */
+.home__section-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.home__section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  border-radius: 2px;
+}

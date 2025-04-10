@@ -1,0 +1,481 @@
+.productDetail {
+  max-width: 1200px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.productDetail__card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 2.5rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.productDetail__main {
+  display: flex;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.productDetail__image-container {
+  width: 50%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.productDetail__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.productDetail__content {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1 / 1;
+}
+
+.productDetail__header {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.productDetail__title-wrapper {
+  margin-bottom: 1rem;
+}
+
+.productDetail__title {
+  font-size: 1.8rem;
+  color: #1e293b;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.productDetail__price {
+  color: #e74c3c;
+}
+
+.productDetail__store {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  color: #64748b;
+  font-size: 1.1rem;
+}
+
+.productDetail__store-name {
+  font-weight: 500;
+}
+
+.productDetail__sales {
+  color: #94a3b8;
+}
+
+.productDetail__info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.productDetail__info-item {
+  background: #f8fafc;
+  padding: 0.8rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.3s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.productDetail__info-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.productDetail__info-icon {
+  font-size: 1.8rem;
+  color: #3b82f6;
+  margin-bottom: 1rem;
+}
+
+.productDetail__info-label {
+  color: #64748b;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.productDetail__info-value {
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.productDetail__description {
+  display: block;
+  margin: 2rem 0;
+  padding: 2rem;
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+}
+
+.productDetail__description-title {
+  color: #1e293b;
+  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.productDetail__description-text {
+  white-space: pre-line;
+  line-height: 1.6;
+  color: #2c3e50;
+  font-size: 1.05rem;
+}
+
+.productDetail__actions {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 2px solid #f1f5f9;
+}
+
+.productDetail__button {
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+.productDetail__button--cart {
+  background: #22c55e;
+  color: white;
+}
+
+.productDetail__button--cart:hover {
+  background: #16a34a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.2);
+}
+
+.productDetail__button--login {
+  background: #3b82f6;
+  color: white;
+}
+
+.productDetail__button--login:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2);
+}
+
+.productDetail__button--back {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.productDetail__button--back:hover {
+  background: #e2e8f0;
+  color: #1e293b;
+  transform: translateY(-2px);
+}
+
+.productDetail__loading {
+  text-align: center;
+  padding: 3rem;
+  font-size: 1.2rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.productDetail__error {
+  text-align: center;
+  padding: 2rem;
+  color: #ef4444;
+  font-size: 1.2rem;
+  background: #fef2f2;
+  border-radius: 12px;
+  border: 1px solid #fecaca;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+/* 大螢幕 */
+@media (min-width: 1200px) {
+  .productDetail__title {
+    font-size: 2rem;
+  }
+
+  .productDetail__store {
+    font-size: 1.2rem;
+  }
+
+  .productDetail__info-item {
+    padding: 1.2rem;
+  }
+
+  .productDetail__info-icon {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+  }
+}
+
+/* 一般桌面 */
+@media (max-width: 1199px) {
+  .productDetail__title {
+    font-size: 1.8rem;
+  }
+
+  .productDetail__info-icon {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+}
+
+/* 小螢幕桌面 */
+@media (max-width: 1024px) {
+  .productDetail {
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .productDetail__card {
+    padding: 1.5rem;
+  }
+
+  .product__container {
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .productDetail__title-wrapper {
+    margin-bottom: 0;
+  }
+
+  .productDetail__title {
+    font-size: 1.6rem;
+  }
+
+  .productDetail__store {
+    font-size: 1rem;
+  }
+
+  .productDetail__info-grid {
+    gap: 0.8rem;
+  }
+
+  .productDetail__info-item {
+    padding: 0.8rem;
+  }
+
+  .productDetail__info-icon {
+    font-size: 1.4rem;
+    margin-bottom: 0.6rem;
+  }
+}
+
+/* 平板 */
+@media (max-width: 900px) {
+  .productDetail__title {
+    font-size: 1.4rem;
+  }
+
+  .productDetail__store {
+    margin-top: 0;
+  }
+
+  .productDetail__info-item {
+    padding: 0.6rem;
+  }
+
+  .productDetail__info-icon {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .productDetail__info-label {
+    font-size: 0.85rem;
+  }
+
+  .productDetail__info-value {
+    font-size: 1rem;
+  }
+}
+
+/* 小平板 */
+@media (max-width: 768px) {
+  .productDetail__main {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .productDetail__image-container {
+    width: 50%;
+  }
+
+  .productDetail__content {
+    width: calc(50% - 1.5rem);
+    aspect-ratio: unset;
+    min-height: 300px; /* 確保最小高度 */
+    justify-content: space-between;
+  }
+
+  .productDetail__header {
+    height: auto;
+    gap: 0.8rem;
+  }
+  .productDetail__title {
+    font-size: 1.3rem;
+  }
+
+  .productDetail__info-grid {
+    width: 100%;
+    order: 1;
+    margin-top: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .productDetail__info-label {
+    display: none;
+  }
+}
+
+/* 大手機 */
+@media (max-width: 600px) {
+  .productDetail {
+    width: 90%;
+  }
+  .productDetail__main {
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  .productDetail__image-container,
+  .productDetail__content {
+    width: 100%;
+  }
+
+  .productDetail__content {
+    min-height: auto;
+  }
+
+  .productDetail__title {
+    font-size: 1.3rem;
+  }
+
+  .productDetail__info-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .productDetail__description {
+    margin: 0.5rem;
+    padding: 1rem;
+  }
+  .productDetail__description-title {
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+  }
+  .productDetail__description-text {
+    font-size: 1rem;
+    margin-bottom: 0;
+  }
+  .productDetail__actions {
+    margin: 0.5rem;
+    padding-top: 0.5rem;
+  }
+  .productDetail__button {
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* 手機 */
+@media (max-width: 480px) {
+  .productDetail {
+    margin: 1rem auto;
+    padding: 0 0.8rem;
+  }
+
+  .productDetail__card {
+    padding: 1rem;
+  }
+
+  .product__container {
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .productDetail__title {
+    font-size: 1.2rem;
+  }
+
+  .productDetail__store {
+    font-size: 0.9rem;
+  }
+
+  .productDetail__info-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .productDetail__content-wrapper {
+    padding-top: 1rem;
+  }
+
+  .productDetail__description {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .productDetail__button {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+    border-radius: 8px;
+  }
+}
+
+/* 小手機 */
+@media (max-width: 360px) {
+  .productDetail__card {
+    padding: 0.8rem;
+  }
+
+  .product__container {
+    gap: 0.8rem;
+  }
+
+  .productDetail__title {
+    font-size: 1.1rem;
+  }
+
+  .productDetail__store {
+    font-size: 0.8rem;
+  }
+
+  .productDetail__content-wrapper {
+    padding-top: 0.8rem;
+  }
+
+  .productDetail__info-icon {
+    font-size: 1rem;
+  }
+}

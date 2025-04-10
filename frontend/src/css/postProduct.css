@@ -1,0 +1,265 @@
+/* 發布商品頁面容器 */
+.postProduct {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* 頁面標題 */
+.postProduct__title {
+  font-size: 2.2rem;
+  color: #2c3e50;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  font-weight: 600;
+  position: relative;
+}
+
+.postProduct__title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+/* 表單群組 */
+.postProduct__group {
+  margin-bottom: 1.8rem;
+}
+
+.postProduct__label {
+  display: block;
+  margin-bottom: 0.8rem;
+  color: #2c3e50;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.postProduct__input {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.postProduct__input:focus {
+  border-color: #3498db;
+  background-color: white;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
+  outline: none;
+}
+
+/* 文本區域特殊樣式 */
+.postProduct__textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+/* 數字輸入框樣式 */
+.postProduct__input--number {
+  -moz-appearance: textfield;
+}
+
+.postProduct__input--number::-webkit-outer-spin-button,
+.postProduct__input--number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 提交按鈕 */
+.postProduct__button {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.postProduct__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+}
+
+.postProduct__button:active {
+  transform: translateY(0);
+}
+
+/* 錯誤訊息 */
+.postProduct__alert {
+  padding: 1rem;
+  margin-top: 1.5rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  animation: shake 0.5s ease-in-out;
+  background-color: #fff7ed;
+  border: 1px solid #f97316;
+  color: #c2410c;
+}
+
+/* 無權限提示 */
+.postProduct__unauthorized {
+  text-align: center;
+  padding: 3rem;
+  color: #64748b;
+  font-size: 1.2rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 500px;
+}
+
+/* 動畫效果 */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* 響應式設計 */
+@media (max-width: 1024px) {
+  .postProduct {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 2rem;
+  }
+
+  .postProduct__title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .postProduct {
+    margin: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .postProduct__title {
+    font-size: 1.6rem;
+    margin-bottom: 1.8rem;
+  }
+
+  .postProduct__title::after {
+    width: 50px;
+    height: 3px;
+    bottom: -8px;
+  }
+
+  .postProduct__group {
+    margin-bottom: 1.5rem;
+  }
+
+  .postProduct__label {
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .postProduct__input {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    border-radius: 6px;
+  }
+
+  .postProduct__textarea {
+    min-height: 100px;
+  }
+
+  .postProduct__button {
+    padding: 0.8rem;
+    font-size: 1rem;
+    border-radius: 6px;
+    margin-top: 0.8rem;
+  }
+
+  .postProduct__alert {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+    margin-top: 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .postProduct {
+    margin: 1rem;
+    padding: 1.2rem;
+    border-radius: 10px;
+  }
+
+  .postProduct__title {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .postProduct__title::after {
+    width: 40px;
+    height: 2px;
+    bottom: -6px;
+  }
+
+  .postProduct__group {
+    margin-bottom: 1.2rem;
+  }
+
+  .postProduct__label {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .postProduct__input {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    border-radius: 5px;
+    border-width: 1px;
+  }
+
+  .postProduct__textarea {
+    min-height: 80px;
+  }
+
+  .postProduct__button {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    margin-top: 0.6rem;
+  }
+
+  .postProduct__alert {
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    border-radius: 5px;
+  }
+
+  .postProduct__unauthorized {
+    padding: 2rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    margin: 1rem auto;
+  }
+}

@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# Coffee Shop E-commerce Platform
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 專案簡介
 
-## Available Scripts
+一個整合電商與社群功能的咖啡豆購物平台，提供商家上架商品、會員購物及文章分享功能。
 
-In the project directory, you can run:
+## 功能特點
 
-### `npm start`
+- 會員系統：支持一般會員與商家會員
+- 商品管理：商家可上架、編輯、下架商品
+- 購物車系統：即時更新、數量管理
+- 文章社群：會員可發布文章、互動交流
+- 搜索功能：支持商品和文章的多維度搜索
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 技術架構
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 前端
 
-### `npm test`
+- React 18
+- Context API 狀態管理
+- React Router v6
+- Axios 請求處理
+- CSS Modules 樣式管理
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 後端
 
-### `npm run build`
+- Node.js & Express
+- MongoDB & Mongoose
+- JWT 認證
+- Multer 檔案上傳
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 本地開發
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+# 安裝依賴
+npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# 啟動開發服務器
+npm run dev
 
-### `npm run eject`
+# 建置專案
+npm run build
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 部署說明
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+1. 確保已安裝 Node.js 和 MongoDB。
+2. 克隆專案到本地：
+   ```bash
+   git clone https://github.com/yourusername/coffeeshop-platform.git
+   cd coffeeshop-platform
+   ```
+3. 安裝依賴：
+   ```bash
+   npm install
+   ```
+4. 配置環境變數：
+   - 在專案根目錄下創建 `.env` 文件，並添加以下內容：
+     ```
+     MONGODB_URI=your_mongodb_uri
+     PASSWORD_SECRET=your_jwt_secret
+     ```
+5. 啟動伺服器：
+   ```bash
+   npm run start
+   ```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 測試
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# 運行單元測試
+npm run test
 
-## Learn More
+# 運行 E2E 測試
+npm run test:e2e
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## API 文檔
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+API 文檔尚未完成。
 
-### Code Splitting
+## 系統架構
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 前端架構
 
-### Analyzing the Bundle Size
+```mermaid
+graph TD
+    A[用戶界面] --> B[路由管理]
+    B --> C[組件]
+    C --> D[Context API]
+    D --> E[API 服務]
+    E --> F[後端服務]
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### 後端架構
 
-### Making a Progressive Web App
+```mermaid
+graph TD
+    A[客戶端請求] --> B[API 層]
+    B --> C[業務邏輯]
+    C --> D[數據庫操作]
+    D --> E[MongoDB]
+    C --> F[文件存儲]
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 貢獻指南
 
-### Advanced Configuration
+歡迎貢獻！請遵循以下步驟:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+1. Fork 本專案
+2. 創建您的特性分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交您的更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 開啟 Pull Request
 
-### Deployment
+## 聯繫方式
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+如有任何問題，請聯繫 [linkuanhan8811@gmail.com](mailto:linkuanhan8811@gmail.com)。
 
-### `npm run build` fails to minify
+## 授權
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+此專案採用 MIT 授權 - 詳見 [LICENSE](./LICENSE) 文件。

@@ -1,0 +1,484 @@
+.cart {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+.cart__title {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+.cart__title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2980b9);
+  border-radius: 2px;
+}
+
+/* 空購物車提示 */
+.cart__empty {
+  text-align: center;
+  padding: 3rem;
+  background: #f8f9fa;
+  border-radius: 10px;
+  color: #7f8c8d;
+  font-size: 1.2rem;
+}
+
+/* 商品卡片樣式 */
+.cart__product-card {
+  border: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  background: white;
+}
+
+.cart__product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.cart__product-card__image-container {
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  border-radius: 15px 15px 0 0;
+  position: relative;
+}
+
+.cart__product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+.cart__product-card__image:hover {
+  transform: scale(1.05);
+}
+
+.cart__product-card__body {
+  padding: 1rem;
+  background: white;
+}
+
+.cart__product-card__title {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 3.2rem;
+  line-height: 1.6rem;
+}
+
+/* 商店名稱樣式 */
+.cart__product-card__store {
+  display: block;
+  color: #7f8c8d;
+  font-size: 0.9rem;
+}
+
+/* 價格樣式 */
+.cart__product-card__price {
+  font-size: 1.1rem;
+  color: #e74c3c;
+  font-weight: bold;
+  margin: 1rem 0;
+  padding-top: 0.7rem;
+}
+
+/* 移除按鈕 */
+.cart__product-card__remove {
+  width: 100%;
+  padding: 0.8rem;
+  border: none;
+  background: #f8f9fa;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border-top: 1px solid #eee;
+}
+
+.cart__product-card__remove:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+.quantity {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* 數量控制按鈕組 */
+.quantity__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 25px;
+  width: fit-content;
+}
+
+.quantity__button {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  color: #2c3e50;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.quantity__button:hover {
+  background: #3498db;
+  color: white;
+}
+
+.quantity__button--disabled {
+  background: #bdc3c7;
+  cursor: not-allowed;
+}
+
+.quantity__display {
+  font-size: 1.1rem;
+  color: #2c3e50;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* 購物車總結區域 */
+.summary {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.summary__content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* 每個區塊的基本樣式 */
+.summary__section {
+  padding: 1.5rem;
+  border-radius: 12px;
+  background: #f8f9fa;
+  transition: all 0.3s ease;
+}
+
+.summary__section:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* 區塊標題 */
+.summary__title {
+  color: #2c3e50;
+  font-size: 1.4rem;
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid #e0e0e0;
+  text-align: center;
+}
+
+/* 內容文字 */
+.summary__text {
+  color: #666;
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+/* 金額文字 */
+.summary__amount {
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 1rem 0;
+}
+
+/* 特別標示（例如：免運費） */
+.summary__highlight {
+  color: #27ae60;
+  font-weight: 500;
+}
+
+/* 總計金額特別樣式 */
+.summary__total {
+  color: #e74c3c;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px dashed #e0e0e0;
+}
+
+/* 結帳按鈕 */
+.summary__checkout {
+  width: 100%;
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.summary__checkout:hover {
+  background: #2980b9;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .cart__row {
+    width: 90%;
+    margin: 0 auto;
+  }
+  .cart {
+    padding: 0 1rem;
+    width: 100%;
+  }
+
+  .cart__title {
+    font-size: 1.8rem;
+  }
+
+  .cart__product-card__title {
+    font-size: 1.1rem;
+    height: 2.8rem;
+    line-height: 1.4rem;
+  }
+
+  .cart__product-card__store {
+    font-size: 0.8rem;
+  }
+
+  .cart__product-card__price {
+    font-size: 1.2rem;
+  }
+
+  .summary {
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .summary__content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .summary__section {
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .summary__title {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    opacity: 0;
+    line-height: 0;
+    width: 0;
+  }
+
+  .summary__text {
+    font-size: 0.9rem;
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .summary__highlight {
+    margin: auto;
+  }
+
+  .summary__amount {
+    font-size: 1.1rem;
+    width: 40%;
+  }
+
+  .summary__total {
+    font-size: 1.3rem;
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+    justify-content: center;
+    width: 40%;
+  }
+
+  .summary__checkout {
+    padding: 0.8rem;
+    font-size: 1rem;
+  }
+
+  .product-card__image-container {
+    height: 150px;
+  }
+
+  .product-card {
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* 確保圖片載入失敗時的樣式 */
+.product-card__image-container::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.03);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.product-card__image-container:hover::after {
+  opacity: 1;
+}
+
+@media (max-width: 576px) {
+  .cart__row {
+    width: 100%;
+  }
+  .cart__product-card {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0;
+  }
+  .cart__product-card__image-container {
+    width: 45%;
+  }
+  .cart__product-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 55%;
+    padding: 0.5rem;
+    position: relative;
+  }
+  .cart__product-card__title {
+    font-size: 1rem;
+    height: 2.4rem;
+    line-height: 1.2rem;
+  }
+  .quantity {
+    margin-top: 0.5rem;
+  }
+  .quantity__controls {
+    margin: 0.5rem 0;
+    padding: 0.25rem;
+    width: 50%;
+  }
+  .cart__product-card__price {
+    margin: 0;
+  }
+  .quantity__button {
+    font-size: 1.1rem;
+    height: 25px;
+    width: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cart {
+    padding: 0 0.25rem;
+  }
+
+  .cart__product-card {
+    display: flex;
+  }
+
+  .cart__product-card__image-container {
+    width: 45%;
+  }
+
+  .cart__product-card__body {
+    width: 55%;
+    padding: 0.5rem;
+  }
+  .cart__product-card__title {
+    font-size: 0.9rem;
+    height: 2.4rem;
+    line-height: 1.2rem;
+    margin-bottom: 0;
+  }
+  .cart__product-card__store {
+    font-size: 0.75rem;
+  }
+  .cart__product-card__price {
+    font-size: 1rem;
+    padding-top: 0.5rem;
+  }
+  .quantity {
+    margin-top: 0;
+  }
+  .quantity__controls {
+    width: 50%;
+    margin: 0.25rem 0;
+  }
+  .quantity__button {
+    height: 20px;
+    width: 20px;
+  }
+  .quantity__display {
+    min-width: 20px;
+    font-size: 0.9rem;
+  }
+  .cart__product-card__remove {
+    padding: 0.25rem;
+  }
+  .summary__text {
+    font-size: 0.8rem;
+  }
+  .summary__amount {
+    font-size: 1rem;
+  }
+  .summary__total {
+    font-size: 1.1rem;
+  }
+  .summary__checkout {
+    font-size: 0.9rem;
+    padding: 0.6rem;
+  }
+  .cart__empty {
+    font-size: 1rem;
+    padding: 2rem;
+  }
+}

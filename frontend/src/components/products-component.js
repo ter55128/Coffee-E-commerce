@@ -1,0 +1,298 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import CartService from "../services/cart-service";
+import AuthService from "../services/auth-service";
+import "../css/products.css";
+import { useCart } from "../context/CartContext";
+
+const ProductsComponent = (props) => {
+  let { currentUser, setCurrentUser } = props;
+  const navigate = useNavigate();
+  const [beans, setBeans] = useState([]);
+  const [filteredBeans, setFilteredBeans] = useState([]);
+  const { updateCartItemCount } = useCart();
+
+  const getAllProducts = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/beans/public"
+      );
+      setBeans(response.data);
+      setFilteredBeans(response.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, [currentUser]);
+
+  // 搜索條件狀態
+  const [searchFilters, setSearchFilters] = useState({
+    keyword: "",
+    minPrice: "",
+    maxPrice: "",
+    sortBy: "default", // default, price-asc, price-desc, sales
+  });
+
+  // 處理搜索條件變更
+  const handleFilterChange = (e) => {
+    const { name, value } = e.target;
+    setSearchFilters((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // 處理搜索提交
+  const handleSubmitSearch = (e) => {
+    e.preventDefault(); // 防止表單默認提交行為
+    applyFilters();
+  };
+
+  // 應用過濾條件
+  const applyFilters = () => {
+    let filtered = [...beans];
+
+    // 關鍵字搜索
+    if (searchFilters.keyword) {
+      filtered = filtered.filter(
+        (bean) =>
+          bean.title
+            .toLowerCase()
+            .includes(searchFilters.keyword.toLowerCase()) ||
+          bean.store?.username
+            .toLowerCase()
+            .includes(searchFilters.keyword.toLowerCase())
+      );
+    }
+
+    // 價格範圍
+    if (searchFilters.minPrice) {
+      filtered = filtered.filter(
+        (bean) => bean.price >= Number(searchFilters.minPrice)
+      );
+    }
+    if (searchFilters.maxPrice) {
+      filtered = filtered.filter(
+        (bean) => bean.price <= Number(searchFilters.maxPrice)
+      );
+    }
+
+    // 排序
+    switch (searchFilters.sortBy) {
+      case "price-asc":
+        filtered.sort((a, b) => a.price - b.price);
+        break;
+      case "price-desc":
+        filtered.sort((a, b) => b.price - a.price);
+        break;
+      case "sales":
+        filtered.sort((a, b) => b.customers.length - a.customers.length);
+        break;
+      default:
+        break;
+    }
+
+    setFilteredBeans(filtered);
+  };
+
+  // 重置過濾條件
+  const resetFilters = () => {
+    setSearchFilters({
+      keyword: "",
+      minPrice: "",
+      maxPrice: "",
+      sortBy: "default",
+    });
+    setFilteredBeans(beans);
+  };
+
+  // 當搜索條件改變時，自動應用過濾
+  // useEffect(() => {
+  //   applyFilters();
+  // }, [searchFilters, beans]);
+
+  const handletoaddTocart = async (beanID) => {
+    try {
+      if (!currentUser) {
+        window.alert("請先登入");
+        navigate("/login");
+        return;
+      }
+      if (currentUser && currentUser.user.role === "store") {
+        window.alert("商家無法使用此功能，請使用一般帳號登入");
+        AuthService.logout();
+        setCurrentUser(null);
+        navigate("/login");
+        return;
+      }
+      //console.log("Adding bean to cart:", beanID);
+      const response = await CartService.addToCart(beanID);
+      // console.log("response", response);
+
+      if (response.data) {
+        window.alert("成功加入購物車！");
+
+        // 添加這段代碼 - 成功添加商品後更新購物車數量
+        try {
+          const cartResponse = await CartService.getCart();
+          const total = cartResponse.data.items.reduce(
+            (sum, item) => sum + item.quantity,
+            0
+          );
+          updateCartItemCount(total);
+        } catch (error) {
+          console.error("更新購物車數量失敗:", error);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+      if (e.response?.status === 400) {
+        window.alert(e.response.data.message);
+      } else {
+        window.alert("加入購物車失敗，請稍後再試");
+      }
+    }
+  };
+  const handleLogout = () => {
+    AuthService.logout(); // remove user from local storage
+    window.alert("請使用一般會員登入");
+    setCurrentUser(null);
+    navigate("/login");
+  };
+
+  const handleDetail = (beanId) => {
+    navigate(`/products/${beanId}`);
+  };
+
+  return (
+    <div className="products">
+      <h1 className="products__title">All Products</h1>
+
+      {/* 將過濾區域改為表單 */}
+      <form onSubmit={handleSubmitSearch} className="products__filters">
+        <div className="products__search">
+          <input
+            type="text"
+            name="keyword"
+            value={searchFilters.keyword}
+            onChange={handleFilterChange}
+            placeholder="搜尋商品名稱或店家..."
+            className="products__search-input"
+          />
+        </div>
+
+        <div className="products__filter-group">
+          <input
+            type="number"
+            name="minPrice"
+            value={searchFilters.minPrice}
+            onChange={handleFilterChange}
+            placeholder="最低價格"
+            className="products__price-input"
+          />
+          <span className="products__price-separator">-</span>
+          <input
+            type="number"
+            name="maxPrice"
+            value={searchFilters.maxPrice}
+            onChange={handleFilterChange}
+            placeholder="最高價格"
+            className="products__price-input"
+          />
+        </div>
+
+        <select
+          name="sortBy"
+          value={searchFilters.sortBy}
+          onChange={handleFilterChange}
+          className="products__sort-select"
+        >
+          <option value="default">預設排序</option>
+          <option value="price-asc">價格由低到高</option>
+          <option value="price-desc">價格由高到低</option>
+          <option value="sales">銷量優先</option>
+        </select>
+
+        <div className="products__filter-buttons">
+          <button type="submit" className="products__filter-submit">
+            搜尋
+          </button>
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="products__filter-reset"
+          >
+            重置
+          </button>
+        </div>
+      </form>
+
+      {/* 顯示過濾後的商品數量 */}
+      <div className="products__result-count">
+        共找到 {filteredBeans.length} 項商品
+      </div>
+
+      <div className="products__grid">
+        {filteredBeans.map((bean) => (
+          <div className="products__card" key={bean._id}>
+            <img
+              src={`http://localhost:8080${bean.image}`}
+              alt={bean.title}
+              className="products__image"
+            />
+            <div className="products__card-content">
+              <h5
+                className="products__card-title"
+                onClick={() => handleDetail(bean._id)}
+              >
+                {bean.title}
+              </h5>
+              <div className="products__info">
+                <span className="products__info-label">{bean.weight}g</span>
+                <span className="products__price">$ {bean.price}</span>
+              </div>
+
+              <div className="products__store">
+                <div className="products__store-info">
+                  <p className="products__store-name">
+                    店家：{bean.store?.username || "未知店家"}
+                  </p>
+                  <p className="products__sales">
+                    已售出：{bean.customers.length} 件
+                  </p>
+                </div>
+                <button
+                  className="products__button products__button--detail"
+                  onClick={() => handleDetail(bean._id)}
+                >
+                  了解更多
+                </button>
+                {currentUser && currentUser.user.role === "store" ? (
+                  <button
+                    className="products__button products__button--login"
+                    onClick={() => handleLogout()}
+                  >
+                    顧客登入
+                  </button>
+                ) : (
+                  <button
+                    className="products__button products__button--cart"
+                    onClick={() => handletoaddTocart(bean._id)}
+                  >
+                    加入購物車
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default ProductsComponent;

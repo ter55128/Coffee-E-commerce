@@ -12,6 +12,7 @@ const publicArticleRoute = require("./routes").publicArticle;
 const passport = require("passport");
 require("./config/passport")(passport);
 const session = require("express-session");
+const knowledgeRoute = require("./routes").knowledge;
 
 // MongoDB
 mongoose
@@ -38,8 +39,10 @@ app.use(passport.session());
 app.use("/api/user", authRoute);
 // beans route is protected by jwt strategy
 // if request header doesn't have jwt token, it will be unauthorized
+app.use("/api/knowledges", knowledgeRoute);
 app.use("/api/beans/public", publicBeanRoute);
 app.use("/api/articles/public", publicArticleRoute);
+
 app.use(
   "/api/beans",
   passport.authenticate("jwt", { session: false }),

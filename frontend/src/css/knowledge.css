@@ -2,43 +2,62 @@
   padding: 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  background-color: #f8f9fa;
 }
 
 .knowledge__title {
   text-align: center;
   color: #2c3e50;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
   font-size: 2.5rem;
   font-weight: 600;
+  position: relative;
 }
 
-.knowledge__grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2rem;
-  padding: 1rem;
+.knowledge__container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* 添加標題底部裝飾 */
+.knowledge__title:after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background-color: #3498db;
+  border-radius: 2px;
 }
 
 .knowledge__card {
   cursor: pointer;
   background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  height: 100%;
+  border: 1px solid #eee;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .knowledge__card:hover {
   transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
 .knowledge__card-header {
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background-color: #3498db;
   color: white;
-  padding: 1.5rem;
+  padding: 1.8rem;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .knowledge__card-icon {
@@ -48,6 +67,7 @@
 .knowledge__card-title {
   margin: 0;
   font-size: 1.5rem;
+  font-weight: 500;
 }
 
 .knowledge__card-content {
@@ -55,6 +75,9 @@
 }
 
 .knowledge__item {
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  padding: 1.5rem;
   margin-bottom: 1.5rem;
 }
 
@@ -64,15 +87,20 @@
 
 .knowledge__item-title {
   color: #2c3e50;
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
   font-weight: 600;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #3498db;
+  display: inline-block;
 }
 
 .knowledge__item-description {
-  color: #64748b;
-  line-height: 1.6;
-  margin: 0;
+  line-height: 1.8;
+  margin: 15px 0;
+  white-space: pre-line;
+  text-align: justify;
+  color: #444;
 }
 
 .knowledge__modal-overlay {
@@ -92,16 +120,17 @@
 .knowledge__modal {
   background: white;
   border-radius: 15px;
-  width: 90%;
-  max-width: 600px;
+  width: 80%;
+  max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   animation: slideUp 0.3s ease;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
 }
 
 .knowledge__modal-header {
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background-color: #3498db;
   color: white;
   padding: 1.5rem;
   display: flex;
@@ -142,6 +171,36 @@
 
 .knowledge__modal-content {
   padding: 2rem;
+  background-color: white;
+}
+
+/* 滾動條美化 */
+.knowledge__modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.knowledge__modal-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.knowledge__modal-content::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 3px;
+}
+
+.knowledge__modal-content::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+
+/* 載入動畫 */
+.knowledge__loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  color: #3498db;
+  font-size: 1.2rem;
 }
 
 @keyframes fadeIn {
@@ -164,40 +223,31 @@
   }
 }
 
-.knowledge__modal::-webkit-scrollbar {
-  width: 8px;
-}
-
-.knowledge__modal::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.knowledge__modal::-webkit-scrollbar-thumb {
-  background: #3498db;
-  border-radius: 4px;
-}
-
-.knowledge__modal::-webkit-scrollbar-thumb:hover {
-  background: #2980b9;
-}
-
 @media (max-width: 768px) {
   .knowledge {
     padding: 1rem;
+    padding-top: 2rem;
   }
 
   .knowledge__title {
     font-size: 2rem;
+    margin-bottom: 2rem;
   }
-
-  .knowledge__grid {
-    grid-template-columns: 1fr;
+  .knowledge__card {
+    width: 90%;
   }
-
+  .knowledge__card-header {
+    padding: 1.5rem;
+  }
+  .knowledge__card-icon {
+    font-size: 1.5rem;
+  }
+  .knowledge__card-title {
+    font-size: 1.2rem;
+  }
   .knowledge__modal {
     width: 95%;
-    max-height: 95vh;
+    margin: 10px;
   }
 
   .knowledge__modal-content {
@@ -206,5 +256,47 @@
 
   .knowledge__modal-title h2 {
     font-size: 1.3rem;
+  }
+}
+@media (max-width: 480px) {
+  .knowledge__container {
+    gap: 0.6rem;
+  }
+  .knowledge__card {
+    width: 95%;
+  }
+  .knowledge__card-header {
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  .knowledge__card-icon {
+    font-size: 1.2rem;
+  }
+  .knowledge__card-title {
+    font-size: 1rem;
+  }
+  .knowledge__modal-header {
+    padding: 1rem;
+  }
+  .knowledge__modal {
+    width: 85%;
+  }
+  .knowledge__modal-content {
+    padding: 1rem;
+  }
+  .knowledge__modal-title h2 {
+    font-size: 1.2rem;
+  }
+  .knowledge__item {
+    margin-bottom: 0;
+    padding: 1rem;
+  }
+  .knowledge__item-title {
+    margin-bottom: 0.5rem;
+  }
+  .knowledge__item-description {
+    font-size: 1rem;
+    line-height: 1.5;
+    margin: 0.5rem;
   }
 }

@@ -10,13 +10,9 @@ router.use((req, res, next) => {
   if (!req.user) {
     return res.status(401).send("Unauthorized access");
   }
-  console.log(req.user);
   next();
 });
-
-// router.delete("/", async (req, res) => {
-//   cart.items.splice(1, 1);
-// });
+console.log("");
 
 // 獲取購物車內容
 router.get("/", async (req, res) => {
@@ -52,13 +48,12 @@ router.get("/", async (req, res) => {
 
 // 添加商品到購物車
 router.post("/", async (req, res) => {
-  console.log("收到添加商品到購物車的請求", req.body);
+  console.log("收到添加商品到購物車的請求");
   const { beanID } = req.body;
   const userID = req.user._id;
 
   try {
     let cart = await Cart.findOne({ user: userID });
-    console.log("userID", userID);
     let bean = await Bean.findById(beanID);
 
     if (!cart) {
@@ -73,7 +68,6 @@ router.post("/", async (req, res) => {
       const itemIndex = cart.items.findIndex(
         (item) => item.beanID.toString() === beanID
       );
-      console.log("itemIndex", itemIndex);
 
       if (itemIndex > -1) {
         //如果商品已存在於購物車，則增加數量
@@ -93,7 +87,6 @@ router.post("/", async (req, res) => {
       await cart.save();
 
       res.status(200).send({ message: "商品已添加到購物車", cart });
-      console.log("cart", cart);
     }
   } catch (err) {
     res.status(500).send("Add item to cart failed");
@@ -130,7 +123,6 @@ router.put("/update/:beanID", async (req, res) => {
 router.delete("/remove/:beanID", async (req, res) => {
   try {
     const cart = await Cart.findOne({ user: req.user.id });
-    console.log(req);
 
     cart.items = cart.items.filter(
       (item) => item.beanID.toString() !== req.params.beanID

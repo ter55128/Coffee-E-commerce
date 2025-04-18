@@ -143,7 +143,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
           {cartItems.items.map((item) => (
             <div
               key={item.beanID._id}
-              className="col-xl-3 col-lg-3 col-sm-6 col-xs-6 mb-3"
+              className="col-lg-3 col-md-4 col-sm-6 mb-3"
             >
               <div className="cart__product-card">
                 <div className="cart__product-card__image-container">
@@ -204,41 +204,25 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       {cartItems.items.length > 0 && (
         <div className="summary">
           <div className="summary__content">
-            <div className="summary__section">
-              <h3 className="summary__title">購物車總覽</h3>
-              <p className="summary__text">商品總件數</p>
-              <div className="summary__amount">
+            <div className="summary__info">
+              <span className="summary__label">總件數：</span>
+              <span className="summary__value">
                 {calculateTotalQuantity()} 件
-              </div>
+              </span>
             </div>
-
-            <div className="summary__section">
-              <h3 className="summary__title">運費資訊</h3>
-              <p className="summary__text">消費滿 1000 元免運費</p>
-              {calculateTotal() >= 1000 ? (
-                <p className="summary__highlight">已達免運門檻！</p>
-              ) : (
-                <p className="summary__text">
-                  還差 ${1000 - calculateTotal()} 元免運
-                </p>
-              )}
-              <div className="summary__amount">
-                運費：${calculateTotal() >= 1000 ? 0 : 60}
-              </div>
+            <div className="summary__info">
+              <span className="summary__label">商品總額：</span>
+              <span className="summary__value summary__value--price">
+                $ {calculateTotal()}
+              </span>
             </div>
-
-            <div className="summary__section">
-              <h3 className="summary__title">結帳金額</h3>
-              <p className="summary__text">商品總額：${calculateTotal()}</p>
-              <p className="summary__text">
-                運費：${calculateTotal() >= 1000 ? 0 : 60}
-              </p>
-              <div className="summary__total">
-                總計：${calculateTotal() + (calculateTotal() >= 1000 ? 0 : 60)}
-              </div>
-            </div>
+            <button
+              className="summary__checkout"
+              onClick={() => window.alert("金流串接還在研究中 ...")}
+            >
+              前往結帳
+            </button>
           </div>
-          <button className="summary__checkout">前往結帳</button>
         </div>
       )}
     </div>

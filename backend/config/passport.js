@@ -6,12 +6,10 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 //const FacebookStrategy = require("passport-facebook").Strategy;
 
 passport.serializeUser((user, done) => {
-  console.log("serializeUser", user);
   done(null, user._id);
 });
 
 passport.deserializeUser(async (_id, done) => {
-  console.log("deserializeUser");
   let foundUser = await User.findOne({ _id }).exec();
   done(null, foundUser);
 });
@@ -82,37 +80,4 @@ module.exports = (passport) => {
       }
     )
   );
-
-  // Facebook 策略
-  // passport.use(
-  //   new FacebookStrategy(
-  //     {
-  //       clientID: process.env.FACEBOOK_APP_ID,
-  //       clientSecret: process.env.FACEBOOK_APP_SECRET,
-  //       callbackURL: "http://localhost:8080/api/auth/facebook/callback",
-  //       profileFields: ["id", "emails", "name"],
-  //     },
-  //     async (accessToken, refreshToken, profile, done) => {
-  //       try {
-  //         let user = await User.findOne({ email: profile.emails[0].value });
-
-  //         if (user) {
-  //           return done(null, user);
-  //         }
-
-  //         user = new User({
-  //           username: `${profile.name.givenName} ${profile.name.familyName}`,
-  //           email: profile.emails[0].value,
-  //           facebookId: profile.id,
-  //           role: "customer",
-  //         });
-
-  //         await user.save();
-  //         return done(null, user);
-  //       } catch (err) {
-  //         return done(err, null);
-  //       }
-  //     }
-  //   )
-  // );
 };

@@ -17,7 +17,6 @@ router.use((req, res, next) => {
 // get a product by store id
 router.get("/store/:_store_id", async (req, res) => {
   try {
-    console.log(req.params);
     let { _store_id } = req.params;
     let beanFound = await Bean.find({ store: _store_id })
       .populate("store", ["username", "email"])
@@ -57,7 +56,6 @@ router.get("/:_id", async (req, res) => {
 
 // post a new product
 router.post("/", upload.single("image"), async (req, res) => {
-  console.log(req.user, req.user._id);
   // validate request body
   let { error } = beanValidation(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -174,7 +172,6 @@ router.patch("/:_id", upload.single("image"), async (req, res) => {
 
 // delete a product
 router.delete("/:_id", async (req, res) => {
-  console.log(req.user);
   let { _id } = req.params;
   try {
     // check if the product exists

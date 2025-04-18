@@ -75,14 +75,6 @@ router.post("/login", async (req, res) => {
   const foundUser = await User.findOne({ email: req.body.email });
   if (!foundUser) return res.status(401).send("User not found");
 
-  // 1. 檢查登入時的用戶信息 ++
-  console.log("登入用戶:", {
-    _id: foundUser._id,
-    email: foundUser.email,
-    role: foundUser.role,
-  });
-  //++
-
   // confirm the password is correct
   foundUser.comparePassword(req.body.password, (err, isMatch) => {
     if (err) return res.status(500).send(err);
@@ -95,9 +87,7 @@ router.post("/login", async (req, res) => {
         role: foundUser.role,
       };
       const token = jwt.sign(tokenObject, process.env.PASSWORD_SECRET);
-      //++
-      console.log("生成的 token 內容:", tokenObject);
-      //++
+
       return res.status(200).send({
         msg: "Login successful",
         token: "JWT " + token, // Space in "JWT " is necessary
@@ -107,7 +97,6 @@ router.post("/login", async (req, res) => {
       return res.status(401).send("Invalid password");
     }
   });
-  console.log(foundUser);
 });
 
 router.patch(
@@ -181,7 +170,6 @@ router.post("/forgot-password", async (req, res) => {
     if (!user) {
       return res.status(404).send("找不到該電子郵件地址");
     }
-    console.log("找到用戶:", user);
 
     // 生成重設密碼的 token（1小時有效）
     const resetToken = jwt.sign(
@@ -189,8 +177,6 @@ router.post("/forgot-password", async (req, res) => {
       process.env.PASSWORD_SECRET,
       { expiresIn: "1h" }
     );
-
-    console.log("生成的重設密碼 token:", resetToken);
     // 發送重設密碼郵件
     try {
       const emailSent = await sendResetPasswordEmail(email, resetToken);
@@ -224,9 +210,7 @@ router.post("/reset-password/:token", async (req, res) => {
       return res.status(400).send("重設密碼連結無效或已過期");
     }
     user.password = newPassword;
-
     await user.save();
-    console.log("user:", user);
 
     res.status(200).send("密碼已成功重設");
   } catch (error) {

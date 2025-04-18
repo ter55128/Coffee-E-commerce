@@ -81,8 +81,8 @@
 ### clone 專案到本地：
 
 ```bash
-   git clone https://github.com/ter55128/coffee-platform.git
-   cd Coffee-Platform
+   git clone https://github.com/ter55128/Coffee-E-commerce.git
+   cd Coffee-E-commerce
 ```
 
 ### 快速部署（使用 Concurrently）
@@ -93,12 +93,9 @@ npm install concurrently --save-dev
 
 # 一鍵安裝前後端依賴
 npm run install-all
-
-# 一鍵啟動前後端服務
-npm run dev
 ```
 
-### 配置環境變數：
+#### 配置環境變數：
 
 - 在 backend 下創建 `.env` 文件，並添加以下內容：
 
@@ -113,17 +110,9 @@ SESSION_SECRET=your_session_secret
 ```
 
 ```bash
-   nodemon server.js
-
+# 一鍵啟動前後端服務
+npm run dev
 ```
-
-### 目錄結構
-
-coffee-shop/
-├── frontend/ # React 前端應用 (Port 3000)
-├── backend/ # Node.js 後端 API (Port 8080)
-│ ├── .env # 後端環境變數配置
-│ └── uploads/ # 檔案上傳目錄
 
 ### 注意事項
 

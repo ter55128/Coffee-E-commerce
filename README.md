@@ -102,22 +102,18 @@ npm run dev
 
 - 在 backend 下創建 `.env` 文件，並添加以下內容：
 
-# MONGO_URI=mongodb://localhost:27017/my-project
-
-# PASSWORD_SECRET=your_password_secret
-
-# EMAIL_USER=your_email
-
-# EMAIL_PASS=your_email_password
-
-# GOOGLE_CLIENT_ID=your_google_client_id
-
-# GOOGLE_CLIENT_SECRET=your_google_client_secret
-
-# SESSION_SECRET=your_session_secret
+```bash
+MONGO_URI=mongodb://localhost:27017/my-project
+PASSWORD_SECRET=your_password_secret
+EMAIL_USER=your_email
+EMAIL_PASS=your_email_password
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+SESSION_SECRET=your_session_secret
+```
 
 ```bash
-   nodemon sever.js
+   nodemon server.js
 
 ```
 

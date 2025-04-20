@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import CartService from "../services/cart-service";
 import "../css/cart.css";
 import { useCart } from "../context/CartContext";
+import PaymentService from "../services/payment-service";
 
 const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [cartItems, setCartItems] = useState({ items: [] });
@@ -127,6 +128,34 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
     }
   }, [cartItems, updateCartItemCount]);
 
+  const handleCheckout = async () => {
+    try {
+      const paymentData = await PaymentService.createPayment(
+        cartItems.items,
+        calculateTotal()
+      );
+
+      // 創建並提交表單到藍新金流
+      const form = document.createElement("form");
+      form.method = "post";
+      form.action = paymentData.paymentUrl;
+
+      for (let key in paymentData.paymentFormData) {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = paymentData.paymentFormData[key];
+        form.appendChild(input);
+      }
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (error) {
+      console.error("結帳失敗:", error);
+      window.alert("結帳過程發生錯誤，請稍後再試");
+    }
+  };
+
   if (loading) {
     return <div>載入中...</div>;
   }
@@ -216,10 +245,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                 $ {calculateTotal()}
               </span>
             </div>
-            <button
-              className="summary__checkout"
-              onClick={() => window.alert("金流串接還在研究中 ...")}
-            >
+            <button className="summary__checkout" onClick={handleCheckout}>
               前往結帳
             </button>
           </div>

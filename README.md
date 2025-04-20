@@ -78,14 +78,22 @@
 
 ## 部署說明
 
-### clone 專案到本地：
+測試網站：https://coffee-e-commerce.zeabur.app/
+
+測試帳號(一般會員)：testcustomer@gmail.com  
+密碼：testcustomer
+
+測試帳號(商家會員)：teststore@gmail.com  
+密碼：teststore
+
+### 本地部署：
 
 ```bash
    git clone https://github.com/ter55128/Coffee-E-commerce.git
    cd Coffee-E-commerce
 ```
 
-### 快速部署（使用 Concurrently）
+###（使用 Concurrently）
 
 ```bash
 # 在根目錄安裝 concurrently

@@ -29,6 +29,7 @@ import EditProductComponent from "./components/editProduct-component";
 import PostProductComponent from "./components/postProduct-component";
 
 import CartComponent from "./components/cart-component";
+import PaymentCallback from "./components/PaymentCallback";
 
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
@@ -192,6 +193,7 @@ function App() {
                 />
               }
             />
+            <Route path="/payment/callback" element={<PaymentCallback />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

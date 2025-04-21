@@ -48,7 +48,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((e) => console.log(e));
-
+console.log(process.env.MONGO_URI);
 // Middleware
 app.use(cors());
 app.use(express.json());

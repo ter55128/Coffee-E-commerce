@@ -36,7 +36,7 @@ const LoginComponent = ({ currentUser, setCurrentUser }) => {
   };
 
   const handleGoogleLogin = async () => {
-    window.location.href = `http://localhost:8080/api/user/google`;
+    window.location.href = `${process.env.REACT_APP_API_URL}/api/user/google`;
   };
 
   // const handleFacebookLogin = async () => {

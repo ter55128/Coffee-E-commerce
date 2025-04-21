@@ -26,7 +26,7 @@ const EditProductComponent = ({ currentUser }) => {
       setBeanData(location.state.beanData);
       if (location.state.beanData.image) {
         setImagePreview(
-          `http://localhost:8080${location.state.beanData.image}`
+          `${process.env.REACT_APP_API_URL}${location.state.beanData.image}`
         );
       }
       setLoading(false);
@@ -36,7 +36,9 @@ const EditProductComponent = ({ currentUser }) => {
           const response = await BeansService.getBeanById(beanId);
           setBeanData(response.data);
           if (response.data.image) {
-            setImagePreview(`http://localhost:8080${response.data.image}`);
+            setImagePreview(
+              `${process.env.REACT_APP_API_URL}${response.data.image}`
+            );
           }
           setLoading(false);
         } catch (error) {

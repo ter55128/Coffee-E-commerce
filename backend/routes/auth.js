@@ -234,7 +234,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/login",
+    failureRedirect: `${process.env.FRONTEND_URL}/login`,
   }),
   async (req, res) => {
     try {
@@ -267,10 +267,10 @@ router.get(
       };
 
       const userDataParam = encodeURIComponent(JSON.stringify(userData));
-      res.redirect(`http://localhost:3000/profile?data=${userDataParam}`);
+      res.redirect(`${process.env.FRONTEND_URL}/profile?data=${userDataParam}`);
     } catch (error) {
       console.error("Google callback error:", error);
-      res.redirect("http://localhost:3000/login?error=auth_failed");
+      res.redirect(`${process.env.FRONTEND_URL}/login?error=auth_failed`);
     }
   }
 );

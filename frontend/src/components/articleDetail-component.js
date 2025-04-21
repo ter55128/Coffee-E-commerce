@@ -17,7 +17,7 @@ const ArticleDetailComponent = ({ currentUser }) => {
     const fetchArticle = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/articles/public/${id}`
+          `${process.env.REACT_APP_API_URL}/api/articles/public/${id}`
         );
         setArticle(response.data);
         setLoading(false);

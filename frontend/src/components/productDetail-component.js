@@ -19,7 +19,7 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
     const loadBeanData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/beans/public/${beanId}`
+          `${process.env.REACT_APP_API_URL}/api/beans/public/${beanId}`
         );
         setBeanData(response.data);
         setLoading(false);
@@ -84,7 +84,7 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
         <div className="productDetail__main">
           <div className="productDetail__image-container">
             <img
-              src={`http://localhost:8080${beanData.image}`}
+              src={`${process.env.REACT_APP_API_URL}${beanData.image}`}
               alt={beanData.title}
               className="productDetail__image"
             />

@@ -177,7 +177,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
               <div className="cart__product-card">
                 <div className="cart__product-card__image-container">
                   <img
-                    src={`http://localhost:8080${item.beanID.image}`}
+                    src={`${process.env.REACT_APP_API_URL}${item.beanID.image}`}
                     alt={item.beanID.title}
                     className="cart__product-card__image"
                     onClick={() => navigate(`/beandetail/${item.beanID._id}`)}

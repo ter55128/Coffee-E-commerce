@@ -24,7 +24,7 @@ const PublicProfileComponent = (props) => {
         if (response.data.role === "store") {
           try {
             const productsResponse = await axios.get(
-              `http://localhost:8080/api/beans/public/store/${id}`
+              `${process.env.REACT_APP_API_URL}/api/beans/public/store/${id}`
             );
             if (productsResponse.data.length === 0) {
               setProductMessage("尚未發布商品");
@@ -44,7 +44,7 @@ const PublicProfileComponent = (props) => {
     const fetchUserArticles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/articles/public/user/${id}`
+          `${process.env.REACT_APP_API_URL}/api/articles/public/user/${id}`
         );
         if (response.data.length === 0) {
           setArticleMessage("尚未發布文章");
@@ -131,7 +131,7 @@ const PublicProfileComponent = (props) => {
               {userProducts.map((bean) => (
                 <div className="public-profile__card" key={bean._id}>
                   <img
-                    src={`http://localhost:8080${bean.image}`}
+                    src={`${process.env.REACT_APP_API_URL}${bean.image}`}
                     alt={bean.title}
                     className="public-profile__card-image"
                   />

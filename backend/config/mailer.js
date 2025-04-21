@@ -25,7 +25,7 @@ transporter.verify((error, success) => {
 // 發送重設密碼郵件
 const sendResetPasswordEmail = async (email, resetToken) => {
   // 重設密碼的連結
-  const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+  const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
   // 郵件內容
   const mailOptions = {

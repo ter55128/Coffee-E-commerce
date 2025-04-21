@@ -3,7 +3,6 @@ let ExtractJwt = require("passport-jwt").ExtractJwt; // ExtractJwt is used to ex
 const User = require("../models").User;
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-//const FacebookStrategy = require("passport-facebook").Strategy;
 
 passport.serializeUser((user, done) => {
   done(null, user._id);
@@ -40,7 +39,7 @@ module.exports = (passport) => {
       {
         clientID: process.env.GOOGLE_CLIENT_ID,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:8080/api/user/google/callback",
+        callbackURL: `${process.env.BACKEND_URL}/api/user/google/callback`,
       },
       async (accessToken, refreshToken, profile, done) => {
         try {

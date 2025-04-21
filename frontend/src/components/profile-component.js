@@ -42,7 +42,7 @@ const ProfileComponent = ({ currentUser, setCurrentUser }) => {
     const fetchUserArticles = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:8080/api/articles/public/user/${currentUser.user._id}`
+          `${process.env.REACT_APP_API_URL}/api/articles/public/user/${currentUser.user._id}`
         );
         if (response.data.length === 0) {
           setArticleMessage("尚未發布文章");

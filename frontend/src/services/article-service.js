@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = "http://localhost:8080/api/articles";
+const API_URL = `${process.env.REACT_APP_API_URL}/api/articles`;
 
 class ArticleService {
   // 發表新文章

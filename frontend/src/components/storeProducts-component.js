@@ -66,7 +66,7 @@ const StoreProductsComponent = ({ currentUser, setCurrentUser }) => {
             <div className="storeProducts__card" key={bean._id}>
               <div className="storeProducts__image-wrapper">
                 <img
-                  src={`http://localhost:8080${bean.image}`}
+                  src={`${process.env.REACT_APP_API_URL}${bean.image}`}
                   alt={bean.title}
                   className="storeProducts__image"
                 />

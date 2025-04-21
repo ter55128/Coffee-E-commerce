@@ -50,7 +50,15 @@ mongoose
   .catch((e) => console.log(e));
 console.log(process.env.MONGO_URI);
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://coffee-e-commerce.zeabur.app", // 生產環境前端
+      "http://localhost:3000", // 本地開發
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(

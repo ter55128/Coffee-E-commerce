@@ -240,7 +240,7 @@ const ProductsComponent = (props) => {
         {filteredBeans.map((bean) => (
           <div className="products__card" key={bean._id}>
             <img
-              src={`http://localhost:8080${bean.image}`}
+              src={`${process.env.REACT_APP_API_URL}${bean.image}`}
               alt={bean.title}
               className="products__image"
             />

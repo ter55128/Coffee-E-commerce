@@ -84,7 +84,7 @@ const ArticlesComponent = ({ currentUser }) => {
     const fetchArticles = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/articles/public"
+          `${process.env.REACT_APP_API_URL}/api/articles/public`
         );
         setArticles(response.data);
         setFilteredArticles(response.data); // 初始化時顯示所有文章

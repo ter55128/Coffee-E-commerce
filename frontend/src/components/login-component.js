@@ -39,9 +39,6 @@ const LoginComponent = ({ currentUser, setCurrentUser }) => {
     window.location.href = `${process.env.REACT_APP_API_URL}/api/user/google`;
   };
 
-  // const handleFacebookLogin = async () => {
-  //   }
-
   return (
     <div className="login">
       <h2 className="login__title">會員登入</h2>

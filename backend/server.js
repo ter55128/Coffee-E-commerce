@@ -14,14 +14,25 @@ require("./config/passport")(passport);
 const session = require("express-session");
 const knowledgeRoute = require("./routes").knowledge;
 
-process.on("SIGTERM", () => {
-  console.log("收到 SIGTERM 信號，準備關閉服務器...");
-  // 關閉數據庫連接
-  mongoose.connection.close(() => {
-    console.log("MongoDB 連接已關閉");
-    process.exit(0);
+const gracefulShutdown = () => {
+  console.log("開始優雅關閉...");
+  server.close(() => {
+    console.log("HTTP 服務器已關閉");
+    mongoose.connection.close(false, () => {
+      console.log("MongoDB 連接已關閉");
+      process.exit(0);
+    });
   });
-});
+
+  // 如果 10 秒內沒有完成關閉，強制退出
+  setTimeout(() => {
+    console.error("無法優雅關閉，強制退出");
+    process.exit(1);
+  }, 10000);
+};
+
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);
 
 process.on("uncaughtException", (err) => {
   console.error("未捕獲的異常：", err);
@@ -93,6 +104,6 @@ app.get("/", (req, res) => {
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, "0.0.0.0", () => {
+const server = app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server is running on port ${PORT}`);
 });

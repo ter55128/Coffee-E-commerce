@@ -13,6 +13,7 @@ const passport = require("passport");
 require("./config/passport")(passport);
 const session = require("express-session");
 const knowledgeRoute = require("./routes").knowledge;
+const MongoStore = require("connect-mongo");
 
 const gracefulShutdown = () => {
   console.log("開始優雅關閉...");
@@ -57,7 +58,14 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false },
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      ttl: 24 * 60 * 60, // 1 天
+    }),
+    cookie: {
+      secure: process.env.NODE_ENV === "production",
+      maxAge: 24 * 60 * 60 * 1000, // 1 天
+    },
   })
 );
 

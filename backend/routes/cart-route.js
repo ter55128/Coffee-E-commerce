@@ -1,9 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
 const Cart = require("../models/cart-Model");
 const Bean = require("../models/bean-Model");
-const { cart } = require(".");
 
 router.use((req, res, next) => {
   console.log("Receiving cart request");

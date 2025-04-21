@@ -16,7 +16,7 @@ const ProductsComponent = (props) => {
   const getAllProducts = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/beans/public"
+        `${process.env.REACT_APP_API_URL}/api/beans/public`
       );
       setBeans(response.data);
       setFilteredBeans(response.data);

@@ -14,6 +14,23 @@ require("./config/passport")(passport);
 const session = require("express-session");
 const knowledgeRoute = require("./routes").knowledge;
 
+process.on("SIGTERM", () => {
+  console.log("收到 SIGTERM 信號，準備關閉服務器...");
+  // 關閉數據庫連接
+  mongoose.connection.close(() => {
+    console.log("MongoDB 連接已關閉");
+    process.exit(0);
+  });
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("未捕獲的異常：", err);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error("未處理的 Promise 拒絕：", err);
+});
+
 // MongoDB
 mongoose
   .connect(process.env.MONGO_URI)

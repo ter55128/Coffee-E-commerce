@@ -12,6 +12,9 @@ const ProductsComponent = (props) => {
   const [beans, setBeans] = useState([]);
   const [filteredBeans, setFilteredBeans] = useState([]);
   const { updateCartItemCount } = useCart();
+  // 添加 message state
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState(""); // success 或 danger
 
   const getAllProducts = async () => {
     try {
@@ -118,25 +121,34 @@ const ProductsComponent = (props) => {
   const handletoaddTocart = async (beanID) => {
     try {
       if (!currentUser) {
-        window.alert("請先登入");
-        navigate("/login");
+        setMessage("請先登入");
+        setMessageType("danger");
+        setTimeout(() => {
+          setMessage("");
+          navigate("/login");
+        }, 2000);
         return;
       }
       if (currentUser && currentUser.user.role === "store") {
-        window.alert("商家無法使用此功能，請使用一般帳號登入");
-        AuthService.logout();
-        setCurrentUser(null);
-        navigate("/login");
+        setMessage("商家無法使用此功能，請使用一般帳號登入");
+        setMessageType("danger");
+        setTimeout(() => {
+          AuthService.logout();
+          setCurrentUser(null);
+          navigate("/login");
+        }, 2000);
         return;
       }
-      //console.log("Adding bean to cart:", beanID);
+
       const response = await CartService.addToCart(beanID);
-      // console.log("response", response);
 
       if (response.data) {
-        window.alert("成功加入購物車！");
+        setMessage("成功加入購物車！");
+        setMessageType("success");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
 
-        // 添加這段代碼 - 成功添加商品後更新購物車數量
         try {
           const cartResponse = await CartService.getCart();
           const total = cartResponse.data.items.reduce(
@@ -151,17 +163,25 @@ const ProductsComponent = (props) => {
     } catch (e) {
       console.log(e);
       if (e.response?.status === 400) {
-        window.alert(e.response.data.message);
+        setMessage(e.response.data.message);
       } else {
-        window.alert("加入購物車失敗，請稍後再試");
+        setMessage("加入購物車失敗，請稍後再試");
       }
+      setMessageType("danger");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
     }
   };
   const handleLogout = () => {
-    AuthService.logout(); // remove user from local storage
-    window.alert("請使用一般會員登入");
-    setCurrentUser(null);
-    navigate("/login");
+    AuthService.logout();
+    setMessage("請使用一般會員登入");
+    setMessageType("danger");
+    setTimeout(() => {
+      setMessage("");
+      setCurrentUser(null);
+      navigate("/login");
+    }, 2000);
   };
 
   const handleDetail = (beanId) => {
@@ -171,6 +191,19 @@ const ProductsComponent = (props) => {
   return (
     <div className="products">
       <h1 className="products__title">All Products</h1>
+
+      {/* 添加 message 顯示 */}
+      {message && (
+        <div
+          className={`products__alert ${
+            messageType === "success"
+              ? "products__alert--success"
+              : "products__alert--danger"
+          }`}
+        >
+          {message}
+        </div>
+      )}
 
       {/* 將過濾區域改為表單 */}
       <form onSubmit={handleSubmitSearch} className="products__filters">

@@ -10,7 +10,7 @@ class ArticleService {
     } else {
       token = "";
     }
-    return axios.post(API_URL, articleData, {
+    return axios.post(`${API_URL}`, articleData, {
       headers: {
         Authorization: token,
         "Content-Type": "application/json",

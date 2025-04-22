@@ -2,66 +2,21 @@ import "../css/home.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth-service";
+import Modal from "./common/Modal";
 
 const HomeComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   const [showQuestionModal, setShowQuestionModal] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   const [showMore, setShowMore] = useState(false);
 
   const handlequestion = () => {
     setCurrentUser(AuthService.getCurrentUser());
-    console.log(currentUser);
     if (currentUser) {
-      window.alert("您已經登入，跳轉至個人頁面");
-      navigate("/profile");
+      setShowLoginModal(true);
     } else {
       setShowQuestionModal(true);
     }
-  };
-
-  const QuestionModal = () => {
-    if (!showQuestionModal) return null;
-
-    return (
-      <div className="home__modal-wrapper">
-        <div className="home__modal">
-          <div className="home__modal-dialog">
-            <div className="home__modal-content">
-              <div className="home__modal-header">
-                <h5 className="home__modal-title">會員登入</h5>
-              </div>
-              <div className="home__modal-body">
-                <p className="home__modal-text">您是否已經有帳號？</p>
-                <div className="home__modal-actions">
-                  <button
-                    className="home__modal-button home__modal-button--primary"
-                    onClick={() => {
-                      setShowQuestionModal(false);
-                      navigate("/login");
-                    }}
-                  >
-                    是
-                  </button>
-                  <button
-                    className="home__modal-button home__modal-button--secondary"
-                    onClick={() => {
-                      setShowQuestionModal(false);
-                      navigate("/register");
-                    }}
-                  >
-                    否
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="home__modal-backdrop"
-          onClick={() => setShowQuestionModal(false)}
-        />
-      </div>
-    );
   };
 
   return (
@@ -168,7 +123,33 @@ const HomeComponent = ({ currentUser, setCurrentUser }) => {
 
         <footer className="home__footer">&copy; 2025 Hank Lin</footer>
       </div>
-      <QuestionModal />
+      <Modal
+        isOpen={showQuestionModal}
+        onClose={() => setShowQuestionModal(false)}
+        title="會員登入"
+        message="您是否已經有帳號？"
+        onConfirm={() => {
+          setShowQuestionModal(false);
+          navigate("/login");
+        }}
+        confirmText="是"
+        cancelText="否"
+        onCancel={() => {
+          setShowQuestionModal(false);
+          navigate("/register");
+        }}
+      />
+      <Modal
+        isOpen={showLoginModal}
+        onClose={() => setShowLoginModal(false)}
+        title="提示"
+        message="您已經登入，跳轉至個人頁面"
+        onConfirm={() => {
+          setShowLoginModal(false);
+          navigate("/profile");
+        }}
+        confirmText="確定"
+      />
     </main>
   );
 };

@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_URL = `${process.env.REACT_APP_API_URL}/api/beans/`;
+const API_URL = `${process.env.REACT_APP_API_URL}/api/beans`;
 
 class BeansService {
   post(title, weight, cultivar, processing, roast, description, price) {
@@ -51,7 +51,7 @@ class BeansService {
     } else {
       token = "";
     }
-    return axios.get(API_URL + "/store/" + _id, {
+    return axios.get(`${API_URL}/store/${_id}`, {
       headers: {
         Authorization: token,
       },
@@ -66,7 +66,7 @@ class BeansService {
     } else {
       token = "";
     }
-    return axios.get(API_URL + "/" + _id, {
+    return axios.get(`${API_URL}/${_id}`, {
       headers: {
         Authorization: token,
       },
@@ -80,7 +80,7 @@ class BeansService {
       token = "";
     }
 
-    return axios.patch(API_URL + _id, formData, {
+    return axios.patch(`${API_URL}/${_id}`, formData, {
       headers: {
         Authorization: token,
         "Content-Type": "multipart/form-data",
@@ -95,7 +95,7 @@ class BeansService {
     } else {
       token = "";
     }
-    return axios.post(API_URL, formData, {
+    return axios.post(`${API_URL}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: token,

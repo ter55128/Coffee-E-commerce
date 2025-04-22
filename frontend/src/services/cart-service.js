@@ -12,7 +12,7 @@ class CartService {
   getCart() {
     let token = this.getToken();
 
-    return axios.get(API_URL, {
+    return axios.get(`${API_URL}`, {
       headers: {
         Authorization: token,
       },
@@ -25,7 +25,7 @@ class CartService {
 
     try {
       return axios.post(
-        API_URL,
+        `${API_URL}`,
         { beanID }, // 只需要傳送 beanID
         {
           headers: {
@@ -44,7 +44,7 @@ class CartService {
     let token = this.getToken();
 
     return axios.put(
-      API_URL + `/update/${beanID}`,
+      `${API_URL}/update/${beanID}`,
       { quantity },
       {
         headers: {
@@ -58,7 +58,7 @@ class CartService {
   removeFromCart(beanID) {
     let token = this.getToken();
 
-    return axios.delete(API_URL + `/remove/${beanID}`, {
+    return axios.delete(`${API_URL}/remove/${beanID}`, {
       headers: {
         Authorization: token,
       },
@@ -69,7 +69,7 @@ class CartService {
   clearCart() {
     let token = this.getToken();
 
-    return axios.delete(API_URL + "/clear", {
+    return axios.delete(`${API_URL}/clear`, {
       headers: {
         Authorization: token,
       },

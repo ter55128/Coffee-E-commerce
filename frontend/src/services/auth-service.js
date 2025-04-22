@@ -3,13 +3,13 @@ const API_URL = `${process.env.REACT_APP_API_URL}/api/user`;
 
 class AuthService {
   login(email, password) {
-    return axios.post(API_URL + "/login", { email, password });
+    return axios.post(`${API_URL}/login`, { email, password });
   }
   logout() {
     localStorage.removeItem("user");
   }
   register(username, email, password, role) {
-    return axios.post(API_URL + "/register", {
+    return axios.post(`${API_URL}/register`, {
       username,
       email,
       password,
@@ -28,7 +28,7 @@ class AuthService {
     }
 
     return axios
-      .patch(API_URL + "profile", updateData, {
+      .patch(`${API_URL}/profile`, updateData, {
         headers: {
           Authorization: token,
         },
@@ -44,7 +44,7 @@ class AuthService {
   }
   updateRole(role) {
     return axios.post(
-      API_URL + "/role",
+      `${API_URL}/role`,
       { role },
       {
         headers: {
@@ -55,14 +55,14 @@ class AuthService {
   }
 
   getUserProfile(id) {
-    return axios.get(API_URL + `publicProfile/${id}`, { id });
+    return axios.get(`${API_URL}/publicProfile/${id}`, { id });
   }
 
   forgotPassword(email) {
-    return axios.post(API_URL + "forgot-password", { email });
+    return axios.post(`${API_URL}/forgot-password`, { email });
   }
   resetPassword(token, newPassword) {
-    return axios.post(API_URL + `reset-password/${token}`, { newPassword });
+    return axios.post(`${API_URL}/reset-password/${token}`, { newPassword });
   }
 }
 

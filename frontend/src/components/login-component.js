@@ -22,7 +22,7 @@ const LoginComponent = ({ currentUser, setCurrentUser }) => {
     try {
       let response = await AuthService.login(email, password);
       localStorage.setItem("user", JSON.stringify(response.data));
-      setMessage("登入成功，即將前往個人頁面...");
+      setMessage("登入成功，即將前往個人頁面");
       setCurrentUser(AuthService.getCurrentUser());
       setTimeout(() => {
         navigate("/profile");

@@ -4,7 +4,6 @@ const Cart = require("../models/cart-Model");
 const Bean = require("../models/bean-Model");
 
 router.use((req, res, next) => {
-  console.log("Receiving cart request");
   if (!req.user) {
     return res.status(401).send("Unauthorized access");
   }

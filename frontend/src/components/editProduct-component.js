@@ -9,6 +9,7 @@ const EditProductComponent = ({ currentUser }) => {
   const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [beanData, setBeanData] = useState({
     title: "",
@@ -43,6 +44,10 @@ const EditProductComponent = ({ currentUser }) => {
           setLoading(false);
         } catch (error) {
           setMessage("載入商品資料失敗");
+          setMessageType("danger");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
           setLoading(false);
         }
       };
@@ -90,10 +95,18 @@ const EditProductComponent = ({ currentUser }) => {
       });
 
       await BeansService.updateBean(beanData._id, formData);
-      window.alert("商品更新成功");
-      navigate("/storeProducts");
+      setMessage("商品更新成功");
+      setMessageType("success");
+      setTimeout(() => {
+        setMessage("");
+        navigate("/storeProducts");
+      }, 2000);
     } catch (error) {
       setMessage(error.response?.data || "更新失敗");
+      setMessageType("danger");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
     }
   };
 
@@ -107,7 +120,13 @@ const EditProductComponent = ({ currentUser }) => {
         <h2 className="editproduct__title">編輯商品</h2>
 
         {message && (
-          <div className="editproduct__alert editproduct__alert--danger">
+          <div
+            className={`editproduct__alert ${
+              messageType === "success"
+                ? "editproduct__alert--success"
+                : "editproduct__alert--danger"
+            }`}
+          >
             {message}
           </div>
         )}

@@ -14,14 +14,15 @@ RUN npm install --legacy-peer-deps
 # 复制源代码
 COPY . .
 
-# 创建 .env 文件（如果需要）
-RUN echo "REACT_APP_API_URL=${REACT_APP_API_URL}" > .env
+# 确保环境变量正确设置
+ARG REACT_APP_API_URL
+ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
 # 构建应用
 RUN npm run build
 
 # 生产阶段
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
 # 复制构建产物
 COPY --from=build /app/build /usr/share/nginx/html

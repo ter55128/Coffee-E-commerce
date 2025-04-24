@@ -14,7 +14,7 @@ RUN npm install --legacy-peer-deps
 # 复制源代码
 COPY . .
 
-# 确保环境变量正确设置
+# 构建时使用 REACT_APP_API_URL
 ARG REACT_APP_API_URL
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 
@@ -27,8 +27,11 @@ FROM nginx:alpine
 # 复制构建产物
 COPY --from=build /app/build /usr/share/nginx/html
 
-# 复制 nginx 配置（如果需要自定义）
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 创建 nginx 配置模板
+COPY nginx.conf /etc/nginx/templates/default.conf.template
+
+# 设置 nginx 可用的环境变量
+ENV API_URL=${REACT_APP_API_URL}
 
 # 暴露端口
 EXPOSE 80

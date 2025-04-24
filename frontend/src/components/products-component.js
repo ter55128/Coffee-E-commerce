@@ -11,10 +11,12 @@ const ProductsComponent = (props) => {
   const navigate = useNavigate();
   const [beans, setBeans] = useState([]);
   const [filteredBeans, setFilteredBeans] = useState([]);
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
   const { updateCartItemCount } = useCart();
   // 添加 message state
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState(""); // success 或 danger
+  const [messageTimer, setMessageTimer] = useState(null);
 
   const getAllProducts = async () => {
     try {
@@ -43,15 +45,96 @@ const ProductsComponent = (props) => {
   // 處理搜索條件變更
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setSearchFilters((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+
+    // 只有排序變更時立即執行過濾
+    if (name === "sortBy") {
+      setSearchFilters((prev) => {
+        const newFilters = {
+          ...prev,
+          [name]: value,
+        };
+
+        let filtered = [...beans];
+
+        // 關鍵字搜索
+        if (newFilters.keyword) {
+          filtered = filtered.filter(
+            (bean) =>
+              bean.title
+                .toLowerCase()
+                .includes(newFilters.keyword.toLowerCase()) ||
+              bean.store?.username
+                .toLowerCase()
+                .includes(newFilters.keyword.toLowerCase())
+          );
+        }
+
+        // 價格範圍
+        if (newFilters.minPrice) {
+          filtered = filtered.filter(
+            (bean) => bean.price >= Number(newFilters.minPrice)
+          );
+        }
+        if (newFilters.maxPrice) {
+          filtered = filtered.filter(
+            (bean) => bean.price <= Number(newFilters.maxPrice)
+          );
+        }
+
+        // 排序
+        switch (newFilters.sortBy) {
+          case "price-asc":
+            filtered.sort((a, b) => a.price - b.price);
+            break;
+          case "price-desc":
+            filtered.sort((a, b) => b.price - a.price);
+            break;
+          case "sales":
+            filtered.sort((a, b) => b.customers.length - a.customers.length);
+            break;
+          default:
+            break;
+        }
+
+        setFilteredBeans(filtered);
+        return newFilters;
+      });
+    } else {
+      // 對於價格和關鍵字搜索，只更新狀態，不執行過濾
+      setSearchFilters((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+
+      // 價格驗證
+      if ((name === "minPrice" || name === "maxPrice") && Number(value) < 0) {
+        setMessage("價格不能為負數");
+        setMessageType("danger");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
+      }
+    }
   };
 
   // 處理搜索提交
   const handleSubmitSearch = (e) => {
     e.preventDefault(); // 防止表單默認提交行為
+
+    // 價格範圍驗證
+    if (
+      searchFilters.minPrice &&
+      searchFilters.maxPrice &&
+      Number(searchFilters.minPrice) > Number(searchFilters.maxPrice)
+    ) {
+      setMessage("最低價格不能高於最高價格");
+      setMessageType("danger");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+      return;
+    }
+
     applyFilters();
   };
 
@@ -111,12 +194,10 @@ const ProductsComponent = (props) => {
       sortBy: "default",
     });
     setFilteredBeans(beans);
+    setMessage("");
+    setMessageType("");
+    setMessageTimer(null);
   };
-
-  // 當搜索條件改變時，自動應用過濾
-  // useEffect(() => {
-  //   applyFilters();
-  // }, [searchFilters, beans]);
 
   const handletoaddTocart = async (beanID) => {
     try {
@@ -207,53 +288,90 @@ const ProductsComponent = (props) => {
 
       {/* 將過濾區域改為表單 */}
       <form onSubmit={handleSubmitSearch} className="products__filters">
-        <div className="products__search">
-          <input
-            type="text"
-            name="keyword"
-            value={searchFilters.keyword}
-            onChange={handleFilterChange}
-            placeholder="搜尋商品名稱或店家..."
-            className="products__search-input"
-          />
+        <div className="products__search-row">
+          <div className="products__search">
+            <input
+              type="text"
+              name="keyword"
+              value={searchFilters.keyword}
+              onChange={handleFilterChange}
+              placeholder="搜尋商品名稱或店家..."
+              className="products__search-input"
+            />
+          </div>
+
+          <div className="products__filter-buttons">
+            <button type="submit" className="products__filter-submit">
+              搜尋
+            </button>
+            <button
+              type="button"
+              onClick={() => setShowMoreFilters(!showMoreFilters)}
+              className={`products__filter-more ${
+                showMoreFilters ? "products__filter-more--active" : ""
+              }`}
+            >
+              <i
+                className={`fas ${
+                  showMoreFilters ? "fa-chevron-up" : "fa-sliders"
+                }`}
+              ></i>
+            </button>
+          </div>
         </div>
 
-        <div className="products__filter-group">
-          <input
-            type="number"
-            name="minPrice"
-            value={searchFilters.minPrice}
-            onChange={handleFilterChange}
-            placeholder="最低價格"
-            className="products__price-input"
-          />
-          <span className="products__price-separator">-</span>
-          <input
-            type="number"
-            name="maxPrice"
-            value={searchFilters.maxPrice}
-            onChange={handleFilterChange}
-            placeholder="最高價格"
-            className="products__price-input"
-          />
-        </div>
-
-        <select
-          name="sortBy"
-          value={searchFilters.sortBy}
-          onChange={handleFilterChange}
-          className="products__sort-select"
+        <div
+          className={`products__more-filters ${
+            showMoreFilters ? "products__more-filters--show" : ""
+          }`}
         >
-          <option value="default">預設排序</option>
-          <option value="price-asc">價格由低到高</option>
-          <option value="price-desc">價格由高到低</option>
-          <option value="sales">銷量優先</option>
-        </select>
+          <div className="products__filter-group">
+            <input
+              type="number"
+              name="minPrice"
+              value={searchFilters.minPrice}
+              onChange={handleFilterChange}
+              placeholder="最低價格"
+              className="products__price-input"
+              min="0"
+              onWheel={(e) => e.target.blur()}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubmitSearch(e);
+                }
+              }}
+            />
+            <span className="products__price-separator">-</span>
+            <input
+              type="number"
+              name="maxPrice"
+              value={searchFilters.maxPrice}
+              onChange={handleFilterChange}
+              placeholder="最高價格"
+              className="products__price-input"
+              min="0"
+              onWheel={(e) => e.target.blur()}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubmitSearch(e);
+                }
+              }}
+            />
+          </div>
 
-        <div className="products__filter-buttons">
-          <button type="submit" className="products__filter-submit">
-            搜尋
-          </button>
+          <select
+            name="sortBy"
+            value={searchFilters.sortBy}
+            onChange={handleFilterChange}
+            className="products__sort-select"
+          >
+            <option value="default">預設排序</option>
+            <option value="price-asc">價格由低到高</option>
+            <option value="price-desc">價格由高到低</option>
+            <option value="sales">銷量優先</option>
+          </select>
           <button
             type="button"
             onClick={resetFilters}

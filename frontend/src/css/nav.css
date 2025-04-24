@@ -137,7 +137,6 @@
 .profile-link::after {
   display: none;
 }
-
 /* 響應式設計 */
 @media (max-width: 768px) {
   .navbar {
@@ -150,7 +149,8 @@
   }
 
   .nav-item {
-    margin: 0.5rem 0;
+    margin-top: 0.5rem;
+    text-align: center;
   }
 
   .cart-link {
@@ -168,55 +168,4 @@
     border-radius: 20px !important;
     justify-content: center;
   }
-}
-
-/* Message 提示樣式 */
-.nav__alert {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  padding: 1rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  display: flex;
-  justify-content: center;
-  max-width: 90%;
-  width: 300px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  animation: slideDown 0.3s ease-out;
-}
-
-.nav__alert--success {
-  background-color: #d4edda;
-  color: #155724;
-  border-left: 4px solid #28a745;
-}
-
-/* 添加動畫效果 */
-@keyframes slideDown {
-  from {
-    transform: translate(-50%, -100%);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, 0);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeOut {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
-}
-
-/* 確保 message 顯示在導航欄上方 */
-.navbar {
-  position: relative;
-  z-index: 999;
 }

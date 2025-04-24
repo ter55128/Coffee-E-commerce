@@ -4,18 +4,20 @@ import AuthService from "../services/auth-service";
 import "../css/nav.css";
 import { useCart } from "../context/CartContext";
 import CartService from "../services/cart-service";
-
+import Message from "./common/Message";
 const NavComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { cartItemCount, updateCartItemCount } = useCart();
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
+  const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
   const handleLogout = () => {
     AuthService.logout();
     setCurrentUser(null);
     setMessage("登出成功！");
-
+    setMessageType("success");
     setTimeout(() => {
       setMessage("");
       navigate("/");
@@ -44,11 +46,17 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     getCartCount();
   }, [currentUser, updateCartItemCount]);
 
+  useEffect(() => {
+    setIsNavCollapsed(true);
+
+    const navbar = document.querySelector(".navbar-collapse");
+    if (navbar && navbar.classList.contains("show")) {
+      navbar.classList.remove("show");
+    }
+  }, [location.pathname, handleLogout]);
+
   return (
-    <div>
-      {message && (
-        <div className="nav__alert nav__alert--success">{message}</div>
-      )}
+    <div className="nav-component">
       <nav className="navbar navbar-expand-md navbar-light">
         <div className="container-fluid adjust">
           <Link
@@ -64,17 +72,23 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
             aria-controls="navbarNav"
-            aria-expanded="false"
+            aria-expanded={!isNavCollapsed}
             aria-label="Toggle navigation"
+            onClick={() => setIsNavCollapsed(!isNavCollapsed)}
           >
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          <div className="collapse navbar-collapse" id="navbarNav">
+          <div
+            className={`collapse navbar-collapse ${
+              !isNavCollapsed ? "show" : ""
+            }`}
+            id="navbarNav"
+          >
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link
-                  className={`nav-link ${
+                  className={`nav-link group-link ${
                     isActive("/products") ? "active" : ""
                   }`}
                   to="/products"
@@ -85,7 +99,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
               {currentUser && currentUser.user.role === "store" && (
                 <li className="nav-item">
                   <Link
-                    className={`nav-link ${
+                    className={`nav-link group-link ${
                       isActive("/storeProducts") ? "active" : ""
                     }`}
                     to="/storeProducts"
@@ -97,7 +111,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
 
               <li className="nav-item">
                 <Link
-                  className={`nav-link ${
+                  className={`nav-link group-link ${
                     isActive("/knowledge") ? "active" : ""
                   }`}
                   to="/knowledge"
@@ -107,7 +121,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
               </li>
               <li className="nav-item">
                 <Link
-                  className={`nav-link ${
+                  className={`nav-link group-link ${
                     isActive("/articles") ? "active" : ""
                   }`}
                   to="/articles"
@@ -183,6 +197,13 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
           </div>
         </div>
       </nav>
+      {message && (
+        <Message
+          message={message}
+          type={messageType}
+          onClose={() => setMessage("")}
+        />
+      )}
     </div>
   );
 };

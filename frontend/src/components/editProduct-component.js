@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/editProduct.css";
+import Message from "./common/Message";
 
 const EditProductComponent = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ const EditProductComponent = ({ currentUser }) => {
       }, 2000);
     } catch (error) {
       setMessage(error.response?.data || "更新失敗");
-      setMessageType("danger");
+      setMessageType("error");
       setTimeout(() => {
         setMessage("");
       }, 2000);
@@ -118,18 +119,6 @@ const EditProductComponent = ({ currentUser }) => {
     <div className="editproduct">
       <div className="editproduct__card">
         <h2 className="editproduct__title">編輯商品</h2>
-
-        {message && (
-          <div
-            className={`editproduct__alert ${
-              messageType === "success"
-                ? "editproduct__alert--success"
-                : "editproduct__alert--danger"
-            }`}
-          >
-            {message}
-          </div>
-        )}
 
         <form onSubmit={handleSubmit} className="editproduct__form">
           <div className="editproduct__form-group">
@@ -261,6 +250,13 @@ const EditProductComponent = ({ currentUser }) => {
           </div>
         </form>
       </div>
+      {message && (
+        <Message
+          message={message}
+          type={messageType}
+          onClose={() => setMessage("")}
+        />
+      )}
     </div>
   );
 };

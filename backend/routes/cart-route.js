@@ -25,17 +25,16 @@ router.get("/", async (req, res) => {
       await cart.save();
       return res.json(cart);
     }
-    const updatedItems = await Promise.all(
-      cart.items.map(async (item) => {
-        const bean = await Bean.findById(item.beanID).populate("store", [
-          "username",
-        ]);
-        item.beanID.store = bean.store;
-        return item;
-      })
-    );
+    const validItems = [];
 
-    cart.items = updatedItems;
+    for (const item of cart.items) {
+      const bean = await Bean.findById(item.beanID);
+      if (bean) {
+        item.beanID.store = bean.store;
+        validItems.push(item);
+      }
+    }
+    cart.items = validItems;
     await cart.save();
     res.json(cart);
   } catch (err) {

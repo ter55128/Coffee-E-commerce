@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/articles.css";
 import axios from "axios";
+import Message from "./common/Message";
 
 const ArticlesComponent = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -9,7 +10,9 @@ const ArticlesComponent = ({ currentUser }) => {
   const [filteredArticles, setFilteredArticles] = useState([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [expandedArticles, setExpandedArticles] = useState({});
+  const [showFilters, setShowFilters] = useState(false);
 
   // 搜索條件狀態
   const [searchFilters, setSearchFilters] = useState({
@@ -91,11 +94,15 @@ const ArticlesComponent = ({ currentUser }) => {
         setLoading(false);
       } catch (error) {
         setMessage("獲取文章失敗");
+        setMessageType("error");
         setLoading(false);
       }
     };
     fetchArticles();
   }, []);
+  useEffect(() => {
+    applyFilters();
+  }, [searchFilters]);
 
   const toggleContent = (articleId) => {
     setExpandedArticles((prev) => ({
@@ -123,33 +130,43 @@ const ArticlesComponent = ({ currentUser }) => {
 
       {/* 搜索過濾區域 */}
       <form onSubmit={handleSubmitSearch} className="articles-list__filters">
-        <div className="articles-list__search">
-          <input
-            type="text"
-            name="keyword"
-            value={searchFilters.keyword}
-            onChange={handleFilterChange}
-            placeholder="搜尋文章標題、作者或內容..."
-            className="articles-list__search-input"
-          />
+        <div className="articles-list__search-wrapper">
+          <div className="articles-list__search">
+            <input
+              type="text"
+              name="keyword"
+              value={searchFilters.keyword}
+              onChange={handleFilterChange}
+              placeholder="搜尋文章標題、作者或內容..."
+              className="articles-list__search-input"
+            />
+          </div>
+          <button
+            type="button"
+            className="articles-list__filter-toggle"
+            onClick={() => setShowFilters(!showFilters)}
+          >
+            <i className="fas fa-sliders"></i>
+          </button>
         </div>
 
-        <select
-          name="sortBy"
-          value={searchFilters.sortBy}
-          onChange={handleFilterChange}
-          className="articles-list__sort-select"
+        <div
+          className={`articles-list__filter-dropdown ${
+            showFilters ? "show" : ""
+          }`}
         >
-          <option value="default">預設排序</option>
-          <option value="date-desc">最新發布</option>
-          <option value="date-asc">最早發布</option>
-          <option value="comments">留言最多</option>
-        </select>
+          <select
+            name="sortBy"
+            value={searchFilters.sortBy}
+            onChange={handleFilterChange}
+            className="articles-list__sort-select"
+          >
+            <option value="default">預設排序</option>
+            <option value="date-desc">最新發布</option>
+            <option value="date-asc">最早發布</option>
+            <option value="comments">留言最多</option>
+          </select>
 
-        <div className="articles-list__filter-buttons">
-          <button type="submit" className="articles-list__filter-submit">
-            搜尋
-          </button>
           <button
             type="button"
             onClick={resetFilters}
@@ -249,7 +266,13 @@ const ArticlesComponent = ({ currentUser }) => {
         ))}
       </div>
 
-      {message && <div>{message}</div>}
+      {message && (
+        <Message
+          message={message}
+          type={messageType}
+          onClose={() => setMessage("")}
+        />
+      )}
     </div>
   );
 };

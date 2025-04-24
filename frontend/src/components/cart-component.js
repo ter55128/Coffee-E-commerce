@@ -4,11 +4,16 @@ import CartService from "../services/cart-service";
 import "../css/cart.css";
 import { useCart } from "../context/CartContext";
 import PaymentService from "../services/payment-service";
+import Message from "./common/Message";
+import Modal from "./common/Modal";
 
 const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [cartItems, setCartItems] = useState({ items: [] });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentItem, setCurrentItem] = useState({ title: "", _id: "" });
   const navigate = useNavigate();
   const { updateCartItemCount } = useCart();
 
@@ -29,7 +34,12 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       setCartItems(response.data);
       setLoading(false);
     } catch (err) {
-      setMessage("獲取購物車失敗: " + err.response?.data?.message);
+      setMessage("獲取購物車失敗");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
       setLoading(false);
     }
   };
@@ -42,24 +52,23 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       );
 
       if (currentItem.quantity === 1) {
-        const isConfirmed = window.confirm(
-          `是否要將 ${currentItem.beanID.title} 從購物車中移除？`
-        );
-        if (isConfirmed) {
-          await CartService.removeFromCart(beanID._id);
-        } else {
-          return;
-        }
+        setIsModalOpen(true);
+        setCurrentItem({
+          title: currentItem.beanID.title,
+          _id: currentItem.beanID._id,
+        });
       } else {
         // 數量大於1，減少數量
         await CartService.updateQuantity(beanID._id, currentItem.quantity - 1);
       }
-
       await loadCart();
-      setMessage("數量更新成功");
     } catch (err) {
-      console.error("更新失敗:", err);
-      setMessage("減少數量失敗: " + err.response?.data?.message);
+      setMessage("減少數量失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     }
   };
   const handletoplus = async (beanID) => {
@@ -69,38 +78,38 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
         (item) => item.beanID._id === beanID._id
       );
 
-      // 數量大於1，增加數量
       await CartService.updateQuantity(beanID._id, currentItem.quantity + 1);
 
       await loadCart();
-      setMessage("數量更新成功");
     } catch (err) {
-      console.error("更新失敗:", err);
-      setMessage("增加數量失敗: " + err.response?.data?.message);
+      setMessage("增加數量失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     }
   };
 
   const handleRemoveItem = async (beanID) => {
     try {
-      // 找到當前商品
-      const currentItem = cartItems.items.find(
-        (item) => item.beanID._id === beanID._id
-      );
-
-      // 詢問是否確定要移除商品
-      const isConfirmed = window.confirm(
-        `確定要將 ${currentItem.beanID.title} 從購物車中移除嗎？`
-      );
-
-      if (!isConfirmed) {
-        return; // 如果用戶取消，則不進行任何操作
-      }
-
-      await CartService.removeFromCart(beanID._id);
+      await CartService.removeFromCart(beanID);
       await loadCart();
+      setIsModalOpen(false);
       setMessage("商品已移除");
+      setMessageType("success");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     } catch (err) {
-      setMessage("移除商品失敗: " + err.response?.data?.message);
+      setIsModalOpen(false);
+      setMessage("移除商品失敗");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     }
   };
 
@@ -180,7 +189,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                     src={`${process.env.REACT_APP_API_URL}${item.beanID.image}`}
                     alt={item.beanID.title}
                     className="cart__product-card__image"
-                    onClick={() => navigate(`/beandetail/${item.beanID._id}`)}
+                    onClick={() => navigate(`/products/${item.beanID._id}`)}
                     onError={(e) => {
                       e.target.src = "/default-bean.jpg";
                       e.target.onerror = null;
@@ -188,7 +197,10 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                   />
                 </div>
                 <div className="cart__product-card__body">
-                  <h5 className="cart__product-card__title">
+                  <h5
+                    className="cart__product-card__title"
+                    onClick={() => navigate(`/products/${item.beanID._id}`)}
+                  >
                     {item.beanID.title} {item.beanID.weight}g
                   </h5>
                   <span className="cart__product-card__store">
@@ -219,7 +231,13 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
 
                   <button
                     className="cart__product-card__remove"
-                    onClick={() => handleRemoveItem(item.beanID)}
+                    onClick={() => {
+                      setIsModalOpen(true);
+                      setCurrentItem({
+                        title: item.beanID.title,
+                        _id: item.beanID._id,
+                      });
+                    }}
                   >
                     移除商品
                   </button>
@@ -229,7 +247,6 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
           ))}
         </div>
       )}
-
       {cartItems.items.length > 0 && (
         <div className="summary">
           <div className="summary__content">
@@ -251,6 +268,16 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
           </div>
         </div>
       )}
+      {message && <Message message={message} type={messageType} />}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message={`是否要將 ${currentItem.title} 從購物車中移除？`}
+        onConfirm={() => handleRemoveItem(currentItem._id)}
+        onCancel={() => setIsModalOpen(false)}
+        confirmText="確定"
+        cancelText="取消"
+      />
     </div>
   );
 };

@@ -3,13 +3,15 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/articleDetail.css";
 import ArticleService from "../services/article-service";
+import Message from "./common/Message";
 
 const ArticleDetailComponent = ({ currentUser }) => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [article, setArticle] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [showReplyModal, setShowReplyModal] = useState(false);
   const [replyContent, setReplyContent] = useState("");
 
@@ -22,7 +24,8 @@ const ArticleDetailComponent = ({ currentUser }) => {
         setArticle(response.data);
         setLoading(false);
       } catch (error) {
-        setError("文章載入失敗");
+        setMessage("文章載入失敗");
+        setMessageType("error");
         setLoading(false);
       }
     };
@@ -45,15 +48,25 @@ const ArticleDetailComponent = ({ currentUser }) => {
       // 清空並關閉彈窗
       setReplyContent("");
       setShowReplyModal(false);
+      setMessage("回覆成功");
+      setMessageType("success");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     } catch (error) {
       console.error("回覆發送失敗", error);
+      setMessage("回覆失敗");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     }
   };
 
   if (loading) return <div className="loading">載入中...</div>;
-  if (error) return <div className="error">{error}</div>;
-  if (!article) return <div className="error">找不到文章</div>;
-
+  if (!article) return <Message message="獲取文章失敗" type="error" />;
   return (
     <div className="articleDetail">
       <div className="articleDetail__button-group">
@@ -155,6 +168,7 @@ const ArticleDetailComponent = ({ currentUser }) => {
           </div>
         </div>
       )}
+      {message && <Message message={message} type={messageType} />}
     </div>
   );
 };

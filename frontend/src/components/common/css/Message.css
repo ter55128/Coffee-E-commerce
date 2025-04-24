@@ -1,0 +1,104 @@
+/* frontend/src/components/common/Message.css */
+.message {
+  position: sticky;
+  bottom: 70vh;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 1000;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(300px, 90%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  animation: messageSlideDown 0.3s ease-out,
+    messageFadeOut 0.3s ease-out 1.7s forwards;
+}
+
+.message__content {
+  flex: 1;
+  text-align: center;
+}
+
+.message__close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 1.5rem;
+  padding: 0 0 0 1rem;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.message__close:hover {
+  opacity: 1;
+}
+
+/* 消息類型樣式 */
+.message--success {
+  background-color: #d4edda;
+  color: #155724;
+  border-left: 4px solid #28a745;
+}
+
+.message--error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-left: 4px solid #dc3545;
+}
+
+.message--info {
+  background-color: #e2e8f0;
+  color: #2d3748;
+  border-left: 4px solid #4a5568;
+}
+
+.message--warning {
+  background-color: #fff3cd;
+  color: #856404;
+  border-left: 4px solid #ffc107;
+}
+
+.nav-component .message {
+  position: fixed;
+}
+
+/* 動畫效果 */
+@keyframes messageSlideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 自動消失動畫 */
+.message--auto-hide {
+  animation: messageSlideDown 0.3s ease-out,
+    messageFadeOut 0.5s ease-out 2.5s forwards;
+}
+
+@keyframes messageFadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* 響應式設計 */
+@media (max-width: 480px) {
+  .message {
+    padding: 0.8rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}

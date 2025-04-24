@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/editProfile.css";
+import Message from "./common/Message";
 
 const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("info");
   const [userData, setUserData] = useState({
     username: "",
     email: "",
@@ -68,6 +70,10 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
         // 驗證新密碼
         if (userData.newPassword !== userData.confirmPassword) {
           setMessage("新密碼與確認密碼不匹配");
+          setMessageType("error");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
           setLoading(false);
           return;
         }
@@ -75,6 +81,10 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
         // 驗證當前密碼是否填寫
         if (!userData.currentPassword) {
           setMessage("請輸入當前密碼");
+          setMessageType("error");
+          setTimeout(() => {
+            setMessage("");
+          }, 2000);
           setLoading(false);
           return;
         }
@@ -86,6 +96,10 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
       // 如果沒有要更新的資料
       if (Object.keys(updateData).length === 0) {
         setMessage("沒有要更新的資料");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
         setLoading(false);
         return;
       }
@@ -101,9 +115,8 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
 
       localStorage.setItem("user", JSON.stringify(updatedUser));
       setCurrentUser(updatedUser);
-
       setMessage("個人資料更新成功！");
-
+      setMessageType("success");
       setTimeout(() => {
         navigate("/profile");
       }, 2000);
@@ -116,6 +129,10 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
         errorMessage = "當前密碼不正確";
       }
       setMessage(errorMessage);
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
     } finally {
       setLoading(false);
     }
@@ -221,19 +238,6 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
             </div>
           )}
 
-          {/* 將 message 移到這裡，讓它在所有情況下都能顯示 */}
-          {message && (
-            <div
-              className={`editprofile__alert ${
-                message.includes("成功")
-                  ? "editprofile__alert--success"
-                  : "editprofile__alert--danger"
-              }`}
-            >
-              {message}
-            </div>
-          )}
-
           <div className="editprofile__actions">
             <button
               type="submit"
@@ -258,6 +262,13 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
           </div>
         </form>
       </div>
+      {message && (
+        <Message
+          message={message}
+          type={messageType}
+          onClose={() => setMessage("")}
+        />
+      )}
     </div>
   );
 };

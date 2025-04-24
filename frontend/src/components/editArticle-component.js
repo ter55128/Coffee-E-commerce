@@ -3,6 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ArticleService from "../services/article-service";
 import "../css/editArticle.css";
+import Message from "./common/Message";
+import Modal from "./common/Modal";
 
 const EditArticleComponent = ({ currentUser }) => {
   const { id } = useParams();
@@ -11,10 +13,9 @@ const EditArticleComponent = ({ currentUser }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
-
-  const [message, setMessage] = useState({ type: "", content: "" });
-
-  console.log(currentUser);
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -35,10 +36,8 @@ const EditArticleComponent = ({ currentUser }) => {
         setContent(articleData.content);
         setLoading(false);
       } catch (error) {
-        setMessage({
-          type: "error",
-          content: "文章載入失敗",
-        });
+        setMessage("文章載入失敗");
+        errotMessage();
         setLoading(false);
       }
     };
@@ -51,42 +50,52 @@ const EditArticleComponent = ({ currentUser }) => {
     fetchArticle();
   }, [id, currentUser, navigate]);
 
+  const errotMessage = () => {
+    setMessageType("error");
+    setTimeout(() => {
+      setMessage("");
+      setMessageType("");
+    }, 2000);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage({ type: "", content: "" }); // 清除之前的訊息
+    setMessage(""); // 清除之前的訊息
 
     try {
       // 驗證
       if (!title.trim()) {
-        setMessage({ type: "error", content: "標題不能為空" });
+        setMessage("標題不能為空");
+        errotMessage();
         return;
       }
       if (title.length < 2 || title.length > 100) {
-        setMessage({ type: "error", content: "標題長度必須在2-100字之間" });
+        setMessage("標題長度必須在2-100字之間");
+        errotMessage();
         return;
       }
       if (!content.trim()) {
-        setMessage({ type: "error", content: "內容不能為空" });
+        setMessage("內容不能為空");
+        errotMessage();
         return;
       }
       if (content.length < 10 || content.length > 5000) {
-        setMessage({ type: "error", content: "內容長度必須在10-5000字之間" });
+        setMessage("內容長度必須在10-5000字之間");
+        errotMessage();
         return;
       }
 
       setLoading(true);
       await ArticleService.updateArticle(id, { title, content });
-      setMessage({ type: "success", content: "文章更新成功！" });
-
-      // 成功後延遲導航，讓用戶看到成功訊息
+      setMessage("文章更新成功！");
+      setMessageType("success");
       setTimeout(() => {
+        setMessage("");
+        setMessageType("");
         navigate(`/articles/${id}`);
-      }, 1500);
+      }, 2000);
     } catch (error) {
-      setMessage({
-        type: "error",
-        content: error.response?.data || "更新失敗",
-      });
+      setMessage("更新失敗");
+      errotMessage();
     } finally {
       setLoading(false);
     }
@@ -96,10 +105,10 @@ const EditArticleComponent = ({ currentUser }) => {
     const hasChanges = title !== article.title || content !== article.content;
 
     if (hasChanges) {
-      const isConfirmed = window.confirm("您有未保存的更改，確定要離開嗎？");
-      if (!isConfirmed) return;
+      setIsModalOpen(true);
+    } else {
+      navigate(`/articles/${id}`);
     }
-    navigate(`/articles/${id}`);
   };
 
   if (loading) return <div className="editArticle__loading">載入中...</div>;
@@ -111,14 +120,6 @@ const EditArticleComponent = ({ currentUser }) => {
       </button>
 
       <div className="editArticle__title">編輯文章</div>
-
-      {message.content && (
-        <div
-          className={`editArticle__message editArticle__message--${message.type}`}
-        >
-          {message.content}
-        </div>
-      )}
 
       <form className="editArticle__form" onSubmit={handleSubmit}>
         <div className="editArticle__form-group">
@@ -160,6 +161,16 @@ const EditArticleComponent = ({ currentUser }) => {
           </button>
         </div>
       </form>
+      {message && <Message message={message} type={messageType} />}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message="您有未保存的更改，確定要離開嗎？"
+        onConfirm={() => navigate(`/articles/${id}`)}
+        onCancel={() => setIsModalOpen(false)}
+        confirmText="確定"
+        cancelText="取消"
+      />
     </div>
   );
 };

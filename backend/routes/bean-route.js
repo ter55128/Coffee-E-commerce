@@ -27,21 +27,6 @@ router.get("/store/:_store_id", async (req, res) => {
   }
 });
 
-// get purchase history by customer id
-// router.get("/customer/:_customer_id", async (req, res) => {
-//   try {
-//     let { _customer_id } = req.params;
-//     let purchaseHistory = await Bean.find({
-//       customers: _customer_id,
-//     })
-//       .populate("store", ["username", "email"])
-//       .exec();
-//     return res.status(200).send(purchaseHistory);
-//   } catch (e) {
-//     return res.status(500).send(e);
-//   }
-//});
-
 // get a product by bean id
 router.get("/:_id", async (req, res) => {
   try {

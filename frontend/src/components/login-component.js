@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/login.css";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const LoginComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();

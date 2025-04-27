@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/forgotPassword.css";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const ForgotPasswordComponent = () => {
   const [email, setEmail] = useState("");

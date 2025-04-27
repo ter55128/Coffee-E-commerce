@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/resetPassword.css";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const ResetPasswordComponent = () => {
   const { token } = useParams();

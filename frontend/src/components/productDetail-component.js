@@ -5,7 +5,7 @@ import AuthService from "../services/auth-service";
 import axios from "axios";
 import "../css/productDetail.css";
 import { useCart } from "../context/CartContext";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
   const { beanId } = useParams();

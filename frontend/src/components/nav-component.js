@@ -4,7 +4,7 @@ import AuthService from "../services/auth-service";
 import "../css/nav.css";
 import { useCart } from "../context/CartContext";
 import CartService from "../services/cart-service";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const NavComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();

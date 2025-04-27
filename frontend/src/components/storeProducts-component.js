@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/storeProducts.css";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const StoreProductsComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/postProduct.css";
-import Message from "./common/message";
+import Message from "./common/Message";
 
 const PostProductComponent = ({ currentUser, setCurrentUser }) => {
   let [title, setTitle] = useState("");

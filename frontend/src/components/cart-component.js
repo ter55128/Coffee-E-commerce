@@ -4,8 +4,8 @@ import CartService from "../services/cart-service";
 import "../css/cart.css";
 import { useCart } from "../context/CartContext";
 import PaymentService from "../services/payment-service";
-import Message from "./common/message";
-import Modal from "./common/modal";
+import Message from "./common/Message";
+import Modal from "./common/Modal";
 
 const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [cartItems, setCartItems] = useState({ items: [] });

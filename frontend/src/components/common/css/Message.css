@@ -67,6 +67,10 @@
 .nav-component .message {
   position: fixed;
 }
+.forgotpassword .message {
+  animation: messageSlideDown 0.3s ease-out,
+    messageFadeOut 0.3s ease-out 3.7s forwards;
+}
 
 /* 動畫效果 */
 @keyframes messageSlideDown {

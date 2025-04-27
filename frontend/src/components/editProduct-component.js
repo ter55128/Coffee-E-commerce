@@ -3,6 +3,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/editProduct.css";
 import Message from "./common/Message";
+import Modal from "./common/Modal";
 
 const EditProductComponent = ({ currentUser }) => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const EditProductComponent = ({ currentUser }) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [beanData, setBeanData] = useState({
     title: "",
     weight: "",
@@ -72,7 +74,6 @@ const EditProductComponent = ({ currentUser }) => {
         image: file,
       }));
 
-      // 創建預覽圖
       const reader = new FileReader();
       reader.onloadend = () => {
         setImagePreview(reader.result);
@@ -111,6 +112,25 @@ const EditProductComponent = ({ currentUser }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await BeansService.deleteBean(beanData._id);
+      setIsModalOpen(false);
+      setMessage("商品已成功刪除！");
+      setMessageType("success");
+      setTimeout(() => {
+        setMessage("");
+        navigate("/storeProducts");
+      }, 2000);
+    } catch (error) {
+      setIsModalOpen(false);
+      setMessage("刪除失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
+    }
+  };
   if (loading) {
     return <div className="editproduct__loading">載入中...</div>;
   }
@@ -118,8 +138,18 @@ const EditProductComponent = ({ currentUser }) => {
   return (
     <div className="editproduct">
       <div className="editproduct__card">
-        <h2 className="editproduct__title">編輯商品</h2>
-
+        <div className="editproduct__card-header">
+          <h2 className="editproduct__title">編輯商品</h2>
+          <button
+            type="button"
+            className="editproduct__delete-button"
+            onClick={() => {
+              setIsModalOpen(true);
+            }}
+          >
+            <i className="fas fa-trash-alt"></i>
+          </button>
+        </div>
         <form onSubmit={handleSubmit} className="editproduct__form">
           <div className="editproduct__form-group">
             <label className="editproduct__label">商品圖片</label>
@@ -257,6 +287,15 @@ const EditProductComponent = ({ currentUser }) => {
           onClose={() => setMessage("")}
         />
       )}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        message="確認要刪除商品嗎？此操作無法復原"
+        confirmText="刪除"
+        onConfirm={handleDelete}
+        cancelText="取消"
+        onCancel={() => setIsModalOpen(false)}
+      />
     </div>
   );
 };

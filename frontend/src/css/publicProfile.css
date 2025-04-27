@@ -84,6 +84,7 @@
   flex-direction: column;
   overflow: hidden;
   position: relative;
+  cursor: pointer;
 }
 
 .public-profile__card:hover {
@@ -168,27 +169,6 @@
   margin: 0;
 }
 
-.public-profile__card-button {
-  width: 100%;
-  padding: 0.8rem;
-  border: none;
-  border-radius: 12px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  margin-top: 1rem;
-  cursor: pointer;
-}
-
-.public-profile__card-button--detail {
-  background: linear-gradient(45deg, #e2e8f0, #cbd5e0);
-  color: #2d3748;
-}
-
-.public-profile__card-button--detail:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
 .public-profile__article {
   display: flex;
   justify-content: space-between;
@@ -216,7 +196,6 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  cursor: pointer;
 }
 
 .public-profile__article-info {
@@ -343,7 +322,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 1rem;
+    padding: 1rem 0rem;
   }
 
   .public-profile {
@@ -354,15 +333,16 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 160px;
+    height: 140px;
   }
 
   .public-profile__card-image {
-    width: 50%;
+    height: 140px;
   }
 
   .public-profile__card-content {
     padding: 0.5rem;
+    width: 100%;
   }
 
   .public-profile__card-title {
@@ -381,7 +361,7 @@
   .public-profile__card-price {
     font-size: 1rem;
     margin-right: 0;
-    padding-top: 0.3rem;
+    padding-top: 0.2rem;
   }
 
   .public-profile__card-footer {
@@ -390,10 +370,6 @@
   }
 
   .public-profile__card-sales {
-    font-size: 0.8rem;
-  }
-
-  .public-profile__card-button {
-    display: none;
+    font-size: 1rem;
   }
 }

@@ -6,9 +6,14 @@
 
 .editArticle__title {
   text-align: center;
+  font-size: 2rem;
   gap: 1.5rem;
+  color: #2c3e50;
+  padding-bottom: 1rem;
   margin-bottom: 2rem;
   font-weight: 500;
+  border-bottom: 1px solid #dcdcdc;
+  opacity: 0.8;
 }
 
 .editArticle__back-button {
@@ -25,15 +30,7 @@
 }
 
 .editArticle__back-button:hover {
-  color: #2980b9;
-}
-
-.editArticle__title {
-  font-size: 2rem;
-  color: #2c3e50;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #dcdcdc;
-  opacity: 0.8;
+  background: #2980b9;
 }
 
 .editArticle__form {
@@ -81,7 +78,6 @@
   display: flex;
   gap: 1rem;
   justify-content: flex-end;
-  margin-top: 2rem;
 }
 
 .editArticle__button {
@@ -118,25 +114,15 @@
   color: #4a5568;
   font-size: 1.2rem;
 }
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-/* 響應式設計 */
 @media (max-width: 768px) {
   .editArticle {
     margin: 1.5rem auto;
   }
 
   .editArticle__title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
   }
 
   .editArticle__form {
@@ -155,15 +141,15 @@
   }
 
   .editArticle__title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .editArticle__form {
     padding: 1rem;
   }
-
-  .editArticle__buttons {
-    flex-direction: column;
+  .editArticle__form-group {
+    margin-bottom: 1rem;
   }
 
   .editArticle__button {

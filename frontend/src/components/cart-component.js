@@ -206,18 +206,20 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                   <span className="cart__product-card__store">
                     {item.beanID.store.username}
                   </span>
-                  <div className="quantity">
-                    <div className="quantity__controls">
+                  <div className="cart__quantity">
+                    <div className="cart__quantity__controls">
                       <button
-                        className="quantity__button"
+                        className="cart__quantity__button"
                         onClick={() => handletominus(item.beanID)}
                         disabled={loading}
                       >
                         -
                       </button>
-                      <span className="quantity__display">{item.quantity}</span>
+                      <span className="cart__quantity__display">
+                        {item.quantity}
+                      </span>
                       <button
-                        className="quantity__button"
+                        className="cart__quantity__button"
                         onClick={() => handletoplus(item.beanID)}
                         disabled={loading}
                       >
@@ -248,21 +250,24 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
         </div>
       )}
       {cartItems.items.length > 0 && (
-        <div className="summary">
-          <div className="summary__content">
-            <div className="summary__info">
-              <span className="summary__label">總件數：</span>
-              <span className="summary__value">
+        <div className="cart__summary">
+          <div className="cart__summary__content">
+            <div className="cart__summary__info">
+              <span className="cart__summary__label">總件數：</span>
+              <span className="cart__summary__value">
                 {calculateTotalQuantity()} 件
               </span>
             </div>
-            <div className="summary__info">
-              <span className="summary__label">商品總額：</span>
-              <span className="summary__value summary__value--price">
+            <div className="cart__summary__info">
+              <span className="cart__summary__label">商品總額：</span>
+              <span className="cart__summary__value cart__summary__value--price">
                 $ {calculateTotal()}
               </span>
             </div>
-            <button className="summary__checkout" onClick={handleCheckout}>
+            <button
+              className="cart__summary__checkout"
+              onClick={handleCheckout}
+            >
               前往結帳
             </button>
           </div>

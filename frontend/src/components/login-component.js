@@ -80,7 +80,7 @@ const LoginComponent = ({ currentUser, setCurrentUser }) => {
         />
       </div>
 
-      <div className="login__form-group" style={{ marginBottom: "0.5rem" }}>
+      <div className="login__form-group">
         <label className="login__label" htmlFor="password">
           密碼
         </label>

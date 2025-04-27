@@ -86,7 +86,10 @@ const HomeComponent = ({ currentUser, setCurrentUser }) => {
               <p className="home__user-text">
                 您可以註冊一個帳號，並開始在論壇發表文章，與其他咖啡愛好者交流，以及購買來自各地的咖啡豆。
               </p>
-              <button className="home__user-button" onClick={handlequestion}>
+              <button
+                className="home__user-button--coffee"
+                onClick={handlequestion}
+              >
                 登錄會員、或者註冊一個帳號
               </button>
             </div>
@@ -97,7 +100,10 @@ const HomeComponent = ({ currentUser, setCurrentUser }) => {
               <p className="home__user-text">
                 註冊成為咖啡商家，提供高品質的咖啡熟豆，也可以在論壇發表文章，分享咖啡知識，增加曝光度。
               </p>
-              <button className="home__user-button" onClick={handlequestion}>
+              <button
+                className="home__user-button--store"
+                onClick={handlequestion}
+              >
                 註冊咖啡商家，讓大家認識你
               </button>
             </div>

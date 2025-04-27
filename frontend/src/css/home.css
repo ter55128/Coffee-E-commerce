@@ -130,12 +130,12 @@
 
 .home__user-card--coffee {
   background: #34495e;
-  color: white;
+  color: #f1f1f1;
 }
 
 .home__user-card--store {
   background: #bdc3c7;
-  color: #2c3e50;
+  color: #34495e;
 }
 
 .home__user-title {
@@ -149,17 +149,26 @@
   line-height: 1.6;
 }
 
-.home__user-button {
+.home__user-button--coffee,
+.home__user-button--store {
   padding: 0.8rem 1.5rem;
   border-radius: 25px;
   transition: all 0.3s ease;
   font-weight: 500;
-  color: #2c3e50;
+  color: #34495e;
+  background-color: #f1f1f1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.home__user-button:hover {
+.home__user-button--coffee:hover,
+.home__user-button--store:hover {
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+.home__user-button--coffee {
+  border: 1px solid #34495e;
+}
+.home__user-button--store {
+  border: 1px solid #bdc3c7;
 }
 
 /* 頁腳 */
@@ -348,13 +357,13 @@
 
   .home__user-text {
     font-size: 0.9rem;
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
   }
 
   .home__user-button {
     padding: 0.6rem 1rem;
     font-size: 0.8rem;
-    width: 100%; /* 在手機版讓按鈕佔滿寬度 */
+    width: 100%;
   }
 
   .home__section-title {

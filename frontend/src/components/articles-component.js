@@ -111,6 +111,10 @@ const ArticlesComponent = ({ currentUser }) => {
     }));
   };
 
+  const newestComment = (article) => {
+    return article.comments[article.comments.length - 1];
+  };
+
   if (loading) return <div className="loading">載入中...</div>;
 
   return (
@@ -184,11 +188,20 @@ const ArticlesComponent = ({ currentUser }) => {
 
       <div className="articles-list__content">
         {filteredArticles.map((article) => (
-          <div key={article._id} className="articles-card">
+          <div
+            key={article._id}
+            className="articles-card"
+            onClick={(e) => {
+              toggleContent(article._id);
+            }}
+          >
             <div className="articles-card__header">
               <h3
                 className="articles-card__title"
-                onClick={() => navigate(`/articles/${article._id}`)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/articles/${article._id}`);
+                }}
               >
                 {article.title}
               </h3>
@@ -214,54 +227,45 @@ const ArticlesComponent = ({ currentUser }) => {
                   ? "articles-card__content--collapsed"
                   : ""
               }`}
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleContent(article._id);
-              }}
             >
               {article.content}
-              {expandedArticles[article._id] && (
-                <div className="comment" onClick={(e) => e.stopPropagation()}>
-                  <h4 className="comment__title">最新留言</h4>
-                  {article.comments.length > 0 ? (
-                    <div className="comment__item">
-                      <div className="comment__meta">
-                        <span
-                          className="comment__author"
-                          onClick={() =>
-                            navigate(
-                              `/publicProfile/${
-                                article.comments[article.comments.length - 1]
-                                  .author._id
-                              }`
-                            )
-                          }
-                        >
-                          {
-                            article.comments[article.comments.length - 1].author
-                              .username
-                          }
-                          ：
-                          {
-                            article.comments[article.comments.length - 1]
-                              .content
-                          }
-                        </span>
-                        <span className="comment__date">
-                          {new Date(
-                            article.comments[
-                              article.comments.length - 1
-                            ].createdAt
-                          ).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="comment--empty">暫無留言</div>
-                  )}
-                </div>
-              )}
             </div>
+            {expandedArticles[article._id] && (
+              <div
+                className="articles-card__comment"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <h4 className="articles-card__comment-title">最新留言</h4>
+                {article.comments.length > 0 ? (
+                  <div
+                    className="articles-card__comment-author"
+                    onClick={() =>
+                      navigate(
+                        `/publicProfile/${newestComment(article).author._id}`
+                      )
+                    }
+                  >
+                    {newestComment(article).author.username}
+                  </div>
+                ) : (
+                  <></>
+                )}
+                {article.comments.length > 0 ? (
+                  <div className="articles-card__comment-item">
+                    <span className="articles-card__comment-content">
+                      {newestComment(article).content}
+                    </span>
+                    <span className="articles-card__comment-date">
+                      {new Date(
+                        newestComment(article).createdAt
+                      ).toLocaleDateString()}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="articles-card__comment--empty">暫無留言</div>
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

@@ -16,7 +16,7 @@
 
 /* 標題樣式 */
 .login__title {
-  font-size: 2.2rem;
+  font-size: 2rem;
   color: #2c3e50;
   text-align: center;
   margin-bottom: 2rem;
@@ -36,18 +36,17 @@
   border-radius: 2px;
 }
 
-/* 表單組樣式 */
 .login__form-group {
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
   position: relative;
 }
 
 .login__label {
   display: block;
-  margin-bottom: 0.7rem;
+  margin-bottom: 0.75rem;
   color: #34495e;
   font-weight: 500;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
 
 .login__input {
@@ -115,20 +114,6 @@
   text-align: right;
 }
 
-/* 響應式設計 */
-@media (max-width: 768px) {
-  .login {
-    margin: 2rem auto;
-    padding: 2rem;
-    width: 90%;
-    max-width: 400px;
-  }
-
-  .login__title {
-    font-size: 2rem;
-  }
-}
-
 .login__oauth {
   display: flex;
   flex-direction: column;
@@ -194,4 +179,29 @@
   padding: 0 1rem;
   color: #64748b;
   font-size: 0.9rem;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+  .login {
+    margin: 2rem auto;
+    padding: 2rem;
+    width: 90%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login__oauth {
+    margin-bottom: 1rem;
+  }
+  .login__label {
+    margin-bottom: 0.5rem;
+  }
+  .login__form-group {
+    margin-bottom: 1rem;
+  }
+  .login__register {
+    padding-top: 1.2rem;
+  }
 }

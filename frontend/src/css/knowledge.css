@@ -122,7 +122,7 @@
   border-radius: 15px;
   width: 80%;
   max-width: 1000px;
-  max-height: 90vh;
+  max-height: 70vh;
   overflow-y: auto;
   position: relative;
   animation: slideUp 0.3s ease;
@@ -246,16 +246,22 @@
     font-size: 1.2rem;
   }
   .knowledge__modal {
-    width: 95%;
+    width: 80%;
+    max-width: 500px;
     margin: 10px;
   }
 
   .knowledge__modal-content {
-    padding: 1.5rem;
+    padding: 1rem;
   }
-
+  .knowledge__modal-header {
+    padding: 1rem;
+  }
+  .knowledge__modal-title i {
+    font-size: 1.25rem;
+  }
   .knowledge__modal-title h2 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
 }
 @media (max-width: 480px) {
@@ -267,7 +273,6 @@
   }
   .knowledge__card-header {
     gap: 0.5rem;
-    padding: 1rem;
   }
   .knowledge__card-icon {
     font-size: 1.2rem;
@@ -281,15 +286,15 @@
   .knowledge__modal {
     width: 85%;
   }
-  .knowledge__modal-content {
-    padding: 1rem;
-  }
+
   .knowledge__modal-title h2 {
     font-size: 1.2rem;
   }
   .knowledge__item {
     margin-bottom: 0;
-    padding: 1rem;
+    padding: 0.5rem;
+    padding-top: 1rem;
+    margin-bottom: 0.5rem;
   }
   .knowledge__item-title {
     margin-bottom: 0.5rem;

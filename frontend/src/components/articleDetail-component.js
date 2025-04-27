@@ -4,6 +4,7 @@ import axios from "axios";
 import "../css/articleDetail.css";
 import ArticleService from "../services/article-service";
 import Message from "./common/Message";
+import Modal from "./common/Modal";
 
 const ArticleDetailComponent = ({ currentUser }) => {
   const { id } = useParams();
@@ -35,33 +36,16 @@ const ArticleDetailComponent = ({ currentUser }) => {
 
   const handleReplySubmit = async () => {
     try {
-      const response = await ArticleService.postComment(id, {
+      await ArticleService.postComment(id, {
         content: replyContent,
       });
-
-      // 更新文章評論
-      setArticle({
-        ...article,
-        comments: [...article.comments, response.data],
-      });
-
-      // 清空並關閉彈窗
-      setReplyContent("");
       setShowReplyModal(false);
+      setReplyContent("");
       setMessage("回覆成功");
       setMessageType("success");
-      setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 2000);
     } catch (error) {
-      console.error("回覆發送失敗", error);
       setMessage("回覆失敗");
       setMessageType("error");
-      setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 2000);
     }
   };
 
@@ -85,7 +69,6 @@ const ArticleDetailComponent = ({ currentUser }) => {
           </button>
         )}
       </div>
-
       <h1 className="articleDetail__title">{article.title}</h1>
       <div className="articleDetail__meta">
         <span
@@ -98,77 +81,56 @@ const ArticleDetailComponent = ({ currentUser }) => {
           發表於：{new Date(article.createdAt).toLocaleDateString()}
         </span>
       </div>
-
       <div className="articleDetail__content">{article.content}</div>
-
-      <div className="comments">
-        <div className="comments__header">
-          <h3 className="comments__title">
+      <div className="articleDetail__comments">
+        <div className="articleDetail__comments-header">
+          <h3 className="articleDetail__comments-title">
             留言區 ({article.comments.length})
           </h3>
           {currentUser && (
             <button
-              className="comments__reply-button"
+              className="articleDetail__comments-reply-button"
               onClick={() => setShowReplyModal(true)}
             >
               <i className="fas fa-reply"></i> 回覆
             </button>
           )}
           {!currentUser && (
-            <div className="comments__login-hint">如想回覆，請先登入</div>
+            <div className="articleDetail__comments-login-hint">
+              如想回覆，請先登入
+            </div>
           )}
         </div>
 
         {article.comments.map((comment, index) => (
-          <div key={index} className="comment">
-            <div className="comment__header">
+          <div key={index} className="articleDetail__comment">
+            <div className="articleDetail__comment-header">
               <span
-                className="comment__author"
+                className="articleDetail__comment-author"
                 onClick={() => navigate(`/publicProfile/${comment.author._id}`)}
               >
                 {comment.author.username}
               </span>
-              <span className="comment__date">
+              <span className="articleDetail__comment-date">
                 {new Date(comment.createdAt).toLocaleDateString()}
               </span>
             </div>
-            <div className="comment__content">{comment.content}</div>
+            <div className="articleDetail__comment-content">
+              {comment.content}
+            </div>
           </div>
         ))}
       </div>
-
-      {showReplyModal && (
-        <div className="modal">
-          <div className="modal__content">
-            <h3 className="modal__title">發表回覆</h3>
-            <textarea
-              className="modal__textarea"
-              value={replyContent}
-              onChange={(e) => setReplyContent(e.target.value)}
-              placeholder="請輸入您的回覆..."
-            />
-            <div className="modal__buttons">
-              <button
-                className="modal__button modal__button--cancel"
-                onClick={() => {
-                  setShowReplyModal(false);
-                  setReplyContent("");
-                }}
-              >
-                取消
-              </button>
-              <button
-                className="modal__button modal__button--submit"
-                onClick={handleReplySubmit}
-                disabled={!replyContent.trim()}
-              >
-                發送
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-      {message && <Message message={message} type={messageType} />}
+      <Message message={message} type={messageType} />
+      <Modal
+        isOpen={showReplyModal}
+        onClose={() => setShowReplyModal(false)}
+        message="發表回覆"
+        content={replyContent}
+        onChange={setReplyContent}
+        onConfirm={handleReplySubmit}
+        onCancel={() => setShowReplyModal(false)}
+      />
     </div>
   );
 };

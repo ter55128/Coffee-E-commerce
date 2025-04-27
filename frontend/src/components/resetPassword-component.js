@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/resetPassword.css";
+import Message from "./common/Message";
 
 const ResetPasswordComponent = () => {
   const { token } = useParams();
@@ -9,6 +10,7 @@ const ResetPasswordComponent = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [validToken, setValidToken] = useState(true);
@@ -19,29 +21,44 @@ const ResetPasswordComponent = () => {
     // 驗證密碼
     if (newPassword.length < 6) {
       setMessage("密碼長度必須至少為6個字符");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
       return;
     }
 
     if (newPassword !== confirmPassword) {
       setMessage("兩次輸入的密碼不一致");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+      }, 2000);
       return;
     }
-
     setLoading(true);
-    setMessage("");
 
     try {
       await AuthService.resetPassword(token, newPassword);
       setMessage("密碼重設成功！即將跳轉到登入頁面...");
+      setMessageType("success");
       setTimeout(() => {
         navigate("/login");
-      }, 3000);
+      }, 2000);
     } catch (error) {
       if (error.response?.status === 401) {
         setValidToken(false);
         setMessage("重設密碼連結已過期，請重新申請");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
       } else {
         setMessage(error.response?.data || "重設密碼失敗，請稍後再試");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+        }, 2000);
       }
     } finally {
       setLoading(false);
@@ -100,18 +117,6 @@ const ResetPasswordComponent = () => {
                 </div>
               </div>
 
-              {message && (
-                <div
-                  className={`resetPassword__message ${
-                    message.includes("成功")
-                      ? "resetPassword__message--success"
-                      : "resetPassword__message--error"
-                  }`}
-                >
-                  {message}
-                </div>
-              )}
-
               <div className="resetPassword__actions">
                 <button
                   type="submit"
@@ -130,6 +135,7 @@ const ResetPasswordComponent = () => {
             </form>
           )}
         </div>
+        <Message message={message} type={messageType} />
       </div>
     </div>
   );

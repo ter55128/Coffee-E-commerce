@@ -161,7 +161,7 @@ const EditArticleComponent = ({ currentUser }) => {
           </button>
         </div>
       </form>
-      {message && <Message message={message} type={messageType} />}
+      <Message message={message} type={messageType} />
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

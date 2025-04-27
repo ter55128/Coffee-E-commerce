@@ -129,19 +129,18 @@ const PublicProfileComponent = (props) => {
           ) : (
             <div className="public-profile__grid">
               {userProducts.map((bean) => (
-                <div className="public-profile__card" key={bean._id}>
+                <div
+                  className="public-profile__card"
+                  key={bean._id}
+                  onClick={() => handleProductDetail(bean._id)}
+                >
                   <img
                     src={`${process.env.REACT_APP_API_URL}${bean.image}`}
                     alt={bean.title}
                     className="public-profile__card-image"
                   />
                   <div className="public-profile__card-content">
-                    <h5
-                      className="public-profile__card-title"
-                      onClick={() => handleProductDetail(bean._id)}
-                    >
-                      {bean.title}
-                    </h5>
+                    <h5 className="public-profile__card-title">{bean.title}</h5>
                     <div className="public-profile__card-info">
                       <span className="public-profile__card-weight">
                         {bean.weight}g
@@ -155,12 +154,6 @@ const PublicProfileComponent = (props) => {
                       <p className="public-profile__card-sales">
                         已售出：{bean.customers.length} 件
                       </p>
-                      <button
-                        className="public-profile__card-button public-profile__card-button--detail"
-                        onClick={() => handleProductDetail(bean._id)}
-                      >
-                        了解更多
-                      </button>
                     </div>
                   </div>
                 </div>

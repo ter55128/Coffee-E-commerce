@@ -54,7 +54,7 @@
 }
 
 .productDetail__title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #1e293b;
   font-weight: 700;
   letter-spacing: -0.5px;
@@ -69,7 +69,7 @@
   display: flex;
   justify-content: space-between;
   color: #64748b;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .productDetail__store-name {
@@ -89,7 +89,7 @@
 
 .productDetail__info-item {
   background: #f8fafc;
-  padding: 0.8rem;
+  padding: 1.2rem;
   border-radius: 12px;
   display: flex;
   flex-direction: column;
@@ -105,9 +105,9 @@
 }
 
 .productDetail__info-icon {
-  font-size: 1.8rem;
+  font-size: 2rem;
   color: #3b82f6;
-  margin-bottom: 1rem;
+  margin-bottom: 1.2rem;
 }
 
 .productDetail__info-label {
@@ -217,28 +217,8 @@
   max-width: 600px;
 }
 
-/* 大螢幕 */
-@media (min-width: 1200px) {
-  .productDetail__title {
-    font-size: 2rem;
-  }
-
-  .productDetail__store {
-    font-size: 1.2rem;
-  }
-
-  .productDetail__info-item {
-    padding: 1.2rem;
-  }
-
-  .productDetail__info-icon {
-    font-size: 2rem;
-    margin-bottom: 1.2rem;
-  }
-}
-
 /* 一般桌面 */
-@media (max-width: 1199px) {
+@media (max-width: 1200px) {
   .productDetail__title {
     font-size: 1.8rem;
   }
@@ -334,25 +314,24 @@
   .productDetail__content {
     width: calc(50% - 1.5rem);
     aspect-ratio: unset;
-    min-height: 300px; /* 確保最小高度 */
     justify-content: space-between;
   }
 
   .productDetail__header {
-    height: auto;
-    gap: 0.8rem;
+    flex: none;
   }
   .productDetail__title {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   .productDetail__info-grid {
     width: 100%;
     order: 1;
-    margin-top: 1rem;
     grid-template-columns: repeat(2, 1fr);
+    margin-top: 0;
   }
-
+}
+@media (max-width: 700px) {
   .productDetail__info-label {
     display: none;
   }
@@ -366,11 +345,15 @@
   .productDetail__main {
     flex-direction: column;
     margin-bottom: 1rem;
+    gap: 1rem;
   }
 
   .productDetail__image-container,
   .productDetail__content {
     width: 100%;
+  }
+  .productDetail__header {
+    gap: 0;
   }
 
   .productDetail__content {
@@ -388,6 +371,7 @@
   }
   .productDetail__description {
     margin: 0.5rem;
+    margin-bottom: 1rem;
     padding: 1rem;
   }
   .productDetail__description-title {
@@ -400,7 +384,7 @@
   }
   .productDetail__actions {
     margin: 0.5rem;
-    padding-top: 0.5rem;
+    padding-top: 1rem;
   }
   .productDetail__button {
     padding: 0.5rem;

@@ -62,7 +62,7 @@
 
 /* 文本區域特殊樣式 */
 .postProduct__textarea {
-  min-height: 120px;
+  min-height: 200px;
   resize: vertical;
 }
 
@@ -186,10 +186,6 @@
     border-radius: 6px;
   }
 
-  .postProduct__textarea {
-    min-height: 100px;
-  }
-
   .postProduct__button {
     padding: 0.8rem;
     font-size: 1rem;
@@ -239,7 +235,7 @@
   }
 
   .postProduct__textarea {
-    min-height: 80px;
+    min-height: 250px;
   }
 
   .postProduct__button {

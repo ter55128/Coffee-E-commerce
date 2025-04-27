@@ -2,37 +2,42 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ArticleService from "../services/article-service";
 import "../css/postArticle.css";
+import Message from "./common/Message";
 
 const PostArticleComponent = ({ currentUser }) => {
   const navigate = useNavigate();
   const [article, setArticle] = useState({ title: "", content: "" });
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await ArticleService.postArticle(article);
       setMessage("發表成功！");
+      setMessageType("success");
       setTimeout(() => {
         navigate("/articles");
-      }, 1500);
+      }, 2000);
     } catch (error) {
       setMessage("發表失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
     }
   };
 
   return (
     <div className="postArticle">
-      <div className="postArticle__header">
-        <button
-          className="postArticle__back"
-          onClick={() => navigate("/articles")}
-        >
-          <i className="fas fa-arrow-left"></i>
-          返回
-        </button>
-        <h1 className="postArticle__title">發表新文章</h1>
-      </div>
+      <button
+        className="postArticle__back"
+        onClick={() => navigate("/articles")}
+      >
+        <i className="fas fa-arrow-left"></i>
+        返回
+      </button>
 
       <form onSubmit={handleSubmit} className="postArticle__form">
         <div className="postArticle__form-group">
@@ -84,17 +89,7 @@ const PostArticleComponent = ({ currentUser }) => {
         </div>
       </form>
 
-      {message && (
-        <div
-          className={`postArticle__message ${
-            message.includes("成功")
-              ? "postArticle__message--success"
-              : "postArticle__message--error"
-          }`}
-        >
-          {message}
-        </div>
-      )}
+      <Message message={message} type={messageType} />
     </div>
   );
 };

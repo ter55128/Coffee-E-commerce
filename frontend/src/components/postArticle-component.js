@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ArticleService from "../services/article-service";
 import "../css/postArticle.css";
-import Message from "./common/Message";
+import Message from "./common/message";
 
 const PostArticleComponent = ({ currentUser }) => {
   const navigate = useNavigate();

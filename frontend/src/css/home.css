@@ -1,14 +1,18 @@
-/* 主要容器 */
+:root {
+  --primary-gradient: #3498d3;
+  --transition-default: all 0.3s ease;
+  --shadow-default: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .home__container {
   padding: 2rem;
 }
 
-/* 主標題區域 */
 .home__hero {
   padding: 2rem;
   border-radius: 20px;
   margin-bottom: 1rem;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-default);
 }
 
 .home__title {
@@ -29,19 +33,19 @@
 
 /* About More 按鈕 */
 .home__button {
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background: var(--primary-gradient);
   border: none;
   padding: 1rem 2rem;
   font-size: 1.1rem;
   border-radius: 30px;
   color: white;
-  transition: all 0.2s ease-in-out;
+  transition: var(--transition-default);
   box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
 .home__button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-default);
 }
 
 /* 特色區域 */
@@ -63,8 +67,8 @@
   background: #fff;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  box-shadow: var(--shadow-default);
+  transition: var(--transition-default);
 }
 
 .home__feature-card:hover {
@@ -87,7 +91,7 @@
   transform: translateX(-50%);
   width: 80px;
   height: 3px;
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background: var(--primary-gradient);
   border-radius: 2px;
 }
 
@@ -111,7 +115,7 @@
   max-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: all 0.2s ease-in-out;
+  transition: var(--transition-default);
   margin-top: 0;
 }
 
@@ -125,7 +129,7 @@
 .home__user-card {
   padding: 2.5rem;
   border-radius: 15px;
-  transition: all 0.3s ease;
+  transition: var(--transition-default);
 }
 
 .home__user-card--coffee {
@@ -153,11 +157,11 @@
 .home__user-button--store {
   padding: 0.8rem 1.5rem;
   border-radius: 25px;
-  transition: all 0.3s ease;
+  transition: var(--transition-default);
   font-weight: 500;
   color: #34495e;
   background-color: #f1f1f1;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-default);
 }
 .home__user-button--coffee:hover,
 .home__user-button--store:hover {
@@ -371,34 +375,6 @@
     margin-bottom: 1.2rem;
   }
 
-  .home__modal {
-    margin: 0.5rem;
-  }
-
-  .home__modal-content {
-    padding: 0.8rem;
-  }
-
-  .home__modal-title {
-    font-size: 1.2rem;
-  }
-
-  .home__modal-text {
-    font-size: 0.9rem;
-  }
-
-  .home__modal-button {
-    padding: 0.4rem 1rem;
-    font-size: 0.9rem;
-  }
-
-  .home__footer {
-    padding: 1rem 0;
-    font-size: 0.8rem;
-  }
-  .row {
-    margin: 0;
-  }
   .home__features-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -406,6 +382,10 @@
 
   .home__feature-card--wide {
     grid-column: 1;
+  }
+  .home__user-button--coffee,
+  .home__user-button--store {
+    width: 100%;
   }
 }
 

@@ -58,16 +58,18 @@
   border-left: 4px solid #4a5568;
 }
 
-.message--warning {
-  background-color: #fff3cd;
-  color: #856404;
-  border-left: 4px solid #ffc107;
-}
-
 .nav-component .message {
   position: fixed;
 }
 .forgotpassword .message {
+  animation: messageSlideDown 0.3s ease-out,
+    messageFadeOut 0.3s ease-out 3.7s forwards;
+}
+.postProduct .message--error {
+  animation: messageSlideDown 0.3s ease-out,
+    messageFadeOut 0.3s ease-out 3.7s forwards;
+}
+.register .message--error {
   animation: messageSlideDown 0.3s ease-out,
     messageFadeOut 0.3s ease-out 3.7s forwards;
 }

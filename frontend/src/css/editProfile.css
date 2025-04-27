@@ -55,6 +55,11 @@
   transition: border-color 0.3s;
 }
 
+.editprofile__textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
 .editprofile__input:focus {
   border-color: #3498db;
   outline: none;

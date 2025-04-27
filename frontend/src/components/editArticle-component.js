@@ -3,8 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ArticleService from "../services/article-service";
 import "../css/editArticle.css";
-import Message from "./common/Message";
-import Modal from "./common/Modal";
+import Message from "./common/message";
+import Modal from "./common/modal";
 
 const EditArticleComponent = ({ currentUser }) => {
   const { id } = useParams();

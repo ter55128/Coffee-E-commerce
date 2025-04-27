@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/register.css";
+import Message from "./common/message";
 
 const RegisterComponent = () => {
   const navigate = useNavigate();
-  let [username, setUsername] = useState("");
-  let [email, setEmail] = useState("");
-  let [password, setPassword] = useState("");
-  let [role, setRole] = useState("");
-  let [message, setMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   const handleUsername = (e) => {
     setUsername(e.target.value);
@@ -25,35 +27,26 @@ const RegisterComponent = () => {
     AuthService.register(username, email, password, role)
       .then((response) => {
         setMessage("註冊成功！即將前往登入頁面...");
+        setMessageType("success");
         setTimeout(() => {
+          setMessage("");
+          setMessageType("");
           navigate("/login");
         }, 2000);
       })
       .catch((e) => {
         setMessage(e.response.data);
-        // 錯誤訊息3秒後自動消失
+        setMessageType("error");
         setTimeout(() => {
           setMessage("");
-        }, 3000);
+          setMessageType("");
+        }, 4000);
       });
   };
 
   return (
     <div className="register">
-      {message && (
-        <div
-          className={`register__alert ${
-            message.includes("成功")
-              ? "register__alert--success"
-              : "register__alert--danger"
-          }`}
-        >
-          {message}
-        </div>
-      )}
-
       <h2 className="register__title">會員註冊</h2>
-
       <div className="register__group">
         <label className="register__label" htmlFor="username">
           用戶名稱 / 商家名稱
@@ -117,6 +110,7 @@ const RegisterComponent = () => {
       <button onClick={handleRegister} className="register__button">
         註冊會員
       </button>
+      <Message message={message} type={messageType} />
     </div>
   );
 };

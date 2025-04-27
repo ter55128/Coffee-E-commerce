@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/articles.css";
 import axios from "axios";
-import Message from "./common/Message";
+import Message from "./common/message";
 
 const ArticlesComponent = ({ currentUser }) => {
   const navigate = useNavigate();

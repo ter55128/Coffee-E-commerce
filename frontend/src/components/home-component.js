@@ -2,7 +2,7 @@ import "../css/home.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth-service";
-import Modal from "./common/Modal";
+import Modal from "./common/modal";
 
 const HomeComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();

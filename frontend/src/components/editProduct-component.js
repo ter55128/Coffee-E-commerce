@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/editProduct.css";
-import Message from "./common/Message";
-import Modal from "./common/Modal";
+import Message from "./common/message";
+import Modal from "./common/modal";
 
 const EditProductComponent = ({ currentUser }) => {
   const navigate = useNavigate();

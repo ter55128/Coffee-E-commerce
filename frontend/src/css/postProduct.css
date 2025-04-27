@@ -1,4 +1,9 @@
-/* 發布商品頁面容器 */
+:root {
+  --primary-gradient: #3498db;
+  --transition-default: all 0.3s ease;
+  --border-radius-default: 8px;
+}
+
 .postProduct {
   max-width: 800px;
   margin: 2rem auto;
@@ -8,7 +13,6 @@
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
-/* 頁面標題 */
 .postProduct__title {
   font-size: 2.2rem;
   color: #2c3e50;
@@ -26,11 +30,10 @@
   transform: translateX(-50%);
   width: 60px;
   height: 3px;
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background: var(--primary-gradient);
   border-radius: 2px;
 }
 
-/* 表單群組 */
 .postProduct__group {
   margin-bottom: 1.8rem;
 }
@@ -47,9 +50,9 @@
   width: 100%;
   padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
-  border-radius: 8px;
+  border-radius: var(--border-radius-default);
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: var(--transition-default);
   background-color: #f8fafc;
 }
 
@@ -60,35 +63,22 @@
   outline: none;
 }
 
-/* 文本區域特殊樣式 */
 .postProduct__textarea {
   min-height: 200px;
   resize: vertical;
 }
 
-/* 數字輸入框樣式 */
-.postProduct__input--number {
-  -moz-appearance: textfield;
-}
-
-.postProduct__input--number::-webkit-outer-spin-button,
-.postProduct__input--number::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-/* 提交按鈕 */
 .postProduct__button {
   width: 100%;
   padding: 1rem;
-  background: linear-gradient(45deg, #3498db, #2980b9);
+  background: var(--primary-gradient);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--border-radius-default);
   color: white;
   font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: var(--transition-default);
   margin-top: 1rem;
 }
 
@@ -97,23 +87,6 @@
   box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
 }
 
-.postProduct__button:active {
-  transform: translateY(0);
-}
-
-/* 錯誤訊息 */
-.postProduct__alert {
-  padding: 1rem;
-  margin-top: 1.5rem;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  animation: shake 0.5s ease-in-out;
-  background-color: #fff7ed;
-  border: 1px solid #f97316;
-  color: #c2410c;
-}
-
-/* 無權限提示 */
 .postProduct__unauthorized {
   text-align: center;
   padding: 3rem;
@@ -125,21 +98,6 @@
   max-width: 500px;
 }
 
-/* 動畫效果 */
-@keyframes shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-}
-
-/* 響應式設計 */
 @media (max-width: 1024px) {
   .postProduct {
     max-width: 700px;
@@ -183,20 +141,12 @@
   .postProduct__input {
     padding: 0.8rem;
     font-size: 0.9rem;
-    border-radius: 6px;
   }
 
   .postProduct__button {
     padding: 0.8rem;
     font-size: 1rem;
-    border-radius: 6px;
     margin-top: 0.8rem;
-  }
-
-  .postProduct__alert {
-    padding: 0.8rem;
-    font-size: 0.9rem;
-    margin-top: 1.2rem;
   }
 }
 
@@ -223,13 +173,13 @@
   }
 
   .postProduct__label {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     margin-bottom: 0.5rem;
   }
 
   .postProduct__input {
     padding: 0.7rem;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     border-radius: 5px;
     border-width: 1px;
   }
@@ -243,13 +193,6 @@
     font-size: 0.9rem;
     border-radius: 5px;
     margin-top: 0.6rem;
-  }
-
-  .postProduct__alert {
-    padding: 0.7rem;
-    font-size: 0.85rem;
-    margin-top: 1rem;
-    border-radius: 5px;
   }
 
   .postProduct__unauthorized {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../css/products.css";
-import Message from "./common/Message";
+import Message from "./common/message";
 
 const ProductsComponent = (props) => {
   let { currentUser, setCurrentUser } = props;

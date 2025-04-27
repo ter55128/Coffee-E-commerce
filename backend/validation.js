@@ -23,7 +23,7 @@ const beanValidation = (data) => {
     title: Joi.string().min(3).max(100).required(),
     weight: Joi.number().min(50).max(5000).required(),
     cultivar: Joi.string().required(),
-    processing: Joi.string().min(3).max(10).required(),
+    processing: Joi.string().min(2).max(10).required(),
     roast: Joi.string().required(),
     description: Joi.string().min(10).max(100).required(),
     price: Joi.number().required(),

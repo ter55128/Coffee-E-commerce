@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AuthService from "../services/auth-service";
 import axios from "axios";
+
 const ProfileComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   const [showRoleModal, setShowRoleModal] = useState(false);

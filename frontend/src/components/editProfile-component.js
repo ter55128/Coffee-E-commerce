@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../services/auth-service";
 import "../css/editProfile.css";
-import Message from "./common/Message";
+import Message from "./common/message";
 
 const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
@@ -180,10 +180,10 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
               onChange={handleInputChange}
               className="editprofile__input editprofile__textarea"
               placeholder="寫下一些關於你自己的介紹..."
-              maxLength="500"
+              maxLength="200"
               rows="4"
             />
-            <small className="editprofile__hint">最多500字</small>
+            <small className="editprofile__hint">最多200字</small>
           </div>
 
           {/* 修改密碼部分根據是否有密碼來顯示不同內容 */}

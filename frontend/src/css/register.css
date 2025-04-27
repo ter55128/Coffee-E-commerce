@@ -172,7 +172,7 @@
 @media (max-width: 768px) {
   .register {
     margin: 2rem auto;
-    padding: 1.5rem;
+    padding: 1rem;
     width: 90%;
     max-width: 400px;
   }
@@ -182,6 +182,6 @@
   }
 
   .register__role-selector {
-    flex-direction: column;
+    gap: 0.5rem;
   }
 }

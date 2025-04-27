@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/storeProducts.css";
+import Message from "./common/message";
 
 const StoreProductsComponent = ({ currentUser, setCurrentUser }) => {
   const navigate = useNavigate();
   const [beanData, setBeanData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
 
   useEffect(() => {
     let _id;
@@ -37,6 +39,11 @@ const StoreProductsComponent = ({ currentUser, setCurrentUser }) => {
       console.log(response.data);
     } catch (error) {
       setMessage("載入商品資料失敗");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
       setLoading(false);
     }
   };
@@ -118,6 +125,7 @@ const StoreProductsComponent = ({ currentUser, setCurrentUser }) => {
       ) : (
         <div className="storeProducts__empty">目前沒有商品</div>
       )}
+      <Message message={message} type={messageType} />
     </div>
   );
 };

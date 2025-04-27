@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-
 import CartService from "../services/cart-service";
 import AuthService from "../services/auth-service";
 import axios from "axios";
 import "../css/productDetail.css";
 import { useCart } from "../context/CartContext";
+import Message from "./common/message";
 
 const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
   const { beanId } = useParams();
@@ -13,6 +13,7 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
   const [loading, setLoading] = useState(true);
   const [beanData, setBeanData] = useState(null);
   const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
   const { updateCartItemCount } = useCart();
 
   useEffect(() => {
@@ -25,6 +26,11 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
         setLoading(false);
       } catch (error) {
         setMessage("載入商品資料失敗");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+          setMessageType("");
+        }, 2000);
         setLoading(false);
       }
     };
@@ -34,21 +40,37 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
   const handleAddToCart = async () => {
     try {
       if (!currentUser) {
-        window.alert("請先登入");
-        navigate("/login");
+        setMessage("請先登入");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+          setMessageType("");
+          navigate("/login");
+        }, 2000);
         return;
       }
       if (currentUser.user.role === "store") {
-        window.alert("商家無法使用此功能，請使用一般帳號登入");
+        setMessage("商家無法使用此功能，請使用一般帳號登入");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+          setMessageType("");
+          navigate("/login");
+        }, 2000);
         AuthService.logout();
         setCurrentUser(null);
-        navigate("/login");
         return;
       }
 
       const response = await CartService.addToCart(beanId);
       if (response.data) {
-        window.alert("成功加入購物車！");
+        setMessage("成功加入購物車！");
+        setMessageType("success");
+        setTimeout(() => {
+          setMessage("");
+          setMessageType("");
+          navigate("/products");
+        }, 2000);
 
         try {
           const cartResponse = await CartService.getCart();
@@ -59,23 +81,35 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
           updateCartItemCount(total);
         } catch (error) {
           console.error("更新購物車數量失敗:", error);
+          setMessage("更新購物車數量失敗");
+          setMessageType("error");
+          setTimeout(() => {
+            setMessage("");
+            setMessageType("");
+          }, 2000);
         }
       }
     } catch (error) {
       if (error.response?.status === 400) {
-        window.alert(error.response.data.message);
+        setMessage(error.response.data.message);
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+          setMessageType("");
+        }, 2000);
       } else {
-        window.alert("加入購物車失敗，請稍後再試");
+        setMessage("加入購物車失敗，請稍後再試");
+        setMessageType("error");
+        setTimeout(() => {
+          setMessage("");
+          setMessageType("");
+        }, 2000);
       }
     }
   };
 
   if (loading) {
-    return <div className="loading">載入中...</div>;
-  }
-
-  if (!beanData) {
-    return <div className="error-message">{message}</div>;
+    return <div className="productDetail__loading">載入中...</div>;
   }
 
   return (
@@ -176,6 +210,7 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
           </button>
         </div>
       </div>
+      <Message message={message} type={messageType} />
     </div>
   );
 };

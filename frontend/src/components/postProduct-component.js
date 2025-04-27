@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BeansService from "../services/beans-service";
 import "../css/postProduct.css";
+import Message from "./common/message";
 
 const PostProductComponent = ({ currentUser, setCurrentUser }) => {
   let [title, setTitle] = useState("");
@@ -12,6 +13,7 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
   let [description, setDescription] = useState("");
   let [price, setPrice] = useState(0);
   let [message, setMessage] = useState("");
+  let [messageType, setMessageType] = useState("");
   let [image, setImage] = useState(null);
   const navigate = useNavigate();
 
@@ -57,11 +59,18 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
 
     try {
       await BeansService.postBean(formData);
-      window.alert("新商品已創建成功");
-      navigate("/product");
+      setMessage("新商品已創建成功");
+      setMessageType("success");
+      setTimeout(() => {
+        navigate("/storeProducts");
+      }, 2000);
     } catch (error) {
-      console.log(error.response);
       setMessage(error.response.data);
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 4000);
     }
   };
 
@@ -168,12 +177,11 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
               <button className="postProduct__button" type="submit">
                 發布商品
               </button>
-
-              {message && <div className="postProduct__alert">{message}</div>}
             </form>
           </>
         )
       )}
+      <Message message={message} type={messageType} />
     </div>
   );
 };

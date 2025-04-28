@@ -1,5 +1,5 @@
 import React from "react";
-import "./css/message.css";
+import "./css/Message.css";
 
 const Message = ({ message, type = "info", onClose }) => {
   if (!message) return null;

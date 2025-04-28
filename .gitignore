@@ -12,6 +12,9 @@ node_modules/
 /build
 /dist
 
+# uploads
+backend/public/uploads/beans/*
+!backend/public/uploads/beans/default.png
 # 環境變數
 
 backend/.env

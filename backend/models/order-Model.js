@@ -57,16 +57,9 @@ const orderSchema = new Schema(
       type: String,
       required: true,
     },
-    paymentDetails: {
-      paymentType: {
-        type: String,
-        enum: ["credit_card", "webatm", "vacc", "cvs"],
-      },
-      paymentStatus: {
-        type: String,
-        enum: ["pending", "paid", "failed", "refunded"],
-        default: "pending",
-      },
+    paymentType: {
+      type: String,
+      enum: ["credit_card", "webatm", "vacc", "cvs"],
     },
   },
   { timestamps: true }

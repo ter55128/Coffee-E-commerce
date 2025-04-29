@@ -15,8 +15,8 @@ class NewebpayService {
   }
 
   createAesEncrypt(paymentdata) {
+    // URL encode
     const dataStr = querystring.stringify(paymentdata);
-    console.log("dataStr", dataStr);
     const cipher = crypto.createCipheriv(
       "aes-256-cbc",
       this.hashKey,
@@ -24,16 +24,14 @@ class NewebpayService {
     );
     let encrypted = cipher.update(dataStr, "utf8", "hex");
     encrypted += cipher.final("hex");
-    console.log("AES加密後", encrypted);
     return encrypted;
   }
 
   createShaEncrypt(aesEncrypt) {
     const sha = crypto.createHash("sha256");
     const plainText = `HashKey=${this.hashKey}&${aesEncrypt}&HashIV=${this.hashIV}`;
-    console.log("plainText", plainText);
+
     const shaEncrypt = sha.update(plainText).digest("hex").toUpperCase();
-    console.log("shaEncrypt", shaEncrypt);
     return shaEncrypt;
   }
 

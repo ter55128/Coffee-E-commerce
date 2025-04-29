@@ -104,11 +104,7 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   articleRoute
 );
-app.use(
-  "/api/payment",
-  passport.authenticate("jwt", { session: false }),
-  paymentRoute
-);
+app.use("/api/payment", paymentRoute);
 
 // 設置靜態文件服務
 app.use("/uploads", express.static("public/uploads"));

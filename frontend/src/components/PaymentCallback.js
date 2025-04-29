@@ -14,12 +14,12 @@ const PaymentCallback = () => {
     const status = searchParams.get("Status");
     const merchantOrderNo = searchParams.get("MerchantOrderNo");
 
-    if (status === "SUCCESS") {
+    if (status === "SUCCESS" && merchantOrderNo) {
       handlePaymentSuccess(merchantOrderNo);
     } else {
       setStatus("failed");
     }
-  }, [location]);
+  }, [location.search]);
 
   const handlePaymentSuccess = async (orderNumber) => {
     try {
@@ -29,8 +29,7 @@ const PaymentCallback = () => {
       setStatus("success");
 
       // 清空購物車
-      // 假設您有一個清空購物車的 service
-      await axios.post("/api/cart/clear");
+      await axios.delete("/api/cart/clear");
     } catch (error) {
       console.error("訂單確認失敗:", error);
       setStatus("failed");
@@ -58,8 +57,9 @@ const PaymentCallback = () => {
                 <p>付款金額：${orderInfo.totalAmount}</p>
                 <p>
                   付款時間：
-                  {new Date(orderInfo.paymentInfo.paymentTime).toLocaleString()}
+                  {new Date(orderInfo.paymentTime).toLocaleString()}
                 </p>
+                <p>付款方式：{orderInfo.paymentType}</p>
               </div>
             )}
             <div className="action-buttons">

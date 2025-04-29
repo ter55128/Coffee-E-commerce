@@ -63,7 +63,7 @@ router.post("/notify", async (req, res) => {
     console.log("收到藍新 Notify:", req.body);
     const { TradeInfo } = req.body;
 
-    const decryptedData = NewebpayService.decryptTradeInfo(TradeInfo);
+    const decryptedData = NewebpayService.decryptNotifyTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);
 
     if (decryptedData.Status === "SUCCESS") {
@@ -88,7 +88,7 @@ router.post("/callback", async (req, res) => {
   try {
     console.log("收到藍新 Callback:", req.body);
     const { TradeInfo } = req.body;
-    const decryptedData = NewebpayService.decryptTradeInfo(TradeInfo);
+    const decryptedData = NewebpayService.decryptCallbackTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);
     const status = decryptedData.Status;
     const orderNo = decryptedData.MerchantOrderNo;

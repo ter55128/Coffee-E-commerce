@@ -35,7 +35,7 @@ class NewebpayService {
     return shaEncrypt;
   }
 
-  decryptTradeInfo(tradeInfo) {
+  decryptNotifyTradeInfo(tradeInfo) {
     const decipher = crypto.createDecipheriv(
       "aes-256-cbc",
       this.hashKey,
@@ -47,7 +47,23 @@ class NewebpayService {
     try {
       return JSON.parse(decrypted);
     } catch (e) {
+      console.log("解密失敗:", e);
+    }
+  }
+
+  decryptCallbackTradeInfo(tradeInfo) {
+    const decipher = crypto.createDecipheriv(
+      "aes-256-cbc",
+      this.hashKey,
+      this.hashIV
+    );
+    let decrypted = decipher.update(tradeInfo, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    decrypted = decrypted.replace(/[\x00-\x20]+$/g, "");
+    try {
       return querystring.parse(decrypted);
+    } catch (e) {
+      console.log("解密失敗:", e);
     }
   }
 }

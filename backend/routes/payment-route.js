@@ -85,8 +85,9 @@ router.post("/notify", async (req, res) => {
 
 router.post("/callback", async (req, res) => {
   try {
-    const { TradeInfo } = req.body;
-    const decryptedData = NewebpayService.decryptCallbackTradeInfo(TradeInfo);
+    const decryptedData = NewebpayService.decryptCallbackTradeInfo(
+      req.body.TradeInfo
+    );
     console.log("解密後資料:", decryptedData);
     const status = decryptedData.Status;
     const orderNo = decryptedData.MerchantOrderNo;

@@ -61,7 +61,7 @@ class NewebpayService {
     decrypted += decipher.final("utf8");
     decrypted = decrypted.replace(/[\x00-\x20]+$/g, "");
     try {
-      return decrypted;
+      return querystring.parse(decrypted);
     } catch (e) {
       console.log("解密失敗:", e);
     }

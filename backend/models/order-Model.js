@@ -1,111 +1,76 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-const orderSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  orderNumber: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  items: [
-    {
-      beanID: {
-        type: Schema.Types.ObjectId,
-        ref: "Bean",
-        required: true,
-      },
-      quantity: {
-        type: Number,
-        required: true,
-        min: 1,
-      },
-      price: {
-        type: Number,
-        required: true,
-        min: 0,
-      },
-      store: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true,
-      },
-    },
-  ],
-  totalAmount: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
-  status: {
-    type: String,
-    enum: ["pending", "paid", "shipped", "delivered", "cancelled", "refunded"],
-    default: "pending",
-  },
-  paymentDetails: {
-    paymentMethod: {
-      type: String,
-      enum: ["credit_card", "webatm", "vacc", "cvs"],
+const orderSchema = new Schema(
+  {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
     },
-    paymentStatus: {
+    Email: {
       type: String,
-      enum: ["pending", "paid", "failed", "refunded"],
+      required: true,
+    },
+    items: [
+      {
+        beanID: {
+          type: Schema.Types.ObjectId,
+          ref: "Bean",
+          required: true,
+        },
+        quantity: {
+          type: Number,
+          required: true,
+          min: 1,
+        },
+        price: {
+          type: Number,
+          required: true,
+          min: 0,
+        },
+      },
+    ],
+    totalAmount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    orderNumber: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "paid",
+        "shipped",
+        "delivered",
+        "cancelled",
+        "refunded",
+      ],
       default: "pending",
     },
-    transactionId: String,
-    paymentTime: Date,
-  },
-  shippingInfo: {
-    name: {
+    description: {
       type: String,
       required: true,
     },
-    phone: {
-      type: String,
-      required: true,
+    paymentDetails: {
+      paymentType: {
+        type: String,
+        enum: ["credit_card", "webatm", "vacc", "cvs"],
+      },
+      paymentStatus: {
+        type: String,
+        enum: ["pending", "paid", "failed", "refunded"],
+        default: "pending",
+      },
     },
-    address: {
-      type: String,
-      required: true,
-    },
-    note: String,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
-
-// 更新時間中間件
-orderSchema.pre("save", function (next) {
-  this.updatedAt = Date.now();
-  next();
-});
-
-// 生成訂單編號的靜態方法
-orderSchema.statics.generateOrderNumber = function () {
-  const timestamp = Date.now().toString();
-  const random = Math.floor(Math.random() * 1000)
-    .toString()
-    .padStart(3, "0");
-  return `ORD${timestamp}${random}`;
-};
-
-// 計算訂單總金額的方法
-orderSchema.methods.calculateTotal = function () {
-  return this.items.reduce((total, item) => {
-    return total + item.price * item.quantity;
-  }, 0);
-};
+  { timestamps: true }
+);
 
 // 檢查訂單狀態的方法
 orderSchema.methods.isPaid = function () {

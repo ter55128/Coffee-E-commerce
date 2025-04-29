@@ -14,43 +14,17 @@ class NewebpayService {
     this.cancelURL = process.env.CANCEL_URL || "http://localhost:3000/cart";
   }
 
-  createMpgPayment(order) {
-    const data = {
-      MerchantID: this.merchantID,
-      RespondType: "JSON",
-      TimeStamp: Math.floor(Date.now() / 1000),
-      Version: "2.0",
-      MerchantOrderNo: order.orderNumber,
-      Amt: order.totalAmount,
-      ItemDesc: order.description,
-      ReturnURL: this.returnURL,
-      NotifyURL: this.notifyURL,
-      CustomerURL: this.cancelURL,
-      Email: order.email,
-    };
-
-    const mpgAesEncrypt = this.createMpgAesEncrypt(data);
-    const mpgShaEncrypt = this.createMpgShaEncrypt(mpgAesEncrypt);
-
-    return {
-      MerchantID: this.merchantID,
-      TradeInfo: mpgAesEncrypt,
-      TradeSha: mpgShaEncrypt,
-      Version: "2.0",
-    };
-  }
-
-  createMpgAesEncrypt(data) {
+  createAesEncrypt(paymentdata) {
     const cipher = crypto.createCipheriv(
       "aes-256-cbc",
       this.hashKey,
       this.hashIV
     );
-    const encrypted = cipher.update(JSON.stringify(data), "utf8", "hex");
+    const encrypted = cipher.update(JSON.stringify(paymentdata), "utf8", "hex");
     return encrypted + cipher.final("hex");
   }
 
-  createMpgShaEncrypt(aesEncrypt) {
+  createShaEncrypt(aesEncrypt) {
     const sha = crypto.createHash("sha256");
     const plainText = `HashKey=${this.hashKey}&${aesEncrypt}&HashIV=${this.hashIV}`;
     return sha.update(plainText).digest("hex").toUpperCase();

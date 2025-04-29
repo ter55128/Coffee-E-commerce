@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import CartService from "../services/cart-service";
 import "../css/cart.css";
 import { useCart } from "../context/CartContext";
-import PaymentService from "../services/payment-service";
 import Message from "./common/Message";
 import Modal from "./common/Modal";
+import PaymentService from "../services/payment-service";
 
 const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [cartItems, setCartItems] = useState({ items: [] });
@@ -16,6 +16,8 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [currentItem, setCurrentItem] = useState({ title: "", _id: "" });
   const navigate = useNavigate();
   const { updateCartItemCount } = useCart();
+  const [editingQuantity, setEditingQuantity] = useState(null);
+  const [tempQuantity, setTempQuantity] = useState("");
 
   useEffect(() => {
     if (!currentUser) {
@@ -71,6 +73,50 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       }, 2000);
     }
   };
+
+  const handleQuantityChange = async (beanID, value) => {
+    // 先更新臨時輸入值
+    setTempQuantity(value);
+
+    // 如果是空值，直接返回
+    if (value === "") return;
+
+    const quantity = parseInt(value);
+
+    // 驗證數量
+    if (isNaN(quantity) || quantity < 1) {
+      setMessage("請輸入有效的數量");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+      return;
+    }
+
+    try {
+      await CartService.updateQuantity(beanID._id, quantity);
+      await loadCart();
+    } catch (err) {
+      setMessage("更新數量失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+    }
+  };
+
+  const handleQuantityFocus = (item) => {
+    setEditingQuantity(item.beanID._id);
+    setTempQuantity(item.quantity.toString());
+  };
+
+  const handleQuantityBlur = () => {
+    setEditingQuantity(null);
+    setTempQuantity("");
+  };
+
   const handletoplus = async (beanID) => {
     try {
       // 找到當前商品
@@ -139,23 +185,25 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
 
   const handleCheckout = async () => {
     try {
-      const paymentData = await PaymentService.createPayment(
+      const response = await PaymentService.createOrder(
         cartItems.items,
         calculateTotal()
       );
+      console.log(response);
+      const { paymentFormData, paymentUrl } = response.data;
 
-      // 創建並提交表單到藍新金流
       const form = document.createElement("form");
-      form.method = "post";
-      form.action = paymentData.paymentUrl;
+      form.method = "POST";
+      form.action = paymentUrl;
+      form.style.display = "none";
 
-      for (let key in paymentData.paymentFormData) {
+      Object.entries(paymentFormData).forEach(([key, value]) => {
         const input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
-        input.value = paymentData.paymentFormData[key];
+        input.value = value;
         form.appendChild(input);
-      }
+      });
 
       document.body.appendChild(form);
       form.submit();
@@ -209,17 +257,28 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                   <div className="cart__quantity">
                     <div className="cart__quantity__controls">
                       <button
-                        className="cart__quantity__button"
+                        className="cart__quantity__button cart__quantity__button--minus"
                         onClick={() => handletominus(item.beanID)}
                         disabled={loading}
                       >
                         -
                       </button>
-                      <span className="cart__quantity__display">
-                        {item.quantity}
-                      </span>
+                      <input
+                        type="text"
+                        className="cart__quantity__display"
+                        value={
+                          editingQuantity === item.beanID._id
+                            ? tempQuantity
+                            : item.quantity
+                        }
+                        onFocus={() => handleQuantityFocus(item)}
+                        onBlur={handleQuantityBlur}
+                        onChange={(e) =>
+                          handleQuantityChange(item.beanID, e.target.value)
+                        }
+                      />
                       <button
-                        className="cart__quantity__button"
+                        className="cart__quantity__button cart__quantity__button--plus"
                         onClick={() => handletoplus(item.beanID)}
                         disabled={loading}
                       >

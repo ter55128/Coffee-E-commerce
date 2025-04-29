@@ -6,4 +6,5 @@ module.exports = {
   article: require("./article-route"),
   publicArticle: require("./public-article-route"),
   knowledge: require("./knowledge-route"),
+  payment: require("./payment-route"),
 };

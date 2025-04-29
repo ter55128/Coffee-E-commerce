@@ -58,7 +58,8 @@
 
 1. **技術升級**
 
-   - 導入 TypeScript
+   - Redux 狀態管理優化
+   - TypeScript
    - 實現 CI/CD 流程
    - Docker
    - 單元測試, E2e
@@ -71,7 +72,6 @@
 
 3. **性能優化**
 
-   - 圖片懶加載
    - 實現服務端渲染
    - 優化數據庫查詢
    - 緩存
@@ -115,6 +115,14 @@ EMAIL_PASS=your_email_password
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
 SESSION_SECRET=your_session_secret
+FRONTEND_URL=http://localhost:3000
+BACKEND_URL=http://localhost:8080
+```
+
+- 在 frontend 下創建 `.env` 文件，並添加以下內容：
+
+```bash
+  REACT_APP_API_URL=http://localhost:8080
 ```
 
 ```bash

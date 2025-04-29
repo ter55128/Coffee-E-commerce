@@ -156,6 +156,13 @@
   color: white;
 }
 
+.cart__quantity__button--minus {
+  border-right: 1px solid #d6d6d6;
+}
+
+.cart__quantity__button--plus {
+  border-left: 1px solid #d6d6d6;
+}
 .cart__quantity__display {
   font-size: 1.2rem;
   color: #2c3e50;
@@ -165,8 +172,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-left: 1px solid #d6d6d6;
-  border-right: 1px solid #d6d6d6;
+  border: none;
+  outline: none;
 }
 
 .cart__summary {

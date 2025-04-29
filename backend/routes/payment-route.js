@@ -60,10 +60,8 @@ router.post(
 
 router.post("/notify", async (req, res) => {
   try {
-    console.log("收到藍新 Callback 原始資料:", req.body);
-    console.log("TradeInfo 字串長度:", TradeInfo.length);
-    console.log("TradeInfo 字串內容:", TradeInfo);
-
+    console.log("收到藍新 Notify:", req.body);
+    const { TradeInfo } = req.body;
     const decryptedData = NewebpayService.decryptNotifyTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);
 
@@ -88,7 +86,10 @@ router.post("/notify", async (req, res) => {
 router.post("/callback", async (req, res) => {
   try {
     console.log("收到藍新 Callback:", req.body);
-    const { TradeInfo } = req.body;
+    console.log(typeof req.body);
+    const contentType = req.get("Content-Type");
+    console.log("Content-Type:", contentType);
+
     const decryptedData = NewebpayService.decryptCallbackTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);
     const status = decryptedData.Status;

@@ -85,11 +85,7 @@ router.post("/notify", async (req, res) => {
 
 router.post("/callback", async (req, res) => {
   try {
-    console.log("收到藍新 Callback:", req.body);
-    console.log(typeof req.body);
-    const contentType = req.get("Content-Type");
-    console.log("Content-Type:", contentType);
-
+    const { TradeInfo } = req.body;
     const decryptedData = NewebpayService.decryptCallbackTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);
     const status = decryptedData.Status;

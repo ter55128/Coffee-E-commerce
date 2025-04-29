@@ -44,7 +44,11 @@ class NewebpayService {
     let decrypted = decipher.update(tradeInfo, "hex", "utf8");
     decrypted += decipher.final("utf8");
     decrypted = decrypted.replace(/[\x00-\x20]+$/g, "");
-    return querystring.parse(decrypted);
+    try {
+      return JSON.parse(decrypted);
+    } catch (e) {
+      return querystring.parse(decrypted);
+    }
   }
 }
 

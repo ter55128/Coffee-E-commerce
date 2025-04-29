@@ -30,7 +30,7 @@ router.post("/createOrder", async (req, res) => {
       MerchantID: process.env.NEWEBPAY_MERCHANT_ID,
       RespondType: "JSON",
       TimeStamp,
-      Version: "2.0",
+      Version: "2.2",
       MerchantOrderNo: order.orderNumber,
       Amt: order.totalAmount,
       ItemDesc: order.description,
@@ -48,10 +48,10 @@ router.post("/createOrder", async (req, res) => {
 
     res.json({
       paymentFormData: {
-        ...paymentdata,
+        MerchantID: process.env.NEWEBPAY_MERCHANT_ID,
         TradeInfo: tradeInfo,
         TradeSha: tradeSha,
-        Version: "2.0",
+        Version: "2.2",
       },
       paymentUrl: process.env.NEWEBPAY_PAY_URL,
     });

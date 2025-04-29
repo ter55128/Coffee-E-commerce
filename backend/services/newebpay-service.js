@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const axios = require("axios");
 require("dotenv").config();
+const querystring = require("querystring");
 
 class NewebpayService {
   constructor() {
@@ -11,23 +12,29 @@ class NewebpayService {
       process.env.RETURN_URL || "http://localhost:3000/payment/callback";
     this.notifyURL =
       process.env.NOTIFY_URL || "http://localhost:8080/api/payment/notify";
-    this.cancelURL = process.env.CANCEL_URL || "http://localhost:3000/cart";
   }
 
   createAesEncrypt(paymentdata) {
+    const dataStr = querystring.stringify(paymentdata);
+    console.log("dataStr", dataStr);
     const cipher = crypto.createCipheriv(
       "aes-256-cbc",
       this.hashKey,
       this.hashIV
     );
-    const encrypted = cipher.update(JSON.stringify(paymentdata), "utf8", "hex");
-    return encrypted + cipher.final("hex");
+    let encrypted = cipher.update(dataStr, "utf8", "hex");
+    encrypted += cipher.final("hex");
+    console.log("AES加密後", encrypted);
+    return encrypted;
   }
 
   createShaEncrypt(aesEncrypt) {
     const sha = crypto.createHash("sha256");
     const plainText = `HashKey=${this.hashKey}&${aesEncrypt}&HashIV=${this.hashIV}`;
-    return sha.update(plainText).digest("hex").toUpperCase();
+    console.log("plainText", plainText);
+    const shaEncrypt = sha.update(plainText).digest("hex").toUpperCase();
+    console.log("shaEncrypt", shaEncrypt);
+    return shaEncrypt;
   }
 
   decryptTradeInfo(tradeInfo) {
@@ -36,11 +43,10 @@ class NewebpayService {
       this.hashKey,
       this.hashIV
     );
-    decipher.setAutoPadding(false);
-    const decrypted = decipher.update(tradeInfo, "hex", "utf8");
-    const plainText = decrypted + decipher.final("utf8");
-    const result = plainText.replace(/[\x00-\x20]+/g, "");
-    return JSON.parse(result);
+    let decrypted = decipher.update(tradeInfo, "hex", "utf8");
+    decrypted += decipher.final("utf8");
+    decrypted = decrypted.replace(/[\x00-\x20]+$/g, "");
+    return querystring.parse(decrypted);
   }
 }
 

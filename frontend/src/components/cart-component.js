@@ -206,6 +206,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       });
 
       document.body.appendChild(form);
+      console.log(form);
       form.submit();
     } catch (error) {
       console.error("結帳失敗:", error);

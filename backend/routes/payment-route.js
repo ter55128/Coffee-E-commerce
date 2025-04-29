@@ -60,8 +60,9 @@ router.post(
 
 router.post("/notify", async (req, res) => {
   try {
-    console.log("收到藍新 Notify:", req.body);
-    const { TradeInfo } = req.body;
+    console.log("收到藍新 Callback 原始資料:", req.body);
+    console.log("TradeInfo 字串長度:", TradeInfo.length);
+    console.log("TradeInfo 字串內容:", TradeInfo);
 
     const decryptedData = NewebpayService.decryptNotifyTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);

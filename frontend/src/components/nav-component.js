@@ -14,6 +14,8 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
   const [messageType, setMessageType] = useState("info");
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
+  const userID = currentUser.user._id;
+
   const handleLogout = () => {
     AuthService.logout();
     setCurrentUser(null);
@@ -144,6 +146,19 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                   </Link>
                 </li>
               )}
+              {currentUser && currentUser.user.role === "customer" && (
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link order-link ${
+                      isActive(`/orders/${userID}`) ? "active" : ""
+                    }`}
+                    to={`/orders/${userID}`}
+                  >
+                    <i class="fa-solid fa-file-lines"></i>
+                  </Link>
+                </li>
+              )}
+
               {currentUser && currentUser.user.role === "customer" && (
                 <li className="nav-item cart-item">
                   <Link

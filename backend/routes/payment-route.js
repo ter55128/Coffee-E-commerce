@@ -71,12 +71,14 @@ router.post("/notify", async (req, res) => {
         {
           status: "paid",
           paymentType: decryptedData.Result.PaymentType,
-          paymentTime: decryptedData.Result.PaymentTime,
+          paymentTime: decryptedData.Result.PayTime,
           tradeNo: decryptedData.Result.TradeNo,
         },
         { new: true }
       );
       console.log("更新訂單:", updatedOrder);
+      const clearCart = await Cart.deleteMany({ user: req.user._id });
+      console.log("購物車已清空", clearCart);
       if (!updatedOrder) {
         console.log("訂單未找到", decryptedData.Result.MerchantOrderNo);
       }
@@ -92,6 +94,9 @@ router.post("/return", async (req, res) => {
   try {
     console.log("收到藍新Return:", req.body);
     const contentType = req.headers["content-type"];
+    console.log("contentType:", contentType);
+    // contentType: application/x-www-form-urlencoded
+    // 有使用query string轉換 但一直顯示MerchantID 內外層不符合 ？
     res.redirect(`${process.env.FRONTEND_URL}/payment/return`);
   } catch (error) {
     console.error("Return 處理錯誤:", error);

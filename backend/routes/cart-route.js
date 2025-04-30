@@ -130,12 +130,5 @@ router.delete("/remove/:beanID", async (req, res) => {
     res.status(500).send("Remove item from cart failed");
   }
 });
-router.delete("/clear", async (req, res) => {
-  try {
-    const cart = await Cart.findOneAndDelete({ user: req.user.id });
-    res.json({ message: "購物車已清空" });
-  } catch (err) {
-    res.status(500).send("Clear cart failed");
-  }
-});
+
 module.exports = router;

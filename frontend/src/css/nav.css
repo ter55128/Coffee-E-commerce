@@ -1,6 +1,6 @@
 /* 導航欄基本樣式 */
 .navbar {
-  padding: 1rem 2rem;
+  padding: 1rem;
   background: white !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -52,7 +52,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e74c3c;
+  background-color: #95a5a6;
   color: white !important;
   border-radius: 50% !important;
   width: 40px;
@@ -60,7 +60,7 @@
 }
 
 .cart-link:hover {
-  background-color: #c0392b !important;
+  background-color: 7f8c8d;
 }
 
 /* 會員按鈕 */
@@ -115,13 +115,14 @@
 }
 
 /* 個人頁面圖標樣式 */
-.profile-link {
+.profile-link,
+.order-link {
   font-size: 1.2rem;
   padding: 0.5rem 1rem !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3498db;
+  background-color: #95a5a6;
   color: white !important;
   border-radius: 50% !important;
   width: 40px;
@@ -129,12 +130,14 @@
   transition: all 0.3s ease;
 }
 
-.profile-link:hover {
-  background-color: #2980b9 !important;
+.profile-link:hover,
+.order-link:hover {
+  background-color: #7f8c8d !important;
 }
 
 /* 個人頁面圖標不需要底線 */
-.profile-link::after {
+.profile-link::after,
+.order-link::after {
   display: none;
 }
 /* 響應式設計 */
@@ -163,7 +166,8 @@
     margin-left: 0.5rem;
   }
 
-  .profile-link {
+  .profile-link,
+  .order-link {
     width: 100%;
     border-radius: 20px !important;
     justify-content: center;

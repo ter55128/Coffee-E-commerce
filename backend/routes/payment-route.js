@@ -66,16 +66,21 @@ router.post("/notify", async (req, res) => {
     console.log("解密後資料:", decryptedData);
 
     if (decryptedData.Status === "SUCCESS") {
-      await Order.findOneAndUpdate(
-        { orderNumber: decryptedData.MerchantOrderNo },
+      const updatedOrder = await Order.findOneAndUpdate(
+        { orderNumber: decryptedData.Result.MerchantOrderNo },
         {
           status: "paid",
-          paymentType: decryptedData.PaymentType,
-          paymentTime: decryptedData.PaymentTime,
-        }
+          paymentType: decryptedData.Result.PaymentType,
+          paymentTime: decryptedData.Result.PaymentTime,
+          tradeNo: decryptedData.Result.TradeNo,
+        },
+        { new: true }
       );
+      console.log("更新訂單:", updatedOrder);
+      if (!updatedOrder) {
+        console.log("訂單未找到", decryptedData.Result.MerchantOrderNo);
+      }
     }
-    // 藍新建議回傳 "SUCCESS" 或 "OK"
     res.send("OK");
   } catch (error) {
     console.error("Notify 處理錯誤:", error);
@@ -99,6 +104,7 @@ router.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
+      console.log("收到訂單查詢");
       const { userId } = req.params;
       if (userId !== req.user._id.toString()) {
         return res.status(403).json({ error: "無權限" });

@@ -1,10 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/PaymentReturn.css";
+import AuthService from "../services/auth-service";
+import Message from "./common/Message";
 
 const PaymentReturn = () => {
   const navigate = useNavigate();
-  const userId = localStorage.getItem("userId");
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [userId, setUserId] = useState(null);
+
+  useEffect(() => {
+    const currentUser = AuthService.getCurrentUser();
+    if (!currentUser) {
+      setMessage("請先登入");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+        navigate("/login");
+      }, 2000);
+    } else {
+      setUserId(currentUser.user._id);
+    }
+  }, [navigate]);
+
+  if (!userId) {
+    return (
+      <div className="payment-container">
+        <Message message={message} type={messageType} />
+      </div>
+    );
+  }
+
   return (
     <div className="payment-container">
       <div className="success-container">
@@ -21,6 +49,7 @@ const PaymentReturn = () => {
           </button>
         </div>
       </div>
+      <Message message={message} type={messageType} />
     </div>
   );
 };

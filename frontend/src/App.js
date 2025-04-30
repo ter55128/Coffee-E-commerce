@@ -195,7 +195,10 @@ function App() {
               }
             />
             <Route path="/payment/return" element={<PaymentReturn />} />
-            <Route path="/orders/:userId" element={<OrderComponent />} />
+            <Route
+              path="/orders/:userId"
+              element={<OrderComponent currentUser={currentUser} />}
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

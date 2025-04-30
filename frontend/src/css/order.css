@@ -1,0 +1,61 @@
+/* order.css */
+
+.order-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.order-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #2c3e50;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.order-table th,
+.order-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.order-table th {
+  background: #f5f6fa;
+  color: #34495e;
+  font-weight: 600;
+}
+
+.order-table tr:hover {
+  background: #f0f8ff;
+}
+
+.order-table td button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 15px;
+}
+
+.order-table td button:hover {
+  background: #217dbb;
+}
+
+.order-empty {
+  text-align: center;
+  color: #888;
+  margin: 32px 0;
+  font-size: 18px;
+}

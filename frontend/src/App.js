@@ -30,6 +30,7 @@ import PostProductComponent from "./components/postProduct-component";
 
 import CartComponent from "./components/cart-component";
 import PaymentReturn from "./components/PaymentReturn";
+import OrderComponent from "./components/order-component";
 
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
@@ -194,6 +195,7 @@ function App() {
               }
             />
             <Route path="/payment/return" element={<PaymentReturn />} />
+            <Route path="/orders/:userId" element={<OrderComponent />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

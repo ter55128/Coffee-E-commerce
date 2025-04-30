@@ -83,10 +83,33 @@ router.post("/notify", async (req, res) => {
   }
 });
 
-router.get("/order/:orderNumber", async (req, res) => {
-  const { orderNumber } = req.params;
-  const order = await Order.findOne({ orderNumber });
-  res.json(order);
+router.post("/return", async (req, res) => {
+  try {
+    console.log("收到藍新Return:", req.body);
+    const contentType = req.headers["content-type"];
+    res.redirect(`${process.env.FRONTEND_URL}/payment/return`);
+  } catch (error) {
+    console.error("Return 處理錯誤:", error);
+    res.status(500).json({ error: error.message });
+  }
 });
+
+router.get(
+  "/orders/:userId",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { userId } = req.params;
+      if (userId !== req.user._id.toString()) {
+        return res.status(403).json({ error: "無權限" });
+      }
+      const orders = await Order.find({ user: userId });
+      res.json(orders);
+    } catch (error) {
+      console.error("訂單查詢錯誤:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
 
 module.exports = router;

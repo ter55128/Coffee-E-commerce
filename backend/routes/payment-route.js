@@ -62,10 +62,7 @@ router.post("/notify", async (req, res) => {
   try {
     console.log("收到藍新 Notify:", req.body);
     const { TradeInfo } = req.body;
-    console.log("Notify TradeInfo:", TradeInfo);
-    console.log("Notify TradeInfo 字串長度:", TradeInfo.length);
-    console.log("Notify TradeInfo is hex", /^[0-9a-fA-F]+$/.test(TradeInfo));
-    const decryptedData = NewebpayService.decryptNotifyTradeInfo(TradeInfo);
+    const decryptedData = NewebpayService.decryptTradeInfo(TradeInfo);
     console.log("解密後資料:", decryptedData);
 
     if (decryptedData.Status === "SUCCESS") {
@@ -84,28 +81,6 @@ router.post("/notify", async (req, res) => {
     console.error("Notify 處理錯誤:", error);
     res.status(500).json({ error: error.message });
   }
-});
-
-router.post("/callback", async (req, res) => {
-  try {
-    console.log("收到藍新 Callback:", req.body);
-    const contentType = req.get("Content-Type");
-    console.log("Content-Type:", contentType);
-    const tradeInfo = req.body.TradeInfo;
-    console.log("TradeInfo:", tradeInfo);
-    console.log("TradeInfo 字串長度:", tradeInfo.length);
-    console.log("TradeInfo is hex", /^[0-9a-fA-F]+$/.test(tradeInfo));
-
-    const decryptedData = NewebpayService.decryptCallbackTradeInfo(tradeInfo);
-
-    console.log("解密後資料:", decryptedData);
-    const status = decryptedData.Status;
-    const orderNo = decryptedData.MerchantOrderNo;
-  } catch (error) {
-    console.error("Callback 處理錯誤:", error);
-    res.status(500).json({ error: error.message });
-  }
-  res.redirect(`/payment/callback?Status=${status}&MerchantOrderNo=${orderNo}`);
 });
 
 router.get("/order/:orderNumber", async (req, res) => {

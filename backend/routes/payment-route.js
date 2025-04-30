@@ -78,9 +78,10 @@ router.post("/notify", async (req, res) => {
         { new: true }
       );
       console.log("更新訂單:", updatedOrder);
-      const clearCart = await Cart.deleteMany({ user: req.user._id });
-      console.log("購物車已清空", clearCart);
-      if (!updatedOrder) {
+      if (updatedOrder) {
+        const clearCart = await Cart.deleteMany({ user: updatedOrder.user });
+        console.log(`${updatedOrder.user}購物車已清空`, clearCart);
+      } else {
         console.log("訂單未找到", decryptedData.Result.MerchantOrderNo);
       }
     }

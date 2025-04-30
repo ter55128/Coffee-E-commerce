@@ -2,17 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../css/PaymentReturn.css"; // 記得引入 CSS
 
-const PaymentCallback = () => {
+const PaymentReturn = () => {
   const [status, setStatus] = useState("processing");
   const [paymentData, setPaymentData] = useState(null);
 
   useEffect(() => {
     // 監聽表單提交
-    const handleFormSubmit = async (event) => {
-      event.preventDefault(); // 阻止表單預設提交行為
+    const handleFormSubmit = async (e) => {
+      e.preventDefault(); // 阻止表單預設提交行為
 
       // 從表單中取得藍新回傳的資料
-      const formData = new FormData(event.target);
+      const formData = new FormData(e.target);
       const paymentData = {
         Status: formData.get("Status"),
         MerchantID: formData.get("MerchantID"),
@@ -20,6 +20,7 @@ const PaymentCallback = () => {
         TradeInfo: formData.get("TradeInfo"),
         TradeSha: formData.get("TradeSha"),
       };
+      console.log(paymentData);
 
       // 如果 Status 是 SUCCESS，處理後續邏輯
       if (paymentData.Status === "SUCCESS") {
@@ -47,12 +48,12 @@ const PaymentCallback = () => {
   return (
     <div className="payment-container">
       {/* 藍新會 POST 到這個表單 */}
-      <form method="POST">
-        <input type="" name="Status" />
-        <input type="" name="MerchantID" />
-        <input type="" name="Version" />
-        <input type="" name="TradeInfo" />
-        <input type="" name="TradeSha" />
+      <form method="POST" action="/payment/return">
+        <input type="hidden" name="Status" />
+        <input type="hidden" name="MerchantID" />
+        <input type="hidden" name="Version" />
+        <input type="hidden" name="TradeInfo" />
+        <input type="hidden" name="TradeSha" />
       </form>
 
       {/* 顯示處理結果 */}
@@ -87,4 +88,4 @@ const PaymentCallback = () => {
   );
 };
 
-export default PaymentCallback;
+export default PaymentReturn;

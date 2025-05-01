@@ -1,0 +1,156 @@
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import "../css/orderDetail.css";
+import AuthService from "../services/auth-service";
+import BeansService from "../services/beans-service";
+import Message from "./common/Message";
+
+const OrderDetailComponent = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const orderDetail = location.state?.orderDetail;
+  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
+  const [message, setMessage] = useState("");
+  const [messageType, setMessageType] = useState("");
+  const [beans, setBeans] = useState(null);
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleString("zh-TW", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+  useEffect(() => {
+    if (!currentUser || !orderDetail) {
+      setMessage("請先登入");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+        navigate("/login");
+      }, 2000);
+      return;
+    }
+    const fetchBeans = async () => {
+      try {
+        // 使用 Promise.all 獲取所有商品資料
+        const beansData = await Promise.all(
+          orderDetail.items.map(async (item) => {
+            const response = await BeansService.getBeanById(item.beanID);
+            return {
+              ...response.data,
+              quantity: item.quantity,
+              image: `${process.env.REACT_APP_API_URL}${response.data.image}`,
+            };
+          })
+        );
+        console.log(beansData);
+        setBeans(beansData);
+      } catch (error) {
+        console.error("Error fetching beans:", error);
+        setMessage("無法取得商品資訊");
+        setMessageType("error");
+      }
+    };
+    fetchBeans();
+  }, [currentUser, orderDetail, navigate]);
+
+  if (!orderDetail) {
+    return (
+      <div>
+        <Message message={message} type={messageType} />
+      </div>
+    );
+  }
+
+  return (
+    <div className="orderDetail">
+      <div className="orderDetail__container">
+        <h2 className="orderDetail__title">訂單詳細資料</h2>
+
+        <div className="orderDetail-header">
+          <button
+            className="orderDetail-header__back-button"
+            onClick={() => navigate("/orders")}
+          >
+            返回訂單列表
+          </button>
+          <div
+            className={`orderDetail-status ${
+              orderDetail.status === "paid"
+                ? "orderDetail-paid"
+                : "orderDetail-unpaid"
+            }`}
+          >
+            {orderDetail.status === "paid" ? "已付款" : "未付款"}
+          </div>
+        </div>
+
+        <div className="orderDetail-info__section">
+          <h3 className="orderDetail-info__title">付款資訊</h3>
+          <div className="orderDetail-info__grid">
+            <div className="orderDetail-info__item">
+              <span className="orderDetail-info__label">付款方式：</span>
+              <span>{orderDetail.paymentType || "尚未付款"}</span>
+            </div>
+            <div className="orderDetail-info__item">
+              <span className="orderDetail-info__label">交易編號：</span>
+              <span>{orderDetail.tradeNo || "尚未產生"}</span>
+            </div>
+            <div className="orderDetail-info__item">
+              <span className="orderDetail-info__label">訂單時間：</span>
+              <span>{formatDate(orderDetail.createdAt)}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="orderDetail-items__list">
+          <h3>訂購商品</h3>
+          {beans &&
+            beans.map((item) => (
+              <div key={item._id} className="orderDetail-items__card">
+                <div className="orderDetail-items__image-container">
+                  <img
+                    className="orderDetail-items__image"
+                    src={item.image}
+                    alt={item.name}
+                  />
+                </div>
+                <div className="orderDetail-items__info">
+                  <h4 className="orderDetail-items__title">{item.title}</h4>
+                  <div className="orderDetail-items__store">
+                    {item.store.username}
+                  </div>
+                  <div className="orderDetail-items__details">
+                    <span>數量: {item.quantity}</span>
+                    <span>${item.price}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+
+        <div className="orderDetail-summary">
+          <div className="orderDetail-summary__total">
+            <h3>訂單總計</h3>
+            <span className="orderDetail-summary__amount">
+              ${orderDetail.totalAmount}
+            </span>
+          </div>
+          {orderDetail.description && (
+            <div className="orderDetail-summary__description">
+              <h3>備註</h3>
+              <p>{orderDetail.description}</p>
+            </div>
+          )}
+        </div>
+      </div>
+      <Message message={message} type={messageType} />
+    </div>
+  );
+};
+
+export default OrderDetailComponent;

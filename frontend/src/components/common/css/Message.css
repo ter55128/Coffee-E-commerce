@@ -57,9 +57,8 @@
   color: #2d3748;
   border-left: 4px solid #4a5568;
 }
-
 .nav-component .message {
-  position: fixed;
+  margin-top: 20px;
 }
 .forgotpassword .message {
   animation: messageSlideDown 0.3s ease-out,

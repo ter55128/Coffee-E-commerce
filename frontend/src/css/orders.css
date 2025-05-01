@@ -1,0 +1,105 @@
+/* order.css */
+
+.order {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.order-container {
+  width: 95%;
+  max-width: 1000px;
+  margin: 3rem 2rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.order-container h2 {
+  text-align: center;
+  margin-bottom: 24px;
+  color: #2c3e50;
+}
+
+.order-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.order-table th,
+.order-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.order-table th {
+  background: #f5f6fa;
+  color: #34495e;
+  font-weight: 600;
+}
+
+.order-table tr:hover {
+  background: #f0f8ff;
+}
+
+.order-table td button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 15px;
+}
+
+.order-table td button:hover {
+  background: #217dbb;
+}
+.order-unpaid {
+  color: rgb(221, 0, 0);
+}
+.order-empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.order-empty {
+  text-align: center;
+  color: #888;
+  margin: 32px 0;
+  font-size: 18px;
+}
+.order-empty-button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 6px 18px;
+  border-radius: 6px;
+  margin: 1rem auto;
+}
+
+@media (max-width: 768px) {
+  .order-container {
+    width: 100%;
+    margin: 2rem 1rem;
+  }
+  .order-time {
+    display: none;
+  }
+}
+@media (max-width: 480px) {
+  .order-container {
+    padding: 1rem 0.5rem;
+    margin: 2rem 0;
+  }
+  .order-paid,
+  .order-unpaid {
+    display: none;
+  }
+}

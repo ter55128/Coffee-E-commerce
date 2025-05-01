@@ -43,7 +43,7 @@ const PaymentReturn = () => {
         <div className="action-buttons">
           <button
             className="view-order-btn"
-            onClick={() => navigate(`/orders/${userId}`)}
+            onClick={() => navigate(`/orders`)}
           >
             查看訂單
           </button>

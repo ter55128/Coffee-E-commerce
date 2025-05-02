@@ -133,7 +133,7 @@ router.delete("/remove/:beanID", async (req, res) => {
 
 router.delete("/clear", async (req, res) => {
   try {
-    console.log("收到清空購物車的請求", req);
+    console.log("收到清空購物車的請求");
     const cart = await Cart.deleteMany({ user: req.user._id });
     res.json({ message: "購物車已清空", cart });
   } catch (err) {

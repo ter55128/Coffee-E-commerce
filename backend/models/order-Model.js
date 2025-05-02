@@ -39,7 +39,6 @@ const orderSchema = new Schema(
     orderNumber: {
       type: String,
       required: true,
-      unique: true,
     },
     status: {
       type: String,

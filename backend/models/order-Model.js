@@ -59,6 +59,7 @@ const orderSchema = new Schema(
     },
     paymentType: {
       type: String,
+      enum: ["WEBATM", "CREDIT", "APPLEPAY", "ANDROIDPAY", "SAMSUNGPAY"],
     },
     paymentTime: {
       type: Date,

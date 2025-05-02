@@ -39,6 +39,11 @@ router.post(
         NotifyURL: process.env.NEWEBPAY_NOTIFY_URL,
         ClientBackURL: process.env.NEWEBPAY_CLIENT_BACK_URL,
         Email: order.Email,
+        CREDIT: 1,
+        WEBATM: 1,
+        APPLEPAY: 1,
+        ANDROIDPAY: 1,
+        SAMSUNGPAY: 1,
       };
 
       const tradeInfo = await NewebpayService.createAesEncrypt(paymentdata);
@@ -87,6 +92,11 @@ router.post(
         NotifyURL: process.env.NEWEBPAY_NOTIFY_URL,
         ClientBackURL: process.env.NEWEBPAY_CLIENT_BACK_URL,
         Email: order.Email,
+        CREDIT: 1,
+        WEBATM: 1,
+        APPLEPAY: 1,
+        ANDROIDPAY: 1,
+        SAMSUNGPAY: 1,
       };
 
       console.log("藍新金流表單所需資料", paymentdata);

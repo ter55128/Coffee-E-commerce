@@ -36,6 +36,26 @@ class PaymentService {
       },
     });
   }
+  continuePayment(orderId) {
+    let token;
+    if (localStorage.getItem("user")) {
+      token = JSON.parse(localStorage.getItem("user")).token;
+      console.log("token", token);
+    } else {
+      token = "";
+    }
+    return axios.post(
+      `${API_URL}/continuePayment`,
+      {
+        orderId,
+      },
+      {
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
+  }
 }
 
 export default new PaymentService();

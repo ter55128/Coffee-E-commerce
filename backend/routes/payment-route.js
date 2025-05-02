@@ -39,6 +39,10 @@ router.post(
         NotifyURL: process.env.NEWEBPAY_NOTIFY_URL,
         ClientBackURL: process.env.NEWEBPAY_CLIENT_BACK_URL,
         Email: order.Email,
+        CREDIT: 1,
+        APPLEPAY: 1,
+        ANDROIDPAY: 1,
+        SAMSUNGPAY: 1,
       };
 
       const tradeInfo = await NewebpayService.createAesEncrypt(paymentdata);
@@ -54,6 +58,60 @@ router.post(
         paymentUrl: process.env.NEWEBPAY_PAY_URL,
       });
     } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  }
+);
+
+router.post(
+  "/continuePayment",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      console.log("收到繼續付款", req.body.orderId);
+      const order = await Order.findOne({
+        _id: req.body.orderId,
+        user: req.user._id,
+      });
+      if (!order) {
+        return res.status(404).json({ error: "訂單不存在" });
+      }
+      console.log("訂單資料", order);
+      const timeStamp = Math.floor(Date.now() / 1000);
+
+      const paymentdata = {
+        MerchantID: process.env.NEWEBPAY_MERCHANT_ID,
+        RespondType: "JSON",
+        TimeStamp: timeStamp,
+        Version: "2.2",
+        MerchantOrderNo: order.orderNumber,
+        Amt: order.totalAmount,
+        ItemDesc: order.description,
+        ReturnURL: process.env.NEWEBPAY_RETURN_URL,
+        NotifyURL: process.env.NEWEBPAY_NOTIFY_URL,
+        ClientBackURL: process.env.NEWEBPAY_CLIENT_BACK_URL,
+        Email: order.Email,
+        CREDIT: 1,
+        APPLEPAY: 1,
+        ANDROIDPAY: 1,
+        SAMSUNGPAY: 1,
+      };
+
+      console.log("藍新金流表單所需資料", paymentdata);
+      const tradeInfo = await NewebpayService.createAesEncrypt(paymentdata);
+      const tradeSha = await NewebpayService.createShaEncrypt(tradeInfo);
+
+      res.json({
+        paymentFormData: {
+          MerchantID: paymentdata.MerchantID,
+          TradeInfo: tradeInfo,
+          TradeSha: tradeSha,
+          Version: "2.2",
+        },
+        paymentUrl: process.env.NEWEBPAY_PAY_URL,
+      });
+    } catch (error) {
+      console.error("繼續付款錯誤:", error);
       res.status(500).json({ error: error.message });
     }
   }

@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../css/orderDetail.css";
 import AuthService from "../services/auth-service";
 import BeansService from "../services/beans-service";
+import PaymentService from "../services/payment-service";
 import Message from "./common/Message";
 
 const OrderDetailComponent = () => {
@@ -23,6 +24,34 @@ const OrderDetailComponent = () => {
       minute: "2-digit",
     });
   };
+
+  const handleContinuePayment = async () => {
+    try {
+      const response = await PaymentService.continuePayment(orderDetail._id);
+      console.log("繼續付款", response);
+      const { paymentFormData, paymentUrl } = response.data;
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = paymentUrl;
+      form.style.display = "none";
+
+      Object.entries(paymentFormData).forEach(([key, value]) => {
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+    } catch (error) {
+      console.error("繼續付款錯誤:", error);
+      setMessage("繼續付款失敗");
+      setMessageType("error");
+    }
+  };
+
   useEffect(() => {
     if (!currentUser || !orderDetail) {
       setMessage("請先登入");
@@ -78,14 +107,24 @@ const OrderDetailComponent = () => {
           >
             返回訂單列表
           </button>
-          <div
-            className={`orderDetail-status ${
-              orderDetail.status === "paid"
-                ? "orderDetail-paid"
-                : "orderDetail-unpaid"
-            }`}
-          >
-            {orderDetail.status === "paid" ? "已付款" : "未付款"}
+          <div className="orderDetail-status-container">
+            <div
+              className={`orderDetail-status ${
+                orderDetail.status === "paid"
+                  ? "orderDetail-paid"
+                  : "orderDetail-unpaid"
+              }`}
+            >
+              {orderDetail.status === "paid" ? "已付款" : "未付款"}
+            </div>
+            {orderDetail.status === "pending" && (
+              <button
+                className="orderDetail-continue-button"
+                onClick={handleContinuePayment}
+              >
+                繼續付款
+              </button>
+            )}
           </div>
         </div>
 
@@ -93,16 +132,20 @@ const OrderDetailComponent = () => {
           <h3 className="orderDetail-info__title">付款資訊</h3>
           <div className="orderDetail-info__grid">
             <div className="orderDetail-info__item">
+              <span className="orderDetail-info__label">訂單編號：</span>
+              <span>{orderDetail.orderNumber}</span>
+            </div>
+            <div className="orderDetail-info__item">
+              <span className="orderDetail-info__label">更新時間：</span>
+              <span>{formatDate(orderDetail.updatedAt)}</span>
+            </div>
+            <div className="orderDetail-info__item">
               <span className="orderDetail-info__label">付款方式：</span>
               <span>{orderDetail.paymentType || "尚未付款"}</span>
             </div>
             <div className="orderDetail-info__item">
               <span className="orderDetail-info__label">交易編號：</span>
               <span>{orderDetail.tradeNo || "尚未產生"}</span>
-            </div>
-            <div className="orderDetail-info__item">
-              <span className="orderDetail-info__label">訂單時間：</span>
-              <span>{formatDate(orderDetail.createdAt)}</span>
             </div>
           </div>
         </div>

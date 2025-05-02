@@ -23,6 +23,13 @@
   color: #2c3e50;
 }
 
+.order-status-description {
+  color: rgb(221, 0, 0);
+  margin-left: 1rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
 .order-table {
   width: 100%;
   border-collapse: collapse;
@@ -59,6 +66,9 @@
 
 .order-table td button:hover {
   background: #217dbb;
+}
+.order-paid {
+  color: rgb(0, 190, 0);
 }
 .order-unpaid {
   color: rgb(221, 0, 0);

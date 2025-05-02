@@ -21,9 +21,9 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
     setCurrentUser(null);
     setMessage("登出成功！");
     setMessageType("success");
+    navigate("/");
     setTimeout(() => {
       setMessage("");
-      navigate("/");
     }, 2000);
   };
 
@@ -171,8 +171,10 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
                   >
                     <i className="fas fa-shopping-cart"></i>
                     <span className="nav-link-text">購物車</span>
-                    {cartItemCount > 0 && (
+                    {cartItemCount > 0 ? (
                       <span className="cart-badge">{cartItemCount}</span>
+                    ) : (
+                      <span className="cart-badge">0</span>
                     )}
                   </Link>
                 </li>

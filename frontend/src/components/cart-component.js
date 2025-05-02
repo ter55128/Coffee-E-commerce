@@ -13,6 +13,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
   const [currentItem, setCurrentItem] = useState({ title: "", _id: "" });
   const navigate = useNavigate();
   const { updateCartItemCount } = useCart();
@@ -54,8 +55,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       );
 
       if (currentItem.quantity === 1) {
-        setIsModalOpen(true);
-        setCurrentItem({
+        openModal("remove", {
           title: currentItem.beanID.title,
           _id: currentItem.beanID._id,
         });
@@ -66,6 +66,46 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       await loadCart();
     } catch (err) {
       setMessage("減少數量失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+    }
+  };
+  const handletoplus = async (beanID) => {
+    try {
+      // 找到當前商品
+      const currentItem = cartItems.items.find(
+        (item) => item.beanID._id === beanID._id
+      );
+
+      await CartService.updateQuantity(beanID._id, currentItem.quantity + 1);
+
+      await loadCart();
+    } catch (err) {
+      setMessage("增加數量失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+    }
+  };
+  const handleRemoveItem = async (beanID) => {
+    try {
+      await CartService.removeFromCart(beanID);
+      await loadCart();
+      setIsModalOpen(false);
+      setMessage("商品已移除");
+      setMessageType("success");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+    } catch (err) {
+      setIsModalOpen(false);
+      setMessage("移除商品失敗");
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
@@ -117,48 +157,6 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
     setTempQuantity("");
   };
 
-  const handletoplus = async (beanID) => {
-    try {
-      // 找到當前商品
-      const currentItem = cartItems.items.find(
-        (item) => item.beanID._id === beanID._id
-      );
-
-      await CartService.updateQuantity(beanID._id, currentItem.quantity + 1);
-
-      await loadCart();
-    } catch (err) {
-      setMessage("增加數量失敗，請稍後再試");
-      setMessageType("error");
-      setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 2000);
-    }
-  };
-
-  const handleRemoveItem = async (beanID) => {
-    try {
-      await CartService.removeFromCart(beanID);
-      await loadCart();
-      setIsModalOpen(false);
-      setMessage("商品已移除");
-      setMessageType("success");
-      setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 2000);
-    } catch (err) {
-      setIsModalOpen(false);
-      setMessage("移除商品失敗");
-      setMessageType("error");
-      setTimeout(() => {
-        setMessage("");
-        setMessageType("");
-      }, 2000);
-    }
-  };
-
   const calculateTotal = () => {
     return cartItems.items.reduce((total, item) => {
       return total + item.beanID.price * item.quantity;
@@ -169,12 +167,10 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
     const count = cartItems.items.reduce((total, item) => {
       return total + item.quantity;
     }, 0);
-    // 更新購物車計數器
     updateCartItemCount(count);
     return count;
   };
 
-  // 在載入購物車和更新後都調用
   useEffect(() => {
     if (cartItems.items.length > 0) {
       calculateTotalQuantity();
@@ -183,15 +179,38 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
     }
   }, [cartItems, updateCartItemCount]);
 
-  const handleCheckout = async () => {
+  const openModal = (type, item = null) => {
+    setModalType(type);
+    if (item) {
+      setCurrentItem(item);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalType(null);
+    setCurrentItem({ title: "", _id: "" });
+  };
+
+  const handleCheckout = () => {
+    openModal("checkout");
+  };
+
+  const processCheckout = async () => {
     try {
       const response = await PaymentService.createOrder(
         cartItems.items,
         calculateTotal()
       );
-      console.log(response);
-      const { paymentFormData, paymentUrl } = response.data;
+      try {
+        const response = await CartService.clearCart(currentUser.user._id);
+        console.log("清空購物車", response);
+      } catch (e) {
+        console.error("清空購物車失敗:", e);
+      }
 
+      const { paymentFormData, paymentUrl } = response.data;
       const form = document.createElement("form");
       form.method = "POST";
       form.action = paymentUrl;
@@ -206,11 +225,11 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       });
 
       document.body.appendChild(form);
-      console.log(form);
       form.submit();
     } catch (error) {
       console.error("結帳失敗:", error);
-      window.alert("結帳過程發生錯誤，請稍後再試");
+      setMessage("結帳過程發生錯誤，請稍後再試");
+      setMessageType("error");
     }
   };
 
@@ -294,8 +313,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                   <button
                     className="cart__product-card__remove"
                     onClick={() => {
-                      setIsModalOpen(true);
-                      setCurrentItem({
+                      openModal("remove", {
                         title: item.beanID.title,
                         _id: item.beanID._id,
                       });
@@ -334,15 +352,28 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
         </div>
       )}
       {message && <Message message={message} type={messageType} />}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        message={`是否要將 ${currentItem.title} 從購物車中移除？`}
-        onConfirm={() => handleRemoveItem(currentItem._id)}
-        onCancel={() => setIsModalOpen(false)}
-        confirmText="確定"
-        cancelText="取消"
-      />
+      {isModalOpen &&
+        (modalType === "remove" ? (
+          <Modal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            message={`是否要將 ${currentItem.title} 從購物車中移除？`}
+            onConfirm={() => handleRemoveItem(currentItem._id)}
+            onCancel={closeModal}
+            confirmText="確定"
+            cancelText="取消"
+          />
+        ) : modalType === "checkout" ? (
+          <Modal
+            isOpen={isModalOpen}
+            onClose={closeModal}
+            message={`提醒！將導向至藍新金流進行後續服務，使用API串接「測試區」，付款流程可以正常跑完，實際上「不會真的收款」，但為確保您的權益及避免使用此支付工具付款所生之所有爭議款項，建議使用商品區的測試商品($1)，再進行後續服務`}
+            onConfirm={processCheckout}
+            onCancel={closeModal}
+            confirmText="確認"
+            cancelText="返回"
+          />
+        ) : null)}
     </div>
   );
 };

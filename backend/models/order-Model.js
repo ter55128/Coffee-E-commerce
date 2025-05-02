@@ -59,7 +59,6 @@ const orderSchema = new Schema(
     },
     paymentType: {
       type: String,
-      enum: ["credit_card", "webatm", "vacc", "cvs"],
     },
     paymentTime: {
       type: Date,

@@ -21,6 +21,7 @@ const PaymentReturn = () => {
         navigate("/login");
       }, 2000);
     } else {
+      console.log(message);
       setUserId(currentUser.user._id);
     }
   }, [navigate]);
@@ -34,19 +35,21 @@ const PaymentReturn = () => {
   }
 
   return (
-    <div className="payment-container">
-      <div className="success-container">
-        <div className="success-icon">✓</div>
-        <h2>付款成功！</h2>
-        <p>感謝您的購買</p>
+    <div className="payment-return">
+      <div className="payment-container">
+        <div className="success-container">
+          <div className="success-icon">✓</div>
+          <h2>付款成功！</h2>
+          <p>感謝您的購買</p>
 
-        <div className="action-buttons">
-          <button
-            className="view-order-btn"
-            onClick={() => navigate(`/orders`)}
-          >
-            查看訂單
-          </button>
+          <div className="action-buttons">
+            <button
+              className="view-order-btn"
+              onClick={() => navigate(`/orders`)}
+            >
+              查看訂單
+            </button>
+          </div>
         </div>
       </div>
       <Message message={message} type={messageType} />

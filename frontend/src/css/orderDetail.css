@@ -10,7 +10,7 @@
   background: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 2.5rem;
+  padding: 2rem;
   transition: all 0.3s ease;
 }
 
@@ -64,12 +64,17 @@
   transform: translateX(-5px);
 }
 
+.orderDetail-status-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
 /* Status Modifiers */
 .orderDetail-status {
   padding: 0.8rem 1.5rem;
   border-radius: 25px;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
   letter-spacing: 0.5px;
 }
 
@@ -83,10 +88,26 @@
   color: #ff4757;
 }
 
+.orderDetail-continue-button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  background-color: #3498db;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+.orderDetail-continue-button:hover {
+  background-color: #217dbb;
+}
 /* Info Section */
 .orderDetail-info__section {
   margin-bottom: 2.5rem;
-  padding: 2rem;
+  padding: 1.5rem;
   background: #f8fafc;
   border-radius: 12px;
   transition: all 0.3s ease;
@@ -106,8 +127,8 @@
 
 .orderDetail-info__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
 
 .orderDetail-info__item {

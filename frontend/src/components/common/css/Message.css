@@ -1,6 +1,6 @@
 /* frontend/src/components/common/Message.css */
 .message {
-  position: sticky;
+  position: fixed;
   bottom: 70vh;
   left: 0;
   right: 0;

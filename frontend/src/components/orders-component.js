@@ -11,6 +11,14 @@ const OrderComponent = ({ currentUser }) => {
   const [messageType, setMessageType] = useState("");
   const navigate = useNavigate();
 
+  const findStatus = (orders) => {
+    if (orders.some((order) => order.status === "pending")) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     const fetchOrders = async () => {
       try {
@@ -52,6 +60,9 @@ const OrderComponent = ({ currentUser }) => {
     <div className="order">
       <div className="order-container">
         <h2>我的訂單</h2>
+        {findStatus(orders) && (
+          <div className="order-status-description">有訂單尚未完成付款</div>
+        )}
         {orders.length === 0 ? (
           <div className="order-empty-container">
             <p className="order-empty">目前沒有訂單</p>
@@ -77,7 +88,13 @@ const OrderComponent = ({ currentUser }) => {
               {orders.map((order) => (
                 <tr key={order._id || order.orderNumber}>
                   <td>{order.orderNumber}</td>
-                  <td>${order.totalAmount}</td>
+                  <td
+                    className={
+                      order.status === "paid" ? "order-paid" : "order-unpaid"
+                    }
+                  >
+                    ${order.totalAmount}
+                  </td>
                   <td
                     className={
                       order.status === "paid" ? "order-paid" : "order-unpaid"

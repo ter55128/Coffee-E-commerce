@@ -74,11 +74,15 @@
   box-shadow: 0 15px 30px rgba(52, 152, 219, 0.15);
 }
 
+.storeProducts__image-wrapper {
+  z-index: 2;
+}
 .storeProducts__image {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   transition: transform 0.5s ease;
+  z-index: 2;
 }
 
 .storeProducts__card:hover .storeProducts__image {
@@ -181,6 +185,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   border-top: 1px solid #e2e8f0;
+  z-index: 1;
 }
 
 .storeProducts__edit-button:hover {

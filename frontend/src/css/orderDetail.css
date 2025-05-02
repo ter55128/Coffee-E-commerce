@@ -292,6 +292,17 @@
   .orderDetail__container {
     padding: 1rem;
   }
+
+  .orderDetail-header__back-button,
+  .orderDetail-continue-button,
+  .orderDetail-paid,
+  .orderDetail-unpaid {
+    font-size: 0.9rem;
+    padding: 0.6rem 1rem;
+  }
+  .orderDetail-status-container {
+    gap: 0.5rem;
+  }
   .orderDetail-items__list {
     gap: 1rem;
   }

@@ -39,7 +39,6 @@ router.post(
         NotifyURL: process.env.NEWEBPAY_NOTIFY_URL,
         ClientBackURL: process.env.NEWEBPAY_CLIENT_BACK_URL,
         Email: order.Email,
-        CREDIT: 1,
         WEBATM: 1,
         APPLEPAY: 1,
         ANDROIDPAY: 1,
@@ -92,7 +91,6 @@ router.post(
         NotifyURL: process.env.NEWEBPAY_NOTIFY_URL,
         ClientBackURL: process.env.NEWEBPAY_CLIENT_BACK_URL,
         Email: order.Email,
-        CREDIT: 1,
         WEBATM: 1,
         APPLEPAY: 1,
         ANDROIDPAY: 1,
@@ -131,7 +129,14 @@ router.post("/notify", async (req, res) => {
         { orderNumber: decryptedData.Result.MerchantOrderNo },
         {
           status: "paid",
-          paymentType: decryptedData.Result.PaymentType,
+          paymentType:
+            decryptedData.Result.PaymentType === "WEBATM"
+              ? "WEBATM"
+              : decryptedData.Result.PaymentMethod === "APPLEPAY"
+              ? "APPLEPAY"
+              : decryptedData.Result.PaymentMethod === "ANDROIDPAY"
+              ? "ANDROIDPAY"
+              : "SAMSUNGPAY",
           paymentTime: decryptedData.Result.PayTime,
           tradeNo: decryptedData.Result.TradeNo,
         },

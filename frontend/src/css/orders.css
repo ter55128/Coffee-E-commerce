@@ -33,7 +33,7 @@
 .order-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 .order-table th,
@@ -67,10 +67,12 @@
 .order-table td button:hover {
   background: #217dbb;
 }
-.order-paid {
+.order-paid,
+.order-amount-paid {
   color: rgb(0, 190, 0);
 }
-.order-unpaid {
+.order-unpaid,
+.order-amount-unpaid {
   color: rgb(221, 0, 0);
 }
 .order-empty-container {

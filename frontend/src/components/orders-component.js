@@ -90,7 +90,9 @@ const OrderComponent = ({ currentUser }) => {
                   <td>{order.orderNumber}</td>
                   <td
                     className={
-                      order.status === "paid" ? "order-paid" : "order-unpaid"
+                      order.status === "paid"
+                        ? "order-amount-paid"
+                        : "order-amount-unpaid"
                     }
                   >
                     ${order.totalAmount}

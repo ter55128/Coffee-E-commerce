@@ -40,7 +40,6 @@ class PaymentService {
     let token;
     if (localStorage.getItem("user")) {
       token = JSON.parse(localStorage.getItem("user")).token;
-      console.log("token", token);
     } else {
       token = "";
     }

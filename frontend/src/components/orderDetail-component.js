@@ -13,7 +13,7 @@ const OrderDetailComponent = () => {
   const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
-  const [beans, setBeans] = useState(null);
+  const [beans, setBeans] = useState(orderDetail?.items || []);
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("zh-TW", {
@@ -47,8 +47,13 @@ const OrderDetailComponent = () => {
       form.submit();
     } catch (error) {
       console.error("繼續付款錯誤:", error);
-      setMessage("繼續付款失敗");
+      setMessage(error.response.data.error);
       setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+        navigate("/orders");
+      }, 2000);
     }
   };
 
@@ -63,28 +68,7 @@ const OrderDetailComponent = () => {
       }, 2000);
       return;
     }
-    const fetchOrder = async () => {
-      try {
-        // 使用 Promise.all 獲取所有商品資料
-        const orderData = await Promise.all(
-          orderDetail.items.map(async (item) => {
-            const response = await BeansService.getBeanById(item.beanID);
-            return {
-              ...response.data,
-              quantity: item.quantity,
-              image: `${process.env.REACT_APP_API_URL}${response.data.image}`,
-            };
-          })
-        );
-        console.log(orderData);
-        setBeans(orderData);
-      } catch (error) {
-        console.error("Error fetching beans:", error);
-        setMessage("無法取得商品資訊");
-        setMessageType("error");
-      }
-    };
-    fetchOrder();
+    setBeans(orderDetail.items || []);
   }, [currentUser, orderDetail, navigate]);
 
   if (!orderDetail) {
@@ -115,7 +99,11 @@ const OrderDetailComponent = () => {
                   : "orderDetail-unpaid"
               }`}
             >
-              {orderDetail.status === "paid" ? "已付款" : "未付款"}
+              {orderDetail.status === "paid"
+                ? "已付款"
+                : orderDetail.status === "cancelled"
+                ? "已取消"
+                : "未付款"}
             </div>
             {orderDetail.status === "pending" && (
               <button
@@ -153,23 +141,23 @@ const OrderDetailComponent = () => {
         <div className="orderDetail-items__list">
           <h3>訂購商品</h3>
           {beans &&
-            beans.map((item) => (
-              <div key={item._id} className="orderDetail-items__card">
+            beans.map((bean) => (
+              <div key={bean._id} className="orderDetail-items__card">
                 <div className="orderDetail-items__image-container">
                   <img
                     className="orderDetail-items__image"
-                    src={item.image}
-                    alt={item.name}
+                    src={bean.image}
+                    alt={bean.name}
                   />
                 </div>
                 <div className="orderDetail-items__info">
-                  <h4 className="orderDetail-items__title">{item.title}</h4>
+                  <h4 className="orderDetail-items__title">{bean.title}</h4>
                   <div className="orderDetail-items__store">
-                    {item.store.username}
+                    {bean.store.username}
                   </div>
                   <div className="orderDetail-items__details">
-                    <span>數量: {item.quantity}</span>
-                    <span>${item.price}</span>
+                    <span>數量: {bean.quantity}</span>
+                    <span>${bean.price}</span>
                   </div>
                 </div>
               </div>

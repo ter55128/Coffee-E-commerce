@@ -117,7 +117,11 @@ const OrderComponent = ({ currentUser }) => {
                       order.status === "paid" ? "order-paid" : "order-unpaid"
                     }
                   >
-                    {order.status === "paid" ? "已付款" : "未付款"}
+                    {order.status === "paid"
+                      ? "已付款"
+                      : order.status === "cancelled"
+                      ? "已取消"
+                      : "未付款"}
                   </td>
                   <td className="order-time">
                     {new Date(order.createdAt).toLocaleString()}

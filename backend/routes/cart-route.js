@@ -54,7 +54,7 @@ router.get("/", async (req, res) => {
 
     res.json(cart);
   } catch (err) {
-    res.status(500).send("Get cart failed");
+    res.status(500).send("獲取購物車失敗，請稍候再試");
   }
 });
 
@@ -116,7 +116,7 @@ router.post("/", async (req, res) => {
       res.status(200).send({ message: "商品已添加到購物車", cart });
     }
   } catch (err) {
-    res.status(500).send("Add item to cart failed");
+    res.status(500).send("添加商品到購物車失敗，請稍候再試");
     console.log("錯誤", err);
   }
 });
@@ -142,7 +142,7 @@ router.put("/update/:beanID", async (req, res) => {
     await cart.save();
     res.json(cart);
   } catch (err) {
-    res.status(500).send("伺服器錯誤");
+    res.status(500).send("更新商品數量失敗，請稍候再試");
   }
 });
 
@@ -158,7 +158,7 @@ router.delete("/remove/:beanID", async (req, res) => {
     await cart.save();
     res.json(cart);
   } catch (err) {
-    res.status(500).send("Remove item from cart failed");
+    res.status(500).send("移除商品失敗，請稍候再試");
   }
 });
 
@@ -168,7 +168,7 @@ router.delete("/clear", async (req, res) => {
     const cart = await Cart.deleteMany({ user: req.user._id });
     res.json({ message: "購物車已清空", cart });
   } catch (err) {
-    res.status(500).send("Clear cart failed");
+    res.status(500).send("清空購物車失敗，請稍候再試");
   }
 });
 module.exports = router;

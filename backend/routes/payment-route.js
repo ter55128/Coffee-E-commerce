@@ -76,10 +76,25 @@ router.post(
         _id: req.body.orderId,
         user: req.user._id,
       });
+
       if (!order) {
         return res.status(404).json({ error: "訂單不存在" });
       }
       console.log("訂單資料", order);
+
+      for (const item of order.items) {
+        const bean = await Bean.findById(item.beanID);
+        if (
+          !bean ||
+          bean.title !== item.title ||
+          bean.price !== item.price ||
+          bean.weight !== item.weight
+        ) {
+          order.status = "cancelled";
+          await order.save();
+          return res.status(400).json({ error: "商品資料已更新，請重新下訂" });
+        }
+      }
 
       const timeStamp = Math.floor(Date.now() / 1000);
 

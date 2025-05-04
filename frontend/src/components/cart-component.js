@@ -38,7 +38,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       setLoading(false);
       console.log(response.data);
     } catch (err) {
-      setMessage("獲取購物車失敗");
+      setMessage(err.response.data.error);
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
@@ -106,7 +106,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       }, 2000);
     } catch (err) {
       setIsModalOpen(false);
-      setMessage("移除商品失敗");
+      setMessage(err.response.data.error);
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
@@ -209,7 +209,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
         const response = await CartService.clearCart(currentUser.user._id);
         console.log("清空購物車", response);
       } catch (e) {
-        console.error("清空購物車失敗:", e);
+        console.error("清空購物車失敗:", e.response.data.error);
       }
 
       const { paymentFormData, paymentUrl } = response.data;

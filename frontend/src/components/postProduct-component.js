@@ -65,7 +65,8 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
         navigate("/storeProducts");
       }, 2000);
     } catch (error) {
-      setMessage(error.response.data);
+      console.log(error.response);
+      setMessage("商品新增失敗，請確認商品資料規範");
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
@@ -167,7 +168,7 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
               </div>
 
               <div className="postProduct__group">
-                <label>商品圖片</label>
+                <label>商品圖片(5MB以下)</label>
                 <input
                   type="file"
                   accept="image/*"

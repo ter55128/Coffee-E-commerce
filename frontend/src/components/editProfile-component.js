@@ -131,6 +131,7 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
       setMessage(errorMessage);
       setMessageType("error");
       setTimeout(() => {
+        setMessageType("");
         setMessage("");
       }, 2000);
     } finally {

@@ -231,6 +231,23 @@
   box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
+.cart__test-list-container {
+  padding: 1rem;
+  background: #f6f6f6;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.cart__test-list-title {
+  font-size: 1.2rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.cart__test-list {
+  list-style: none;
+  color: #666;
+}
+
 @media (max-width: 768px) {
   .cart__row {
     margin: 0 auto;
@@ -294,6 +311,11 @@
 
   .cart__summary__value--price {
     font-size: 1.3rem;
+  }
+  .cart__test-list-title {
+    padding-left: 0;
+    font-size: 1rem;
+    margin-bottom: 0;
   }
 
   .cart__summary__checkout {
@@ -406,5 +428,12 @@
   .cart__empty {
     font-size: 1rem;
     padding: 2rem;
+  }
+  .cart__test-list-container {
+    margin: 0.5rem;
+    padding: 0.5rem;
+  }
+  .cart__test-list-title {
+    font-size: 0.8rem;
   }
 }

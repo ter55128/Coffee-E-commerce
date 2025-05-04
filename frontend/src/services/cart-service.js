@@ -26,7 +26,7 @@ class CartService {
     try {
       return axios.post(
         `${API_URL}`,
-        { beanID }, // 只需要傳送 beanID
+        { beanID },
         {
           headers: {
             Authorization: token, // token 會包含用戶信息

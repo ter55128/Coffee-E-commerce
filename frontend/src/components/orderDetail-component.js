@@ -63,10 +63,10 @@ const OrderDetailComponent = () => {
       }, 2000);
       return;
     }
-    const fetchBeans = async () => {
+    const fetchOrder = async () => {
       try {
         // 使用 Promise.all 獲取所有商品資料
-        const beansData = await Promise.all(
+        const orderData = await Promise.all(
           orderDetail.items.map(async (item) => {
             const response = await BeansService.getBeanById(item.beanID);
             return {
@@ -76,15 +76,15 @@ const OrderDetailComponent = () => {
             };
           })
         );
-        console.log(beansData);
-        setBeans(beansData);
+        console.log(orderData);
+        setBeans(orderData);
       } catch (error) {
         console.error("Error fetching beans:", error);
         setMessage("無法取得商品資訊");
         setMessageType("error");
       }
     };
-    fetchBeans();
+    fetchOrder();
   }, [currentUser, orderDetail, navigate]);
 
   if (!orderDetail) {

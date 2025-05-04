@@ -34,10 +34,18 @@ const OrderComponent = ({ currentUser }) => {
         }
         setLoading(true);
         const response = await paymentService.getOrders(currentUser.user._id);
-        setOrders(response.data || []);
-        console.log(response.data);
+        if (response && response.data) {
+          setOrders(response.data);
+        } else {
+          setOrders([]);
+          setMessage("訂單資料載入失敗，請稍後再試");
+          setMessageType("error");
+        }
       } catch (err) {
-        setMessage(err.response.data.message || "取得訂單資料失敗");
+        setOrders([]);
+        setMessage(
+          err?.response?.data?.message || "取得訂單資料失敗，請稍後再試"
+        );
         setMessageType("error");
       } finally {
         setLoading(false);
@@ -49,6 +57,13 @@ const OrderComponent = ({ currentUser }) => {
 
   if (loading) return <div>載入中...</div>;
   if (!currentUser) {
+    return (
+      <div>
+        <Message message={message} type={messageType} />
+      </div>
+    );
+  }
+  if (!orders) {
     return (
       <div>
         <Message message={message} type={messageType} />

@@ -69,7 +69,6 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
         setTimeout(() => {
           setMessage("");
           setMessageType("");
-          navigate("/products");
         }, 2000);
 
         try {
@@ -136,7 +135,7 @@ const ProductDetailComponent = ({ currentUser, setCurrentUser }) => {
                   店家：{beanData.store?.username || "未知店家"}
                 </span>
                 <span className="productDetail__sales">
-                  已售出：{beanData.customers?.length || 0} 件
+                  已售出：{beanData.soldCount} 件
                 </span>
               </div>
             </div>

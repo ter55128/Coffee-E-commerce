@@ -1,7 +1,7 @@
 /* frontend/src/components/common/Message.css */
 .message {
   position: fixed;
-  bottom: 70vh;
+  bottom: 60vh;
   left: 0;
   right: 0;
   margin-left: auto;

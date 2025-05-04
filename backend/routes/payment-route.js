@@ -2,6 +2,7 @@ const router = require("express").Router();
 const NewebpayService = require("../services/newebpay-service");
 const Order = require("../models/order-Model");
 const Cart = require("../models/cart-Model");
+const Bean = require("../models/bean-Model");
 const dotenv = require("dotenv");
 require("dotenv").config();
 const passport = require("passport");
@@ -14,6 +15,7 @@ router.post(
     try {
       console.log("資料傳到payment-route");
       const { cartItems, totalAmount } = req.body;
+      console.log(cartItems);
       const timeStamp = Math.floor(Date.now() / 1000);
       // 創建訂單
       const order = await Order.create({
@@ -25,6 +27,7 @@ router.post(
         status: "pending",
         description: `咖啡豆訂單-${timeStamp}`,
       });
+      console.log("訂單已創建", order);
 
       // 藍新金流表單所需資料
       const paymentdata = {
@@ -77,6 +80,7 @@ router.post(
         return res.status(404).json({ error: "訂單不存在" });
       }
       console.log("訂單資料", order);
+
       const timeStamp = Math.floor(Date.now() / 1000);
 
       const paymentdata = {
@@ -146,6 +150,19 @@ router.post("/notify", async (req, res) => {
       if (updatedOrder) {
         const clearCart = await Cart.deleteMany({ user: updatedOrder.user });
         console.log(`${updatedOrder.user}購物車已清空`, clearCart);
+
+        await Promise.all(
+          updatedOrder.items.map(async (item) => {
+            if (!item.beanID) return null;
+            return Bean.findByIdAndUpdate(
+              item.beanID,
+              {
+                $inc: { soldCount: item.quantity },
+              },
+              { new: true }
+            );
+          })
+        );
       } else {
         console.log("訂單未找到", decryptedData.Result.MerchantOrderNo);
       }

@@ -29,6 +29,22 @@ const orderSchema = new Schema(
           required: true,
           min: 0,
         },
+        store: {
+          type: String,
+          required: true,
+        },
+        title: {
+          type: String,
+          required: true,
+        },
+        image: {
+          type: String,
+          required: true,
+        },
+        weight: {
+          type: Number,
+          required: true,
+        },
       },
     ],
     totalAmount: {

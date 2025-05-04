@@ -36,6 +36,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       const response = await CartService.getCart();
       setCartItems(response.data);
       setLoading(false);
+      console.log(response.data);
     } catch (err) {
       setMessage("獲取購物車失敗");
       setMessageType("error");
@@ -199,6 +200,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
 
   const processCheckout = async () => {
     try {
+      console.log(cartItems);
       const response = await PaymentService.createOrder(
         cartItems.items,
         calculateTotal()
@@ -327,6 +329,35 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
           ))}
         </div>
       )}
+      <div className="cart__test-list-container">
+        <ul className="cart__test-list-title">
+          金流串接測試網站之規範
+          <li className="cart__test-list">
+            1. 目前提供測試之付款服務為 WebATM、Apple Pay、Google Pay、Samsung
+            Pay{" "}
+          </li>
+          <li className="cart__test-list">2. WebATM 僅支援華南銀行</li>
+          <li className="cart__test-list">
+            3. Apple Pay 請使用真實之信用卡號，至 Apple 裝置上進行綁定與支付測試
+          </li>
+          <li className="cart__test-list">
+            4. Google Pay 請使用真實之信用卡號，至 Android
+            裝置上進行綁定與支付測試
+          </li>
+          <li className="cart__test-list">
+            5. Samsung Pay 請使用真實之信用卡號，至 Samsung
+            裝置上進行綁定與支付測試
+          </li>
+          <li className="cart__test-list">
+            6. 測試過WebATM、Apple Pay 功能均可正常使用，Google Pay、Samsung Pay
+            若有問題，請聯繫 linkuanhan8811@gmail.com ，謝謝！
+          </li>
+          <li className="cart__test-list">
+            7.
+            提醒！測試區「不會真的收款」！但為確保您的權益及避免使用此支付工具付款所生之所有爭議款項，商品建議使用「購物車測試專用」($1)，再進行後續服務
+          </li>
+        </ul>
+      </div>
       {cartItems.items.length > 0 && (
         <div className="cart__summary">
           <div className="cart__summary__content">
@@ -344,7 +375,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
             </div>
             <button
               className="cart__summary__checkout"
-              onClick={handleCheckout}
+              onClick={processCheckout}
             >
               前往結帳
             </button>
@@ -352,28 +383,15 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
         </div>
       )}
       {message && <Message message={message} type={messageType} />}
-      {isModalOpen &&
-        (modalType === "remove" ? (
-          <Modal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            message={`是否要將 ${currentItem.title} 從購物車中移除？`}
-            onConfirm={() => handleRemoveItem(currentItem._id)}
-            onCancel={closeModal}
-            confirmText="確定"
-            cancelText="取消"
-          />
-        ) : modalType === "checkout" ? (
-          <Modal
-            isOpen={isModalOpen}
-            onClose={closeModal}
-            message={`提醒！將導向至藍新金流進行後續服務，使用API串接「測試區」，付款流程可以正常跑完，實際上「不會真的收款」，但為確保您的權益及避免使用此支付工具付款所生之所有爭議款項，建議使用商品區的測試商品($1)，再進行後續服務`}
-            onConfirm={processCheckout}
-            onCancel={closeModal}
-            confirmText="確認"
-            cancelText="返回"
-          />
-        ) : null)}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        message={`是否要將 ${currentItem.title} 從購物車中移除？`}
+        onConfirm={() => handleRemoveItem(currentItem._id)}
+        onCancel={closeModal}
+        confirmText="確定"
+        cancelText="取消"
+      />
     </div>
   );
 };

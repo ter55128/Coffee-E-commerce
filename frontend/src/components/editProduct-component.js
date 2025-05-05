@@ -177,7 +177,7 @@ const EditProductComponent = ({ currentUser }) => {
           </div>
 
           <div className="editproduct__form-group">
-            <label className="editproduct__label">商品名稱</label>
+            <label className="editproduct__label">商品名稱 (3-100字)</label>
             <input
               type="text"
               name="title"
@@ -190,7 +190,7 @@ const EditProductComponent = ({ currentUser }) => {
 
           <div className="editproduct__form-row">
             <div className="editproduct__form-group">
-              <label className="editproduct__label">重量 (g)</label>
+              <label className="editproduct__label">重量 (50-5000g)</label>
               <input
                 type="number"
                 name="weight"
@@ -202,7 +202,7 @@ const EditProductComponent = ({ currentUser }) => {
             </div>
 
             <div className="editproduct__form-group">
-              <label className="editproduct__label">價格</label>
+              <label className="editproduct__label">價格 (100-10000)</label>
               <input
                 type="number"
                 name="price"
@@ -253,7 +253,7 @@ const EditProductComponent = ({ currentUser }) => {
           </div>
 
           <div className="editproduct__form-group">
-            <label className="editproduct__label">商品描述</label>
+            <label className="editproduct__label">商品描述 (10-100字)</label>
             <textarea
               name="description"
               className="editproduct__input editproduct__textarea"

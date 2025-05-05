@@ -85,7 +85,7 @@ const ProductsComponent = (props) => {
             filtered.sort((a, b) => b.price - a.price);
             break;
           case "sales":
-            filtered.sort((a, b) => b.customers.length - a.customers.length);
+            filtered.sort((a, b) => b.soldCount - a.soldCount);
             break;
           default:
             break;
@@ -170,7 +170,7 @@ const ProductsComponent = (props) => {
         filtered.sort((a, b) => b.price - a.price);
         break;
       case "sales":
-        filtered.sort((a, b) => b.customers.length - a.customers.length);
+        filtered.sort((a, b) => b.soldCount - a.soldCount);
         break;
       default:
         break;
@@ -326,9 +326,7 @@ const ProductsComponent = (props) => {
                   >
                     店家：{bean.store?.username || "未知店家"}
                   </p>
-                  <p className="products__sales">
-                    已售出：{bean.customers.length} 件
-                  </p>
+                  <p className="products__sales">已售出：{bean.soldCount} 件</p>
                 </div>
               </div>
             </div>

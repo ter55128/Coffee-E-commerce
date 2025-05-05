@@ -65,7 +65,8 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
         navigate("/storeProducts");
       }, 2000);
     } catch (error) {
-      setMessage(error.response.data);
+      console.log(error.response);
+      setMessage("商品新增失敗，請確認商品資料規範");
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
@@ -88,7 +89,7 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
             <h2 className="postProduct__title">新增商品</h2>
             <form onSubmit={handleSubmit}>
               <div className="postProduct__group">
-                <label className="postProduct__label">商品名稱</label>
+                <label className="postProduct__label">商品名稱 (3-100字)</label>
                 <input
                   name="title"
                   type="text"
@@ -99,7 +100,7 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
               </div>
 
               <div className="postProduct__group">
-                <label className="postProduct__label">重量 (g)</label>
+                <label className="postProduct__label">重量 (50-5000g)</label>
                 <input
                   name="weight"
                   type="number"
@@ -143,7 +144,9 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
               </div>
 
               <div className="postProduct__group">
-                <label className="postProduct__label">產品內容</label>
+                <label className="postProduct__label">
+                  產品內容 (10-100字)
+                </label>
                 <textarea
                   name="description"
                   className="postProduct__input postProduct__textarea"
@@ -154,7 +157,7 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
               </div>
 
               <div className="postProduct__group">
-                <label className="postProduct__label">價格</label>
+                <label className="postProduct__label">價格 (100-10000)</label>
                 <input
                   name="price"
                   type="number"
@@ -165,7 +168,7 @@ const PostProductComponent = ({ currentUser, setCurrentUser }) => {
               </div>
 
               <div className="postProduct__group">
-                <label>商品圖片</label>
+                <label>商品圖片(5MB以下)</label>
                 <input
                   type="file"
                   accept="image/*"

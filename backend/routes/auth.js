@@ -48,7 +48,7 @@ router.post("/register", async (req, res) => {
 
   // confirm the email is not already in the database
   const emailExist = await User.findOne({ email: req.body.email });
-  if (emailExist) return res.status(400).send("Email already exists");
+  if (emailExist) return res.status(400).send("信箱已註冊，請重新登入");
 
   // create a new user
   let { email, username, password, role, introduction } = req.body;

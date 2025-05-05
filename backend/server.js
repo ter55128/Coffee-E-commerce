@@ -1,19 +1,21 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const MongoStore = require("connect-mongo");
 const mongoose = require("mongoose");
 require("dotenv").config();
+const passport = require("passport");
+require("./config/passport")(passport);
+const session = require("express-session");
+
 const authRoute = require("./routes").auth;
 const beanRoute = require("./routes").bean;
 const publicBeanRoute = require("./routes").publicBean;
 const cartRoute = require("./routes").cart;
 const articleRoute = require("./routes").article;
 const publicArticleRoute = require("./routes").publicArticle;
-const passport = require("passport");
-require("./config/passport")(passport);
-const session = require("express-session");
 const knowledgeRoute = require("./routes").knowledge;
-const MongoStore = require("connect-mongo");
+const paymentRoute = require("./routes").payment;
 
 const gracefulShutdown = () => {
   console.log("開始優雅關閉...");
@@ -102,6 +104,7 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   articleRoute
 );
+app.use("/api/payment", paymentRoute);
 
 // 設置靜態文件服務
 app.use("/uploads", express.static("public/uploads"));

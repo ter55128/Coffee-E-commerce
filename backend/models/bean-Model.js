@@ -43,9 +43,9 @@ const beanSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId, // primary key
     ref: "User",
   },
-  customers: {
-    type: [String],
-    default: [],
+  soldCount: {
+    type: Number,
+    default: 0,
   },
   createdAt: {
     type: Date,

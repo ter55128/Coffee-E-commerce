@@ -108,7 +108,7 @@ const StoreProductsComponent = ({ currentUser, setCurrentUser }) => {
                   <i className="fas fa-chart-line storeProducts__sales-icon"></i>
                   <span>已售出：</span>
                   <span className="storeProducts__sales-count">
-                    {bean.customers.length}
+                    {bean.soldCount}
                   </span>
                 </div>
               </div>

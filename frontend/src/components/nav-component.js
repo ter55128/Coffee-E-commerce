@@ -14,14 +14,16 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
   const [messageType, setMessageType] = useState("info");
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
 
+  const userID = currentUser?.user?._id || null;
+
   const handleLogout = () => {
     AuthService.logout();
     setCurrentUser(null);
     setMessage("登出成功！");
     setMessageType("success");
+    navigate("/");
     setTimeout(() => {
       setMessage("");
-      navigate("/");
     }, 2000);
   };
 
@@ -89,7 +91,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
             <ul className="navbar-nav">
               <li className="nav-item">
                 <Link
-                  className={`nav-link group-link ${
+                  className={`nav-link  ${
                     isActive("/products") ? "active" : ""
                   }`}
                   to="/products"
@@ -100,7 +102,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
               {currentUser && currentUser.user.role === "store" && (
                 <li className="nav-item">
                   <Link
-                    className={`nav-link group-link ${
+                    className={`nav-link  ${
                       isActive("/storeProducts") ? "active" : ""
                     }`}
                     to="/storeProducts"
@@ -112,7 +114,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
 
               <li className="nav-item">
                 <Link
-                  className={`nav-link group-link ${
+                  className={`nav-link  ${
                     isActive("/knowledge") ? "active" : ""
                   }`}
                   to="/knowledge"
@@ -122,7 +124,7 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
               </li>
               <li className="nav-item">
                 <Link
-                  className={`nav-link group-link ${
+                  className={`nav-link  ${
                     isActive("/articles") ? "active" : ""
                   }`}
                   to="/articles"
@@ -135,26 +137,44 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
               {currentUser && (
                 <li className="nav-item">
                   <Link
-                    className={`nav-link profile-link ${
+                    className={`nav-link icon-link ${
                       isActive("/profile") ? "active" : ""
                     }`}
                     to="/profile"
                   >
                     <i className="fas fa-user"></i>
+                    <span className="nav-link-text">個人資料</span>
                   </Link>
                 </li>
               )}
               {currentUser && currentUser.user.role === "customer" && (
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link icon-link ${
+                      isActive(`/orders/${userID}`) ? "active" : ""
+                    }`}
+                    to="/orders"
+                  >
+                    <i className="fa-solid fa-file-lines"></i>
+                    <span className="nav-link-text">訂單查詢</span>
+                  </Link>
+                </li>
+              )}
+
+              {currentUser && currentUser.user.role === "customer" && (
                 <li className="nav-item cart-item">
                   <Link
-                    className={`nav-link cart-link ${
+                    className={`nav-link icon-link ${
                       isActive("/cart") ? "active" : ""
                     }`}
                     to="/cart"
                   >
                     <i className="fas fa-shopping-cart"></i>
-                    {cartItemCount > 0 && (
+                    <span className="nav-link-text">購物車</span>
+                    {cartItemCount > 0 ? (
                       <span className="cart-badge">{cartItemCount}</span>
+                    ) : (
+                      <span className="cart-badge">0</span>
                     )}
                   </Link>
                 </li>
@@ -198,13 +218,8 @@ const NavComponent = ({ currentUser, setCurrentUser }) => {
           </div>
         </div>
       </nav>
-      {message && (
-        <Message
-          message={message}
-          type={messageType}
-          onClose={() => setMessage("")}
-        />
-      )}
+
+      <Message message={message} type={messageType} />
     </div>
   );
 };

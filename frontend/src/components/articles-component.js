@@ -237,7 +237,7 @@ const ArticlesComponent = ({ currentUser }) => {
               >
                 <h4 className="articles-card__comment-title">最新留言</h4>
                 {article.comments.length > 0 ? (
-                  <div
+                  <span
                     className="articles-card__comment-author"
                     onClick={() =>
                       navigate(
@@ -246,7 +246,7 @@ const ArticlesComponent = ({ currentUser }) => {
                     }
                   >
                     {newestComment(article).author.username}
-                  </div>
+                  </span>
                 ) : (
                   <></>
                 )}

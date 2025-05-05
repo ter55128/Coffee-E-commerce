@@ -152,7 +152,7 @@ const PublicProfileComponent = (props) => {
 
                     <div className="public-profile__card-footer">
                       <p className="public-profile__card-sales">
-                        已售出：{bean.customers.length} 件
+                        已售出：{bean.soldCount} 件
                       </p>
                     </div>
                   </div>

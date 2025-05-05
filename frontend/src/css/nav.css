@@ -1,6 +1,9 @@
 /* 導航欄基本樣式 */
+.nav-component {
+  position: relative;
+}
 .navbar {
-  padding: 1rem 2rem;
+  padding: 1rem;
   background: white !important;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -44,23 +47,12 @@
 .nav-link.active::after {
   transform: scaleX(1);
 }
-
-/* 購物車按鈕 */
-.cart-link {
-  font-size: 1.2rem;
-  padding: 0.5rem 1rem !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #e74c3c;
-  color: white !important;
-  border-radius: 50% !important;
-  width: 40px;
-  height: 40px;
+.nav-link-text {
+  display: none;
 }
 
 .cart-link:hover {
-  background-color: #c0392b !important;
+  background-color: 7f8c8d;
 }
 
 /* 會員按鈕 */
@@ -74,12 +66,6 @@
   background-color: #7f8c8d;
 }
 
-/* 購物車和會員按鈕不需要底線 */
-.cart-link::after,
-.nav-member::after {
-  display: none;
-}
-
 /* 購物車數量提示 */
 .cart-badge {
   position: absolute;
@@ -88,10 +74,10 @@
   background-color: #3498db;
   color: white;
   font-size: 0.8rem;
-  padding: 0.2rem 0.5rem;
-  border-radius: 10px;
-  min-width: 18px;
-  height: 18px;
+  padding: 0.2rem;
+  border-radius: 50%;
+  min-width: 20px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -115,26 +101,26 @@
 }
 
 /* 個人頁面圖標樣式 */
-.profile-link {
+.icon-link {
   font-size: 1.2rem;
-  padding: 0.5rem 1rem !important;
+  padding: 0.5rem !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #3498db;
-  color: white !important;
+  color: #34495e !important;
   border-radius: 50% !important;
   width: 40px;
   height: 40px;
   transition: all 0.3s ease;
 }
 
-.profile-link:hover {
-  background-color: #2980b9 !important;
+.icon-link:hover {
+  background-color: #f8f9fa !important;
 }
 
 /* 個人頁面圖標不需要底線 */
-.profile-link::after {
+.icon-link::after,
+.nav-member::after {
   display: none;
 }
 /* 響應式設計 */
@@ -160,12 +146,22 @@
 
   .cart-badge {
     position: static;
-    margin-left: 0.5rem;
   }
 
-  .profile-link {
+  .icon-link {
     width: 100%;
     border-radius: 20px !important;
     justify-content: center;
+  }
+}
+@media (max-width: 767px) {
+  a.nav-link {
+    font-size: 1rem;
+  }
+  .nav-link i {
+    display: none;
+  }
+  .nav-link-text {
+    display: block;
   }
 }

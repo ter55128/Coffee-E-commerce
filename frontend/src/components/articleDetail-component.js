@@ -17,23 +17,21 @@ const ArticleDetailComponent = ({ currentUser }) => {
   const [replyContent, setReplyContent] = useState("");
 
   useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_API_URL}/api/articles/public/${id}`
-        );
-        setArticle(response.data);
-        setLoading(false);
-      } catch (error) {
-        setMessage("文章載入失敗");
-        setMessageType("error");
-        setLoading(false);
-      }
-    };
-
     fetchArticle();
   }, [id]);
-
+  const fetchArticle = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_URL}/api/articles/public/${id}`
+      );
+      setArticle(response.data);
+      setLoading(false);
+    } catch (error) {
+      setMessage("文章載入失敗");
+      setMessageType("error");
+      setLoading(false);
+    }
+  };
   const handleReplySubmit = async () => {
     try {
       await ArticleService.postComment(id, {
@@ -43,6 +41,7 @@ const ArticleDetailComponent = ({ currentUser }) => {
       setReplyContent("");
       setMessage("回覆成功");
       setMessageType("success");
+      fetchArticle();
     } catch (error) {
       setMessage("回覆失敗");
       setMessageType("error");

@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import CartService from "../services/cart-service";
 import "../css/cart.css";
 import { useCart } from "../context/CartContext";
-import PaymentService from "../services/payment-service";
 import Message from "./common/Message";
 import Modal from "./common/Modal";
+import PaymentService from "../services/payment-service";
 
 const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [cartItems, setCartItems] = useState({ items: [] });
@@ -13,9 +13,12 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
   const [currentItem, setCurrentItem] = useState({ title: "", _id: "" });
   const navigate = useNavigate();
   const { updateCartItemCount } = useCart();
+  const [editingQuantity, setEditingQuantity] = useState(null);
+  const [tempQuantity, setTempQuantity] = useState("");
 
   useEffect(() => {
     if (!currentUser) {
@@ -33,8 +36,9 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       const response = await CartService.getCart();
       setCartItems(response.data);
       setLoading(false);
+      console.log(response.data);
     } catch (err) {
-      setMessage("獲取購物車失敗");
+      setMessage(err.response.data.error);
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
@@ -52,8 +56,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       );
 
       if (currentItem.quantity === 1) {
-        setIsModalOpen(true);
-        setCurrentItem({
+        openModal("remove", {
           title: currentItem.beanID.title,
           _id: currentItem.beanID._id,
         });
@@ -90,7 +93,6 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       }, 2000);
     }
   };
-
   const handleRemoveItem = async (beanID) => {
     try {
       await CartService.removeFromCart(beanID);
@@ -104,13 +106,56 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       }, 2000);
     } catch (err) {
       setIsModalOpen(false);
-      setMessage("移除商品失敗");
+      setMessage(err.response.data.error);
       setMessageType("error");
       setTimeout(() => {
         setMessage("");
         setMessageType("");
       }, 2000);
     }
+  };
+
+  const handleQuantityChange = async (beanID, value) => {
+    // 先更新臨時輸入值
+    setTempQuantity(value);
+
+    // 如果是空值，直接返回
+    if (value === "") return;
+
+    const quantity = parseInt(value);
+
+    // 驗證數量
+    if (isNaN(quantity) || quantity < 1) {
+      setMessage("請輸入有效的數量");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+      return;
+    }
+
+    try {
+      await CartService.updateQuantity(beanID._id, quantity);
+      await loadCart();
+    } catch (err) {
+      setMessage("更新數量失敗，請稍後再試");
+      setMessageType("error");
+      setTimeout(() => {
+        setMessage("");
+        setMessageType("");
+      }, 2000);
+    }
+  };
+
+  const handleQuantityFocus = (item) => {
+    setEditingQuantity(item.beanID._id);
+    setTempQuantity(item.quantity.toString());
+  };
+
+  const handleQuantityBlur = () => {
+    setEditingQuantity(null);
+    setTempQuantity("");
   };
 
   const calculateTotal = () => {
@@ -123,12 +168,10 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
     const count = cartItems.items.reduce((total, item) => {
       return total + item.quantity;
     }, 0);
-    // 更新購物車計數器
     updateCartItemCount(count);
     return count;
   };
 
-  // 在載入購物車和更新後都調用
   useEffect(() => {
     if (cartItems.items.length > 0) {
       calculateTotalQuantity();
@@ -137,31 +180,58 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
     }
   }, [cartItems, updateCartItemCount]);
 
-  const handleCheckout = async () => {
+  const openModal = (type, item = null) => {
+    setModalType(type);
+    if (item) {
+      setCurrentItem(item);
+    }
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalType(null);
+    setCurrentItem({ title: "", _id: "" });
+  };
+
+  const handleCheckout = () => {
+    openModal("checkout");
+  };
+
+  const processCheckout = async () => {
     try {
-      const paymentData = await PaymentService.createPayment(
+      console.log(cartItems);
+      const response = await PaymentService.createOrder(
         cartItems.items,
         calculateTotal()
       );
+      try {
+        const response = await CartService.clearCart(currentUser.user._id);
+        console.log("清空購物車", response);
+      } catch (e) {
+        console.error("清空購物車失敗:", e.response.data.error);
+      }
 
-      // 創建並提交表單到藍新金流
+      const { paymentFormData, paymentUrl } = response.data;
       const form = document.createElement("form");
-      form.method = "post";
-      form.action = paymentData.paymentUrl;
+      form.method = "POST";
+      form.action = paymentUrl;
+      form.style.display = "none";
 
-      for (let key in paymentData.paymentFormData) {
+      Object.entries(paymentFormData).forEach(([key, value]) => {
         const input = document.createElement("input");
         input.type = "hidden";
         input.name = key;
-        input.value = paymentData.paymentFormData[key];
+        input.value = value;
         form.appendChild(input);
-      }
+      });
 
       document.body.appendChild(form);
       form.submit();
     } catch (error) {
       console.error("結帳失敗:", error);
-      window.alert("結帳過程發生錯誤，請稍後再試");
+      setMessage("結帳過程發生錯誤，請稍後再試");
+      setMessageType("error");
     }
   };
 
@@ -209,17 +279,28 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                   <div className="cart__quantity">
                     <div className="cart__quantity__controls">
                       <button
-                        className="cart__quantity__button"
+                        className="cart__quantity__button cart__quantity__button--minus"
                         onClick={() => handletominus(item.beanID)}
                         disabled={loading}
                       >
                         -
                       </button>
-                      <span className="cart__quantity__display">
-                        {item.quantity}
-                      </span>
+                      <input
+                        type="text"
+                        className="cart__quantity__display"
+                        value={
+                          editingQuantity === item.beanID._id
+                            ? tempQuantity
+                            : item.quantity
+                        }
+                        onFocus={() => handleQuantityFocus(item)}
+                        onBlur={handleQuantityBlur}
+                        onChange={(e) =>
+                          handleQuantityChange(item.beanID, e.target.value)
+                        }
+                      />
                       <button
-                        className="cart__quantity__button"
+                        className="cart__quantity__button cart__quantity__button--plus"
                         onClick={() => handletoplus(item.beanID)}
                         disabled={loading}
                       >
@@ -234,8 +315,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
                   <button
                     className="cart__product-card__remove"
                     onClick={() => {
-                      setIsModalOpen(true);
-                      setCurrentItem({
+                      openModal("remove", {
                         title: item.beanID.title,
                         _id: item.beanID._id,
                       });
@@ -249,6 +329,35 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
           ))}
         </div>
       )}
+      <div className="cart__test-list-container">
+        <ul className="cart__test-list-title">
+          金流串接測試網站之規範
+          <li className="cart__test-list">
+            1. 目前提供測試之付款服務為 WebATM、Apple Pay、Google Pay、Samsung
+            Pay{" "}
+          </li>
+          <li className="cart__test-list">2. WebATM 僅支援華南銀行</li>
+          <li className="cart__test-list">
+            3. Apple Pay 請使用真實之信用卡號，至 Apple 裝置上進行綁定與支付測試
+          </li>
+          <li className="cart__test-list">
+            4. Google Pay 請使用真實之信用卡號，至 Android
+            裝置上進行綁定與支付測試
+          </li>
+          <li className="cart__test-list">
+            5. Samsung Pay 請使用真實之信用卡號，至 Samsung
+            裝置上進行綁定與支付測試
+          </li>
+          <li className="cart__test-list">
+            6. 測試過WebATM、Apple Pay 功能均可正常使用，Google Pay、Samsung Pay
+            若有問題，請聯繫 linkuanhan8811@gmail.com ，謝謝！
+          </li>
+          <li className="cart__test-list">
+            7.
+            提醒！測試區「不會真的收款」！但為確保您的權益及避免使用此支付工具付款所生之所有爭議款項，商品建議使用「購物車測試專用」($1)，再進行後續服務
+          </li>
+        </ul>
+      </div>
       {cartItems.items.length > 0 && (
         <div className="cart__summary">
           <div className="cart__summary__content">
@@ -266,7 +375,7 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
             </div>
             <button
               className="cart__summary__checkout"
-              onClick={handleCheckout}
+              onClick={processCheckout}
             >
               前往結帳
             </button>
@@ -276,10 +385,10 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
       {message && <Message message={message} type={messageType} />}
       <Modal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={closeModal}
         message={`是否要將 ${currentItem.title} 從購物車中移除？`}
         onConfirm={() => handleRemoveItem(currentItem._id)}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={closeModal}
         confirmText="確定"
         cancelText="取消"
       />

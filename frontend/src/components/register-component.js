@@ -35,7 +35,7 @@ const RegisterComponent = () => {
         }, 2000);
       })
       .catch((e) => {
-        setMessage(e.response.data);
+        setMessage(e.response.data.error);
         setMessageType("error");
         setTimeout(() => {
           setMessage("");

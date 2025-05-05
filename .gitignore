@@ -3,6 +3,8 @@
 # dependencies
 /.pnp
 .pnp.js
+node_modules/
+.cache/
 
 # testing
 /coverage
@@ -10,6 +12,10 @@
 # production
 /build
 /dist
+
+# uploads
+backend/public/uploads/beans/*
+!backend/public/uploads/beans/default.png
 
 # 環境變數
 backend/.env

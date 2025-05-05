@@ -29,7 +29,9 @@ import EditProductComponent from "./components/editProduct-component";
 import PostProductComponent from "./components/postProduct-component";
 
 import CartComponent from "./components/cart-component";
-import PaymentCallback from "./components/PaymentCallback";
+import PaymentReturn from "./components/PaymentReturn";
+import OrdersComponent from "./components/orders-component";
+import OrderDetailComponent from "./components/orderDetail-component";
 
 function App() {
   let [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
@@ -193,7 +195,12 @@ function App() {
                 />
               }
             />
-            <Route path="/payment/callback" element={<PaymentCallback />} />
+            <Route path="/payment/return" element={<PaymentReturn />} />
+            <Route
+              path="/orders"
+              element={<OrdersComponent currentUser={currentUser} />}
+            />
+            <Route path="/orders/:orderId" element={<OrderDetailComponent />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

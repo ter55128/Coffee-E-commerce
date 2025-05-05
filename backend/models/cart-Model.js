@@ -23,6 +23,22 @@ const cartSchema = new mongoose.Schema({
         type: Number,
         required: true,
       },
+      store: {
+        type: String,
+        required: true,
+      },
+      title: {
+        type: String,
+        required: true,
+      },
+      image: {
+        type: String,
+        required: true,
+      },
+      weight: {
+        type: Number,
+        required: true,
+      },
     },
   ],
   createdAt: {

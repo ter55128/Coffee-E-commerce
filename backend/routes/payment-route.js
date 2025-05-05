@@ -3,6 +3,7 @@ const NewebpayService = require("../services/newebpay-service");
 const Order = require("../models/order-Model");
 const Cart = require("../models/cart-Model");
 const Bean = require("../models/bean-Model");
+const User = require("../models/user-Model");
 const dotenv = require("dotenv");
 require("dotenv").config();
 const passport = require("passport");
@@ -16,6 +17,7 @@ router.post(
       console.log("資料傳到payment-route");
       const { cartItems, totalAmount } = req.body;
       console.log(cartItems);
+
       const timeStamp = Math.floor(Date.now() / 1000);
       // 創建訂單
       const order = await Order.create({

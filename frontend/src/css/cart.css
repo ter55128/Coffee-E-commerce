@@ -391,22 +391,23 @@
   }
   .cart__quantity__button {
     font-size: 0.9rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
   }
   .cart__quantity__controls {
-    margin: 0.5rem 0;
-    height: 1.5rem;
+    margin: 0.5rem 0 0.75rem 0;
+    height: 1.75rem;
   }
   .cart__product-card__price {
     font-size: 0.9rem;
-    margin: 0.5rem 0;
+    margin: 0.75rem 0 0.5rem 0;
     height: 1.5rem;
   }
 
   .cart__product-card__remove {
     padding: 0.25rem;
     font-size: 0.8rem;
+    margin-top: 0.5rem;
   }
   .cart__summary {
     margin: 0.75rem;

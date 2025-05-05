@@ -146,15 +146,13 @@ const OrderDetailComponent = () => {
                 <div className="orderDetail-items__image-container">
                   <img
                     className="orderDetail-items__image"
-                    src={bean.image}
+                    src={`${process.env.REACT_APP_API_URL}${bean.image}`}
                     alt={bean.name}
                   />
                 </div>
                 <div className="orderDetail-items__info">
                   <h4 className="orderDetail-items__title">{bean.title}</h4>
-                  <div className="orderDetail-items__store">
-                    {bean.store.username}
-                  </div>
+
                   <div className="orderDetail-items__details">
                     <span>數量: {bean.quantity}</span>
                     <span>${bean.price}</span>

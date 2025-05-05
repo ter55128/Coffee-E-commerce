@@ -45,10 +45,6 @@ const orderSchema = new Schema(
           type: Number,
           required: true,
         },
-        storeUsername: {
-          type: String,
-          required: true,
-        },
       },
     ],
     totalAmount: {

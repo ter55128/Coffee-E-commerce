@@ -84,18 +84,15 @@ router.patch("/:_id", upload.single("image"), async (req, res) => {
   try {
     let { _id } = req.params;
 
-    // 檢查商品是否存在
     let beanFound = await Bean.findOne({ _id });
     if (!beanFound) {
       return res.status(400).send("商品不存在，無法更新");
     }
 
-    // 檢查是否為商品擁有者
     if (!beanFound.store.equals(req.user._id)) {
       return res.status(403).send("只有商品擁有者可以更新商品");
     }
 
-    // 準備更新數據
     const updateData = {
       title: req.body.title,
       weight: req.body.weight,

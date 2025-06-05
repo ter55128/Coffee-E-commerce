@@ -17,7 +17,7 @@ router.post("/", async (req, res) => {
     console.log(req.user._id);
     const { title, content } = req.body;
     console.log(req.body);
-    // 驗證標題和內容
+
     if (!title || !content) {
       return res.status(400).send("標題和內容不能為空");
     }
@@ -83,7 +83,7 @@ router.post("/:_id/comment", async (req, res) => {
   }
 });
 
-// 刪除文章（只有作者可以刪除）
+// 刪除文章
 router.delete("/:_id", async (req, res) => {
   try {
     const article = await Article.findById(req.params._id);
@@ -101,7 +101,7 @@ router.delete("/:_id", async (req, res) => {
   }
 });
 
-// 更新文章（只有作者可以更新）
+// 更新文章
 router.patch("/:_id", async (req, res) => {
   try {
     console.log(req.user);

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../css/orderDetail.css";
 import AuthService from "../services/auth-service";
-import BeansService from "../services/beans-service";
 import PaymentService from "../services/payment-service";
 import Message from "./common/Message";
 

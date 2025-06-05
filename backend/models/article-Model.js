@@ -47,7 +47,6 @@ const articleSchema = new mongoose.Schema({
   },
 });
 
-// 更新時間中間件
 articleSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();

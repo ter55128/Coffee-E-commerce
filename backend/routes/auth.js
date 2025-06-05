@@ -111,7 +111,7 @@ router.patch(
         return res.status(404).send("用戶不存在");
       }
 
-      // 如果要更改密碼，驗證當前密碼
+      // 驗證當前密碼
       if (newPassword) {
         const isMatch = await new Promise((resolve, reject) => {
           user.comparePassword(currentPassword, (err, match) => {
@@ -125,7 +125,6 @@ router.patch(
         }
       }
 
-      // 更新用戶資料
       if (username) user.username = username;
       if (newPassword) user.password = newPassword;
       if (introduction !== undefined) user.introduction = introduction;
@@ -196,13 +195,12 @@ router.post("/forgot-password", async (req, res) => {
   }
 });
 
-// 添加重設密碼的路由
+// 重設密碼
 router.post("/reset-password/:token", async (req, res) => {
   try {
     const { token } = req.params;
     const { newPassword } = req.body;
 
-    //驗證 token
     const decoded = jwt.verify(token, process.env.PASSWORD_SECRET);
     const user = await User.findById(decoded._id);
 
@@ -221,7 +219,7 @@ router.post("/reset-password/:token", async (req, res) => {
   }
 });
 
-// Google OAuth 路由
+// Google OAuth
 router.get(
   "/google",
 

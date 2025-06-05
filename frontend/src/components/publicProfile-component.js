@@ -20,7 +20,6 @@ const PublicProfileComponent = (props) => {
         const response = await AuthService.getUserProfile(id);
         setUserProfile(response.data);
 
-        // 如果是商家，獲取其商品
         if (response.data.role === "store") {
           try {
             const productsResponse = await axios.get(

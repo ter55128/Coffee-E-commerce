@@ -50,7 +50,6 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
 
   const handletominus = async (beanID) => {
     try {
-      // 找到當前商品
       const currentItem = cartItems.items.find(
         (item) => item.beanID._id === beanID._id
       );
@@ -61,7 +60,6 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
           _id: currentItem.beanID._id,
         });
       } else {
-        // 數量大於1，減少數量
         await CartService.updateQuantity(beanID._id, currentItem.quantity - 1);
       }
       await loadCart();
@@ -76,7 +74,6 @@ const CartComponent = ({ currentUser, setCurrentUser }) => {
   };
   const handletoplus = async (beanID) => {
     try {
-      // 找到當前商品
       const currentItem = cartItems.items.find(
         (item) => item.beanID._id === beanID._id
       );

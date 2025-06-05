@@ -50,7 +50,7 @@ module.exports = (passport) => {
 
           if (user) {
             console.log("使用者已存在");
-            // 如果用戶存在但沒有 googleId，更新它
+            // 有用戶但沒有 googleId，更新
             if (!user.googleId) {
               user.googleId = profile.id;
               await user.save();
@@ -64,7 +64,7 @@ module.exports = (passport) => {
             username: profile.displayName,
             email: profile.emails[0].value,
             googleId: profile.id,
-            // role 初始為 null，等待用戶選擇
+            // role 初始為 null
             role: null,
             introduction: "",
           });

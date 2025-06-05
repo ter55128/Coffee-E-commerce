@@ -2,7 +2,6 @@ import axios from "axios";
 const API_URL = `${process.env.REACT_APP_API_URL}/api/articles`;
 
 class ArticleService {
-  // 發表新文章
   postArticle(articleData) {
     let token;
     if (localStorage.getItem("user")) {
@@ -18,7 +17,6 @@ class ArticleService {
     });
   }
 
-  // 發表評論
   postComment(articleId, replyContent) {
     let token;
     if (localStorage.getItem("user")) {
@@ -33,7 +31,6 @@ class ArticleService {
     });
   }
 
-  // 更新文章
   updateArticle(id, updateData) {
     let token;
     if (localStorage.getItem("user")) {
@@ -48,7 +45,6 @@ class ArticleService {
     });
   }
 
-  // 刪除文章
   deleteArticle(id) {
     return axios.delete(`${API_URL}/${id}`, {
       headers: {

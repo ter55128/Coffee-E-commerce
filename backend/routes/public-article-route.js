@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Article = require("../models").Article;
 
-// 獲取所有文章
 router.get("/", async (req, res) => {
   try {
     const articles = await Article.find({})
@@ -16,7 +15,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 獲取單篇文章
 router.get("/:_id", async (req, res) => {
   try {
     const article = await Article.findById(req.params._id)

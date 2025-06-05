@@ -37,7 +37,6 @@ const ProductsComponent = (props) => {
     sortBy: "default", // default, price-asc, price-desc, sales
   });
 
-  // 處理搜索條件變更
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
 
@@ -51,7 +50,6 @@ const ProductsComponent = (props) => {
 
         let filtered = [...beans];
 
-        // 關鍵字搜索
         if (newFilters.keyword) {
           filtered = filtered.filter(
             (bean) =>
@@ -64,7 +62,6 @@ const ProductsComponent = (props) => {
           );
         }
 
-        // 價格範圍
         if (newFilters.minPrice) {
           filtered = filtered.filter(
             (bean) => bean.price >= Number(newFilters.minPrice)
@@ -76,7 +73,6 @@ const ProductsComponent = (props) => {
           );
         }
 
-        // 排序
         switch (newFilters.sortBy) {
           case "price-asc":
             filtered.sort((a, b) => a.price - b.price);
@@ -136,7 +132,6 @@ const ProductsComponent = (props) => {
   const applyFilters = () => {
     let filtered = [...beans];
 
-    // 關鍵字搜索
     if (searchFilters.keyword) {
       filtered = filtered.filter(
         (bean) =>
@@ -149,7 +144,6 @@ const ProductsComponent = (props) => {
       );
     }
 
-    // 價格範圍
     if (searchFilters.minPrice) {
       filtered = filtered.filter(
         (bean) => bean.price >= Number(searchFilters.minPrice)
@@ -161,7 +155,6 @@ const ProductsComponent = (props) => {
       );
     }
 
-    // 排序
     switch (searchFilters.sortBy) {
       case "price-asc":
         filtered.sort((a, b) => a.price - b.price);
@@ -179,7 +172,6 @@ const ProductsComponent = (props) => {
     setFilteredBeans(filtered);
   };
 
-  // 重置過濾條件
   const resetFilters = () => {
     setSearchFilters({
       keyword: "",

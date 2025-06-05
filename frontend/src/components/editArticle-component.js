@@ -25,7 +25,6 @@ const EditArticleComponent = ({ currentUser }) => {
         );
         const articleData = response.data;
 
-        // 檢查是否為文章作者
         if (currentUser?.user._id !== articleData.author._id) {
           navigate("/articles");
           return;
@@ -59,10 +58,9 @@ const EditArticleComponent = ({ currentUser }) => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage(""); // 清除之前的訊息
+    setMessage("");
 
     try {
-      // 驗證
       if (!title.trim()) {
         setMessage("標題不能為空");
         errotMessage();

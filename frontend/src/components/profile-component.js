@@ -17,13 +17,11 @@ const ProfileComponent = ({ currentUser, setCurrentUser }) => {
 
     if (userData) {
       try {
-        // 解析用户数据
+        // 解析用戶數據
         const parsedData = JSON.parse(decodeURIComponent(userData));
 
-        // 存储用户信息
         localStorage.setItem("user", JSON.stringify(parsedData));
 
-        // 更新 currentUser
         setCurrentUser(parsedData);
 
         // 清除 URL 参数
@@ -34,7 +32,6 @@ const ProfileComponent = ({ currentUser, setCurrentUser }) => {
     }
   }, [setCurrentUser]);
 
-  // 當用戶沒有角色時顯示對話框
   useEffect(() => {
     if (currentUser && !currentUser.user.role) {
       setShowRoleModal(true);
@@ -60,7 +57,7 @@ const ProfileComponent = ({ currentUser, setCurrentUser }) => {
     try {
       const response = await AuthService.updateRole(selectedRole);
 
-      // 更新本地用户数据
+      // 更新用戶數據
       const updatedUserData = {
         ...currentUser,
         token: response.data.token,

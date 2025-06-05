@@ -1,13 +1,12 @@
 const nodemailer = require("nodemailer");
 
-// 創建郵件傳輸器
 const transporter = nodemailer.createTransport({
-  service: "gmail", // 使用 Gmail
+  service: "gmail",
   port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER, // 您的 Gmail 帳號
-    pass: process.env.EMAIL_PASS, // 您的 Gmail 應用程式密碼
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
   tls: {
     rejectUnauthorized: false,
@@ -22,12 +21,9 @@ transporter.verify((error, success) => {
   }
 });
 
-// 發送重設密碼郵件
 const sendResetPasswordEmail = async (email, resetToken) => {
-  // 重設密碼的連結
   const resetLink = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
 
-  // 郵件內容
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
@@ -64,7 +60,6 @@ const sendResetPasswordEmail = async (email, resetToken) => {
     `,
   };
 
-  // 發送郵件
   try {
     await transporter.sendMail(mailOptions);
     console.log("郵件發送成功:");

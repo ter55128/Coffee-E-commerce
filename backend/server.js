@@ -17,8 +17,13 @@ const publicArticleRoute = require("./routes").publicArticle;
 const knowledgeRoute = require("./routes").knowledge;
 const paymentRoute = require("./routes").payment;
 
+// 避免資料遺失，釋放資源，提成穩定性
+
+// 處理完現有請求，關閉伺服器，關閉 MongoDB，安全結束程式
 const gracefulShutdown = () => {
   console.log("開始優雅關閉...");
+
+  // HTTP 伺服器停止接收連線，等待現有請求處理完畢，避免資料遺失
   server.close(() => {
     console.log("HTTP 服務器已關閉");
     mongoose.connection.close(false, () => {
@@ -27,7 +32,6 @@ const gracefulShutdown = () => {
     });
   });
 
-  // 如果 10 秒內沒有完成關閉，強制退出
   setTimeout(() => {
     console.error("無法優雅關閉，強制退出");
     process.exit(1);
@@ -37,6 +41,7 @@ const gracefulShutdown = () => {
 process.on("SIGTERM", gracefulShutdown);
 process.on("SIGINT", gracefulShutdown);
 
+//避免未被 try catch 的異常導致程式崩潰
 process.on("uncaughtException", (err) => {
   console.error("未捕獲的異常：", err);
 });
@@ -54,10 +59,7 @@ console.log(process.env.MONGO_URI);
 // Middleware
 app.use(
   cors({
-    origin: [
-      "https://coffee-e-commerce.zeabur.app", // 生產環境前端
-      "http://localhost:3000", // 本地開發
-    ],
+    origin: ["https://coffee-e-commerce.zeabur.app", "http://localhost:3000"],
     credentials: true,
   })
 );

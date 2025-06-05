@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const Knowledge = require("../models/knowledge-Model");
 
-// 獲取所有標題
 router.get("/", async (req, res) => {
   try {
     const knowledges = await Knowledge.find({}, "title icon");
@@ -11,7 +10,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// 獲取特定標題的內容
 router.get("/:title", async (req, res) => {
   try {
     const knowledge = await Knowledge.findOne({

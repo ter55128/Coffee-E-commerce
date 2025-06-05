@@ -3,4 +3,5 @@ module.exports = {
   Bean: require("./bean-Model"),
   Cart: require("./cart-Model"),
   Article: require("./article-Model"),
+  Order: require("./order-Model"),
 };

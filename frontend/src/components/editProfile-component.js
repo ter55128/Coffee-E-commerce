@@ -22,13 +22,11 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
   const hasNoPassword = !currentUser?.user?.password;
 
   useEffect(() => {
-    // 確保用戶已登入
     if (!currentUser) {
       navigate("/login");
       return;
     }
 
-    // 載入用戶資料
     setUserData({
       ...userData,
       username: currentUser.user.username,
@@ -55,19 +53,15 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
       // 只更新選擇修改的欄位
       const updateData = {};
 
-      // 檢查用戶名是否變更
       if (userData.username !== currentUser.user.username) {
         updateData.username = userData.username;
       }
 
-      // 添加自我介紹的更新
       if (userData.introduction !== currentUser.user.introduction) {
         updateData.introduction = userData.introduction;
       }
 
-      // 處理密碼相關更新（只有有密碼的用戶才能修改密碼）
       if (!hasNoPassword && userData.newPassword) {
-        // 驗證新密碼
         if (userData.newPassword !== userData.confirmPassword) {
           setMessage("新密碼與確認密碼不匹配");
           setMessageType("error");
@@ -78,7 +72,6 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
           return;
         }
 
-        // 驗證當前密碼是否填寫
         if (!userData.currentPassword) {
           setMessage("請輸入當前密碼");
           setMessageType("error");
@@ -93,7 +86,6 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
         updateData.newPassword = userData.newPassword;
       }
 
-      // 如果沒有要更新的資料
       if (Object.keys(updateData).length === 0) {
         setMessage("沒有要更新的資料");
         setMessageType("error");
@@ -104,10 +96,9 @@ const EditProfileComponent = ({ currentUser, setCurrentUser }) => {
         return;
       }
 
-      // 調用更新 API
       const response = await AuthService.updateProfile(updateData);
 
-      // 更新本地存儲的用戶資料和 token
+      // 更新用戶資料 .token
       const updatedUser = {
         token: response.data.token,
         user: response.data.user,

@@ -18,7 +18,6 @@ const ResetPasswordComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 驗證密碼
     if (newPassword.length < 6) {
       setMessage("密碼長度必須至少為6個字符");
       setMessageType("error");

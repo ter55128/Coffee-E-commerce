@@ -88,17 +88,13 @@ router.post("/", async (req, res) => {
       return res.status(200).send({ message: "商品已添加到購物車", cart });
     }
     if (cart) {
-      //  檢查商品是否已存在於購物車
       const itemIndex = cart.items.findIndex(
         (item) => item.beanID.toString() === beanID
       );
 
       if (itemIndex > -1) {
-        //如果商品已存在於購物車，則增加數量
         cart.items[itemIndex].quantity += 1;
       } else if (itemIndex == -1) {
-        //如果商品不存在於購物車，則新增商品
-
         const newItem = {
           beanID: bean._id,
           quantity: 1,
@@ -134,7 +130,7 @@ router.put("/update/:beanID", async (req, res) => {
     );
 
     if (quantity === 0) {
-      cart.items.splice(itemIndex, 1); // 移除商品
+      cart.items.splice(itemIndex, 1);
     } else {
       cart.items[itemIndex].quantity = quantity;
     }

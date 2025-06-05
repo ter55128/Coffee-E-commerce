@@ -20,7 +20,6 @@ const ArticlesComponent = ({ currentUser }) => {
     sortBy: "default", // default, date-desc, date-asc, comments
   });
 
-  // 處理搜索條件變更
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
     setSearchFilters((prev) => ({
@@ -29,17 +28,14 @@ const ArticlesComponent = ({ currentUser }) => {
     }));
   };
 
-  // 處理搜索提交
   const handleSubmitSearch = (e) => {
     e.preventDefault();
     applyFilters();
   };
 
-  // 應用過濾條件
   const applyFilters = () => {
     let filtered = [...articles];
 
-    // 關鍵字搜索（標題、作者名稱、內容）
     if (searchFilters.keyword) {
       filtered = filtered.filter(
         (article) =>
@@ -55,7 +51,6 @@ const ArticlesComponent = ({ currentUser }) => {
       );
     }
 
-    // 排序
     switch (searchFilters.sortBy) {
       case "date-desc":
         filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
@@ -73,7 +68,6 @@ const ArticlesComponent = ({ currentUser }) => {
     setFilteredArticles(filtered);
   };
 
-  // 重置過濾條件
   const resetFilters = () => {
     setSearchFilters({
       keyword: "",
@@ -82,7 +76,6 @@ const ArticlesComponent = ({ currentUser }) => {
     setFilteredArticles(articles);
   };
 
-  // 獲取所有文章
   useEffect(() => {
     const fetchArticles = async () => {
       try {

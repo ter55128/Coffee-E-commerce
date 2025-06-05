@@ -53,7 +53,7 @@ const KnowledgeComponent = () => {
   };
 
   // 當 modal 開啟時禁止背景滾動
-  React.useEffect(() => {
+  useEffect(() => {
     if (selectedSection) {
       document.body.style.overflow = "hidden";
     } else {

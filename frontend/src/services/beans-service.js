@@ -28,22 +28,6 @@ class BeansService {
       }
     );
   }
-  //get purchase history by customer id
-  // getPurchaseHistory(_id) {
-  //   let token;
-  //   if (localStorage.getItem("user")) {
-  //     token = JSON.parse(localStorage.getItem("user")).token;
-  //   } else {
-  //     token = "";
-  //   }
-  //   return axios.get(API_URL + "/customer/" + _id, {
-  //     headers: {
-  //       Authorization: token,
-  //     },
-  //   });
-  // }
-
-  // get beans by store id
   getStoreBeans(_id) {
     let token;
     if (localStorage.getItem("user")) {
@@ -58,7 +42,6 @@ class BeansService {
     });
   }
 
-  // get beans by bean id
   getBeanById(_id) {
     let token;
     if (localStorage.getItem("user")) {

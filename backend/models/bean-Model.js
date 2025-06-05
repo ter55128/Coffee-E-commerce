@@ -52,8 +52,8 @@ const beanSchema = new Schema({
     default: Date.now,
   },
   image: {
-    type: String, // 存儲圖片的路徑
-    default: "default-bean.jpg", // 預設圖片
+    type: String,
+    default: "default-bean.jpg",
   },
 });
 

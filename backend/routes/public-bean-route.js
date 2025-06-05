@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const Bean = require("../models").Bean;
 
-// 公開的獲取所有商品路由
 router.get("/", async (req, res) => {
   try {
     let beans = await Bean.find({})
